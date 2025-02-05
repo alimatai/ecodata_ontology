@@ -370,7 +370,8 @@
         
         },
         "location": {
-        
+            "FIELD_ID": "ENVO:00000114",
+            "PLOT_ID": "AGRO:00000301"
         },
         "soils" : {
             "COARSE_SAND": "None",
