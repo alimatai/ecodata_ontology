@@ -1,0 +1,34 @@
+dpinst:AF001 a dp:Field ;
+    rdfs:label "AF001" ;
+
+dpinst:y1 a dp:SamplingCampaign ;
+    rdfs:label "Y1"^^xsd:str .
+
+dpinst:y2 a dp:SamplingCampaign ;
+    rdfs:label "Y2"^^xsd:str .
+
+dpinst:y1s1 a dp:SamplingSeason ;
+    rdfs:label "Y1S1"^^xsd:str .
+
+dpinst:y1s2 a dp:SamplingSeason ;
+    rdfs:label "Y1S1"^^xsd:str .
+
+dpinst:y2s1 a dp:SamplingSeason ;
+    rdfs:label "Y1S1"^^xsd:str .
+
+dpinst:y2s2 a dp:SamplingSeason ;
+    rdfs:label "Y1S1"^^xsd:str .
+
+dpinst:SC a sosa:Sensor ;
+    a foaf:Person ;
+    rdfs:label "Stéphane Cordeau" .
+
+dpinst:obsIDxyz a sosa:Observation ;
+    sosa:ObservedProperty sosaext:pH ;
+    sosa:hasSimpleResult 7 ;
+    sosa:hasFeatureOfInterest sosaext:SoilBiochemstry ;
+    sosa:hasFeatureOfInterest sosaext:AF001 ;
+    sosa:resultTime 01/01/2022 ;
+    sosa:phenomenonTime sosaext:y1 ;
+    sosa:phenomenonTime sosaext:s2 ;
+    sosa:madeBySensor dp:SC .

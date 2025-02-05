@@ -1,0 +1,824 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix time: <https://www.w3.org/2006/time#> .
+@prefix bago: <https://opendata.inrae.fr/bag-def#> .
+@prefix envo: <http://purl.obolibrary.org/obo/envo.owl> .
+@prefix ncbitaxon: <http://purl.obolibrary.org/obo/ncbitaxon.owl> .
+@prefix om: <http://www.ontology-of-units-of-measure.org/resource/om-2/> .
+@prefix unit: <https://w3id.org/uom/> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix to: <https://agroportal.lirmm.fr/ontologies/TO/> . # http://purl.obolibrary.org/obo/to.owl
+@prefix po: <https://agroportal.lirmm.fr/ontologies/PO> . # http://purl.obolibrary.org/obo/po.owl
+@prefix pato: <https://agroportal.lirmm.fr/ontologies/PATO> . # http://purl.obolibrary.org/obo/pato.owl
+@prefix chebi: <http://purl.obolibrary.org/obo/chebi.owl> .
+@prefix agro: <http://purl.obolibrary.org/obo/agro-edit.owl> .
+
+@prefix dp: <http://www.truc.machin.org/dp/> .
+
+dp: a owl:Ontology ;
+  dcterms:title "DeepImpact sosa-compatible Ontology"@en ;
+  dcterms:description "This ontology is an abstraction of the data of the DeepImpact project (INRAE), articulated on the sosa ontology"@en ;
+  dcterms:creator [ a foaf:Agent ; foaf:name "Victor Mataigne"@fr ] ;
+  dcterms:rights "Copyright 2017 W3C/OGC." ;
+  dcterms:license <http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document> ;
+  dcterms:license <http://www.opengeospatial.org/ogc/Software> ;
+  dcterms:created "2024-07-17"^^xsd:date ;
+  vann:preferredNamespacePrefix "dp" ;
+  vann:preferredNamespaceUri "http://www.w3.org/ns/dp/" .
+
+# ---------------------------------------------- #
+# dp elements used as links to sos main entities #
+# ---------------------------------------------- #
+
+# TODO : voir quels préfixes pré-existants peuvent exister pour 'locatedIn' et 'includedIn'
+# TODO : Safran / GeographicEntity, pas mieux ?
+
+dp:SamplingCampaign rdfs:subClassOf time:Interval ;
+    rdfs:label "Sampling Campaign"@en ;
+    rdfs:comment "A sampling campaign is a label given to an interval of time used to gather all samples and observations made during this interval."@en .
+
+dp:SamplingSeason rdfs:subClassOf time:Interval ;
+    rdfs:label "Sampling Season"@en ;
+    rdfs:comment "A sampling season is a label given to an interval which is a subpart of a dp:SamplingCampaign,used to gather all samples and observations made during this interval. dp:Fields and dp:Plots are sampled only once per sampling season."@en ;
+    dp:includedIn dp:SamplingCampaign .
+
+dp:SamplingOrObservationLocation rdfs:subClassOf sosa:FeatureOfInterest ; # a geo:GeographicEntity ; TODO : find GeographicEntity
+    rdfs:label "Sampling or observation location"@en ;
+    rdfs:comment "A geographical entity from which observations are made and samples are taken of."@en .
+
+dp:Field a dp:SamplingOrObservationLocation ;
+    rdfs:label "Field"@en ;
+    rdfs:comment "An area occupied by a cultivated crop"@en .
+
+dp:Plot a dp:SamplingOrObservationLocation ;
+    rdfs:label "Plot"@en ;
+    rdfs:comment "A subpart of a dp:Field, specifically dedicated to sampling data."@en ;
+
+dp:Region a sosa:FeatureOfInterest ; # a geo:GeographicEntity ; TODO : find GeographicEntity
+    rdfs:label "Region"@en ;
+    skos:altLabel "REGION"@en ;
+    rdfs:comment "A geographic (and/or administrative) entity representing a large area of land in France"@en .
+
+dp:SafranGridMesh a sosa:FeatureOfInterest ; # a geo:GeographicEntity ; TODO : find GeographicEntity
+    rdfs:label "Safran Grid Mesh"@en ;
+    skos:altLabel "SAFRAN"@en ;
+    rdfs:comment "A mesh of the Safran grid, which is used to divide France territory in 1km*1km meshes."@en .
+
+dp:includedIn a rdfs:Property ;
+    rdfs:domain time:Interval ;
+    rdfs:range time:Interval .
+
+dp:locatedIn a rdfs:Property ;
+    rdfs:domain dp:Plot ;
+    rdfs:range dp:Field .
+
+# -------------------------------------------------------------------------------- #
+# DeepImpact elements which can serve as categories of 'sosa:ObservableProperties' #
+# -------------------------------------------------------------------------------- #
+
+dp:CategoryOfObservableProperties a rdfs:Class ;
+    rdfs:label "Vategory of observable properties"@en ;
+    rdfs:comment "Represents a set of dp:ObservableProperties' which can be grouped together because related to the same kind of observation or sampling."@en .
+
+dp:includesObservableProperty a rdfs:Property ;
+    rdfs:domain sosa:CategoryOfObservableProperties ;
+    rdfs:range sosa:ObservableProperty ;
+    owl:inverseOf dp:belongsToCategory .
+
+dp:belongsToCategory a rdfs:Property ;
+    rdfs:domain sosa:ObservableProperty ;
+    rdfs:range sosa:CategoryOfObservableProperties ;
+    owl:inverseOf dp:includesObservableProperty .
+
+dp:Boagressors a dp:CategoryOfObservableProperties ;
+    rdfs:label "Bioagressors"@en ;
+    rdfs:comment "Entity gathering entities representing variables related to the sampling of bioagressors (but not bioagressors species themselves) in a 'dp:Plot'."@en ;
+    dp:includesObservableProperty dp:PlantDevelopmentStage ;
+    dp:includesObservableProperty dp:PlantHeight ;
+    dp:includesObservableProperty dp:NumberOfFungalParasiticSpots ;
+    dp:includesObservableProperty dp:NumberOfLivingLeaves ;
+    dp:includesObservableProperty dp:NumberOfStems ;
+    dp:includesObservableProperty dp:OverallFoliarParasitism ;
+    dp:includesObservableProperty dp:OverallFoliarPhytophagy ;
+    dp:includesObservableProperty dp:SlugChewingInsects ;
+    dp:includesObservableProperty dp:RootDamages ;
+    dp:includesObservableProperty dp:UndefinedFoliarPhytophagy ;
+    dp:includesObservableProperty dp:AphidColonies ;
+    dp:includesObservableProperty dp:UndefinedFoliarParasitism ;
+    dp:includesObservableProperty dp:ThallusPerPlant ;
+    dp:includesObservableProperty dp:MainThallusHeight ;
+    dp:includesObservableProperty dp:PlantsOnOneMeter ;
+    dp:includesObservableProperty dp:MoreThanOneMeterSampling ;
+    dp:includesObservableProperty dp:PestDensity ;
+    dp:includesObservableProperty dp:GeneralState ;
+    dp:includesObservableProperty dp:SampledPlant .
+
+dp:BioagressoSpecies a dp:CategoryOfObservableProperties ;
+    rdfs:label "Bioagressor species"@en ;
+    rdfs:comment "A living organism, known to cause damages to a plant, for example by feeding on it or causing diseaseas."@en ;
+    dp:isA dp:SampledOrObservedOrganism ;
+    dp:observedOn dp:SampledOrObservedOrganism ;
+    dp:inAbundanceCategory xsd:literal .
+
+dp:Biomass a dp:CategoryOfObservableProperties ;
+    rdfs:label "Biomass"@en ;
+    rdfs:comment "An entity gathering various data for the recording of biomass in a cultivated crop."@en ;
+    dp:includesObservableProperty dp:PlantDensity ;
+    dp:includesObservableProperty dp:BiomassCrop ;
+    dp:includesObservableProperty dp:NumberOfRanks ;
+    dp:includesObservableProperty dp:NumberOfunits .
+
+#dp:Biomass a dp:CategoryOfObservableProperties ;
+#    rdfs:label "Biomass"@en ;
+#    rdfs:comment "Gathers data representing the biomass of a cultivated crop"@en ;
+#    dp:rowNumber xsd:int ;
+#    dp:plantDensity xsd:integer ;
+#    dp:biomassCrop xsd:float ;
+#    dp:biomassweed xsd:float .
+
+dp:Climatic a dp:CategoryOfObservableProperties ;
+    rdfs:label "Climatic data"@en ;
+    rdfs:comment "An entity gathering climatic data obtained by the SAFRAN network of METEO-France, a grid of 4km*4km meshes. Each 'dp:Field' is associated to a mesh."@en ;
+    rdfs:comment "Une entité qui regroupe les données climatiques obtenues par le réseau SAFRAN de METEO-France, constitué de mailles de 4km*4km. Chaque parcelle 'dp:Field' DeepImpact est associée à une maille."@fr .
+    dp:includesObservableProperty dp:prenei_q ;
+    dp:includesObservableProperty dp:preliq_q ;
+    dp:includesObservableProperty dp:pe_q ;
+    dp:includesObservableProperty dp:t_q ;
+    dp:includesObservableProperty dp:tinf_h_q ;
+    dp:includesObservableProperty dp:tsup_h_q ;
+    dp:includesObservableProperty dp:ff_q ;
+    dp:includesObservableProperty dp:dli_q ;
+    dp:includesObservableProperty dp:ssi_q ;
+    dp:includesObservableProperty dp:evap_q ;
+    dp:includesObservableProperty dp:etp_q ;
+    dp:includesObservableProperty dp:q_q ;
+    dp:includesObservableProperty dp:hu_q ;
+    dp:includesObservableProperty dp:swi_q ;
+    dp:includesObservableProperty dp:wg_racine_q ;
+    dp:includesObservableProperty dp:wgi_racine_q .
+
+dp:SoilBiochemistry a dp:CategoryOfObservableProperties ;
+    rdfs:label "Soil Biochemistry"@en ;
+    rdfs:comment "An entity gathering various data for the analysis of soils biochemestry."@en ;
+    dp:includesObservableProperty dp:CoarseSand ;
+    dp:includesObservableProperty dp:FineSand ;
+    dp:includesObservableProperty dp:CoarseSilt ;
+    dp:includesObservableProperty dp:FineSilt a;
+    dp:includesObservableProperty dp:Clay ;
+    dp:includesObservableProperty dp:LimestoneTotal ;
+    dp:includesObservableProperty dp:LimestoneActive ;
+    dp:includesObservableProperty dp:Iron ;
+    dp:includesObservableProperty dp:PH ;
+    dp:includesObservableProperty dp:Conductivity ;
+    dp:includesObservableProperty dp:Carbon ;
+    dp:includesObservableProperty dp:OrganicMatter ;
+    dp:includesObservableProperty dp:NitrogenTotal ;
+    dp:includesObservableProperty dp:CNRatio ;
+    dp:includesObservableProperty dp:Phosphate ;
+    dp:includesObservableProperty dp:Calcium ;
+    dp:includesObservableProperty dp:Lime ;
+    dp:includesObservableProperty dp:Magnesium ;
+    dp:includesObservableProperty dp:Magnesia ;
+    dp:includesObservableProperty dp:Potassium ;
+    dp:includesObservableProperty dp:Potash ;
+    dp:includesObservableProperty dp:Sodium ;
+    dp:includesObservableProperty dp:SodiumOxide ;
+    dp:includesObservableProperty dp:CationExchangeCapacity ;
+    dp:includesObservableProperty dp:Zinc ;
+    dp:includesObservableProperty dp:Copper ;
+    dp:includesObservableProperty dp:Manganese a sosa:ObservableProperty ;
+    dp:includesObservableProperty dp:WaterHoldingCapacity .
+
+dp:Adventice a dp:CategoryOfObservableProperties ;
+    rdfs:label "Adventice"@en ;
+    rdfs:comment "An entity gathering various data for the inventory of adventices (weeds) in an area."@en .
+    dp:includesObservableProperty dp:DensityClass ;
+    dp:includesObservableProperty dp:PhenologyStage  ;
+    dp:includesObservableProperty dp:Abundance  ;
+
+dp:Yield a dp:CategoryOfObservableProperties ;
+    rdfs:label "Yield"@en ;
+    rdfs:comment "Gathers data representing the yield of a cultivated crop"@en ;    
+    dp:includesObservableProperty dp:DryWeight1000Seeds ;
+    dp:includesObservableProperty dp:FreshWeight1000Seeds ;
+    dp:includesObservableProperty dp:WeightTotal ;
+    dp:hasnumericData to:TO_0003019 .
+
+# ---------------------------------------------------------------------
+
+# https://schema.org/Place -> GeographicLocation
+
+# Location data files
+# geo:LATITUDE
+# geo:LONGITUDE
+
+# TODO : add all om:hasUnit om:qqchose .
+
+# Issue : ce n'est peut être pas intelligent d'associer une unité à l'ObservableProperty . #
+# Logiquement, c'est plutôt associé à l'observation elle-même, donc avec l'archi actuelle, #
+# pas possible de "bound" une unité directement à une variable DeepImpact, on ne peut que  #
+# spécifier ça dans un triplet d'une instance Observation                                  #
+
+# -------------------------- #
+# Soils biochemistry classes #
+# -------------------------- #
+
+# TODO : Enlever les sosa:hasSimpleResult (c'est réservé pour Observation)
+
+dp:CoarseSand a sosa:Observableproperty ;
+    rdfs:label "Coarse Sand" ;
+    skos:altLabel "COARSE_SAND" ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:FineSand a sosa:ObservableProperty ;
+    rdfs:label "Fine Sand" ;
+    skos:altLabel "FINE_SAND" ;
+    owl:sameAs envo:ENVO_06105273 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:CoarseSilt a sosa:ObservableProperty ;
+    rdfs:label "Coarse silt" ;
+    skos:altLabel "COARSE_SILT" ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:FineSilt a sosa:ObservableProperty ;
+    rdfs:label "Fine silt" ;
+    skos:altLabel "FINE_SILT" ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:Clay a sosa:ObservableProperty ;
+    rdfs:label "Clay" ;
+    skos:altLabel "CLAY" ;
+    owl:sameAs envo:ENVO_00002982 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:LimestoneTotal a sosa:ObservableProperty ;
+    rdfs:label "Limestone total" ;
+    skos:altLabel "LIMESTONE_TOTAL" ;
+    owl:sameAs envo:ENVO_00002053 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:LimestoneActive a sosa:ObservableProperty ;
+    rdfs:label "Limestone active" ;
+    skos:altLabel "LIMESTONE_ACTIVE" ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:Iron a sosa:ObservableProperty ;
+    rdfs:label "Iron" ;
+    skos:altLabel "IRON" ;
+    owl:sameAs envo:CHEBI_24873 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:PH a sosa:ObservableProperty ;
+    rdfs:label "PH" ;
+    owl:sameAs envo:ENVO_09200010 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:Conductivity a sosa:ObservableProperty ;
+    rdfs:label "Conductivity" ;
+    skos:altLabel "CONDUCTIVITY" ;
+    owl:sameAs envo:ENVO_09200016 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:Carbon a sosa:ObservableProperty ;
+    rdfs:label "Carbon" ;
+    skos:altLabel "CARBON" ;
+    owl:sameAs envo:CHEBI_33582 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:OrganicMatter a sosa:ObservableProperty ;
+    rdfs:label "Organic matter" ;
+    skos:altLabel "ORGANIC_MATTER" ;
+    owl:sameAs envo:ENVO_04000008 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:NitrogenTotal a sosa:ObservableProperty ;
+    rdfs:label "Nitrogen Total" ;
+    skos:altLabel "NITROGEN_TOTAL" ;
+    owl:sameAs envo:CHEBI_51143 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:CNRatio a sosa:ObservableProperty ;
+    rdfs:label "C/N ratio" ;
+    skos:altLabel "C/N " ;
+    owl:sameAs envo:AGRO_00000452 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:Phosphate a sosa:ObservableProperty ;
+    rdfs:label "Phosphate" ;
+    skos:altLabel "PHOSPHATE" ;
+    owl:sameAs envo:CHEBI_26020 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:Calcium a sosa:ObservableProperty ;
+    rdfs:label "Calcium" ;
+    skos:altLabel "CALCIUM" ;
+    owl:sameAs envo:CHEBI_22985 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:Lime a sosa:ObservableProperty ;
+    rdfs:label "Lime" ;
+    skos:altLabel "LIME" ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:Magnesium a sosa:ObservableProperty ;
+    rdfs:label "Magnesium" ;
+    skos:altLabel "MAGNESIUM" ;
+    owl:sameAs envo:CHEBI_25108 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:Magnesia a sosa:ObservableProperty ;
+    rdfs:label "Magnesia" ;
+    skos:altLabel "MAGNESIA" ;
+    owl:sameAs envo:CHEBI_31794 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:Potassium a sosa:ObservableProperty ;
+    rdfs:label "Potassium" ;
+    skos:altLabel "POTASSIUM" ;
+    owl:sameAs envo:CHEBI_26217 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:Potash a sosa:ObservableProperty ;
+    rdfs:label "Potash" ;
+    skos:altLabel "POTASH" ;
+    owl:sameAs envo:CHEBI_147420 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float . 
+
+dp:Sodium a sosa:ObservableProperty ;
+    rdfs:label "Sodium" ;
+    skos:altLabel "SODIUM" ;
+    owl:sameAs envo:CHEBI_26712 ; # envo:CHEBI_26708
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float . 
+
+dp:SodiumOxide a sosa:ObservableProperty ;
+    rdfs:label "Sodium oxide" ;
+    skos:altLabel "SODIUM_OXIDE" ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:CationExchangeCapacity a sosa:ObservableProperty ;
+    rdfs:label "cation exchange capacity" ;
+    skos:altLabel "CEC" ;
+    owl:sameAs envo:ENVO_06105240 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:Zinc a sosa:ObservableProperty ;
+    rdfs:label "Zinc" ;
+    skos:altLabel "ZINC" ;
+    owl:sameAs envo:CHEBI_27364 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:Copper a sosa:ObservableProperty ;
+    rdfs:label "Copper" ;
+    skos:altLabel "COPPER" ;
+    owl:sameAs envo:CHEBI_23377 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:Manganese a sosa:ObservableProperty ;
+    rdfs:label "Manganese" ;
+    skos:altLabel "MANGANESE" ;
+    owl:sameAs envo:CHEBI_25154 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:WaterHoldingCapacity a sosa:ObservableProperty ;
+    rdfs:label "Water holding capacity" ;
+    skos:altLabel "WATER_HOLDING_CAPACITY" ;
+    owl:sameAs envo:ENVO_06105304 ;
+    dp:belongsToCategory dp:SoilBiochemistry ;
+    sosa:hasSimpleResult xsd:float .
+
+# -------------------- #
+# Bioagressors classes #
+# -------------------- #
+
+dp:AphidColonies a sosa:ObservableProperty ;
+    rdfs:label "Aphid colonies"@en ;
+    skos:altLabel "APHID_COLONIES" ;
+    rdfs:comment ""@en .
+
+dp:GeneralState a sosa:ObservableProperty ;
+    rdfs:label "General state"@en ;
+    skos:altLabel "GENERAL_STATE" ;
+    rdfs:comment "The overall, human-eye estimated health of a plot."@en ;
+    sosa:hasSimpleResult xsd:string . 
+
+dp:MainThallusHeight a sosa:ObservableProperty ;
+    rdfs:label "Main Thallus Height"@en ;
+    skos:altLabel "MAIN_THALLUS_HEIGHT" ;
+    rdfs:comment "Height of the main thallus of a wheat plant."@en ;
+    sosa:hasSimpleResult xsd:float .
+
+dp:MoreThanOneMeterSampling a sosa:ObservableProperty ;
+    rdfs:label "Sampled on more than one meter"@en ;
+    skos:altLabel "MORE_ONE_METER" ;
+    rdfs:comment "Indicates if the sampling for bioagressors was made on plants selected on more than a length of one meter in a plot's row."@en ;
+    sosa:hasSimpleResult xsd:boolean .
+
+dp:NumberOfFungalParasiticSpots a sosa:ObservableProperty ;
+    rdfs:label "Number of fungal parasitic spots"@en ;
+    skos:altLabel "N_SPOTS_PARASITIC_FUNGI" ;
+    rdfs:comment ""@en .
+
+dp:NumberOfLivingLeaves a sosa:ObservableProperty ;
+    rdfs:label "Number Of Living Leaves"@en ;
+    skos:altLabel "NUMBER_OF_LIVING_LEAVES" ;
+    rdfs:comment "How many living leaves can be count on a plant."@en .
+
+dp:NumberOfStems a sosa:ObservableProperty ;
+    rdfs:label "Number of stems"@en ;
+    skos:altLabel "NUMBER_OF_STEMS" ;
+    rdfs:comment "The number of stems on a wheat plant."@en .
+
+dp:OverallFoliarParasitism a sosa:ObservableProperty ;
+    rdfs:label "Overall foliar parasitism"@en ;
+    skos:altLabel "OVERALL_FOLIAR_PARASITISM" ;
+    rdfs:comment ""@en .
+
+dp:OverallFoliarPhytophagy a sosa:ObservableProperty ;
+    rdfs:label "Overall foliar phytophagy"@en ;
+    skos:altLabel "OVERALL_FOLIAR_PHYTOPHAGY" ;
+    rdfs:comment ""@en .
+
+dp:PestDensity a sosa:ObservableProperty ;
+    rdfs:label "Pest density"@en ;
+    skos:altLabel "PEST_DENSITY" ;
+    rdfs:comment "The overall, human-eye estimated quantity of pests on a plot"@en ;
+    sosa:hasSimpleResult xsd:string .
+
+dp:PlantDevelopmentStage a sosa:ObservableProperty ; a po:PO_0007033 ;
+    rdfs:label "Plant development stage"@en ;
+    skos:altLabel "PLANT_DEVELOPMENT_STAGE" ;
+    rdfs:comment "The development stage (~growth stage) of a plant."@en .
+
+dp:PlantHeight a sosa:ObservableProperty ; a to:TO_0000207 ; # http://purl.obolibrary.org/obo/TO_0000207
+    rdfs:label "PlantHeight"@en ;
+    skos:altLabel "PLANT_HEIGHT" ;
+    rdfs:comment "The height of a plant."@en .
+
+dp:PlantsOnOneMeter a sosa:ObservableProperty ;
+    rdfs:label "Plants On One Meter"@en ;
+    skos:altLabel "NB_ONE_METER" ;
+    rdfs:comment "Number of plants sampled on a row of 1m length in a plot."@en ;
+    sosa:hasSimpleResult xsd:integer .
+
+dp:RootDamages a sosa:ObservableProperty ;
+    rdfs:label "Root damages"@en ;
+    skos:altLabel "ROOT_DAMAGES" ;
+    rdfs:comment ""@en .
+
+dp:SlugChewingInsects a sosa:ObservableProperty ;
+    rdfs:label "Slug chewing insects"@en ;
+    skos:altLabel "SLUG_CHEWING_INSECTS" ;
+    rdfs:comment ""@en .
+
+dp:ThallusPerPlant a sosa:ObservableProperty ;
+    rdfs:label "Thallus per plant"@en ;
+    skos:altLabel "NUMBER_OF_THALLUS_PER_PLANT" ;
+    rdfs:comment "Number of thallus on a wheat plant."@en .
+
+dp:UndefinedFoliarParasitism a sosa:ObservableProperty ;
+    rdfs:label "Undefined foliar parasitism"@en ;
+    skos:altLabel "UNDEFINED_FOLIAR_PARASITISM" ;
+    rdfs:comment ""@en .
+
+dp:UndefinedFoliarPhytophagy a sosa:ObservableProperty ;
+    rdfs:label "Undefined foliar phytophagy"@en ;
+    skos:altLabel "UNDEFINED_FOLIAR_PHYTOPHAGY" ;
+    rdfs:comment ""@en .
+
+dp:SampledPlant a sosa:FeatureOfInterest ;
+    rdfs:label "Sampled Plant"@en ;
+    skos:altLabel "PLANT" ;
+    rdfs:comment "An identifier of the plant's plot which was sampled."@en ;
+    sosa:hasSimpleResult xsd:string .
+
+# Bioagressors species list
+
+dp:BrevicoryneBrassicae a dp:BioagressoSpecies ;
+    rdfs:label "Brevicoryne brassicae"@en ;
+    rdfs:comment "An aphid feeding on many members of the genus Brassica."@en ;
+    a bago:PestAnimal ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_69196 .
+
+dp:LeptosphaeriaBiglobosa a dp:BioagressoSpecies ;
+    rdfs:label "Leptosphaeria biglobosa" ;
+    skos:prefLabel "Plenodomus biglobosus/Leptosphaeria biglobosa 'brassicae' group";
+    rdfs:comment "A pathogenic fungus causing Phoma stem canker / blackleg disease on Brassica napus." ;
+    a bago:FungalPathogenOrganism ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_225338 .
+
+dp:LeptosphaeriaMaculans a dp:BioagressoSpecies ;
+    rdfs:label "Leptosphaeria maculans" ;
+    skos:prefLabel "Plenodomus lingam/Leptosphaeria maculans 'brassicae' group" ;
+    rdfs:comment "A pathogenic fungus causing the blackleg disease on Brassica crops." ;
+    a bago:FungalPathogenOrganism ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_225342 .
+
+dp:PseudocercosporellaCapsellae a dp:BioagressoSpecies ;
+    rdfs:label "Pseudocercosporella capsellae" ;
+    skos:prefLabel "Neopseudocercosporella capsellae" ;
+    rdfs:comment "A pathogenic fungus infecting crucifers, causing the 'white leaf spot' disease." ;
+    a bago:FungalPathogenOrganism ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_1873268 .
+
+dp:MycosphaerellaBrassicicola a dp:BioagressoSpecies ;
+    rdfs:label "Mycosphaerella brassicicola" ;
+    skos:prefLabel "Neopseudocercosporella brassicae" ;
+    rdfs:comment "A pathogenic fungus causing the ring spot disease of brassicas" ;
+    a bago:FungalPathogenOrganism ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_1873267 .
+
+dp:ErysipheCruciferum a dp:BioagressoSpecies ;
+    rdfs:label "Erysiphe cruciferum" ;
+    skos:prefLabel "Erysiphe cruciferarum" ;
+    rdfs:comment "A fungus parasiting Brassica crops and causing the main powdery mildew of crucifers." ;
+    a bago:FungalPathogenOrganism ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_69478 .
+
+dp:AlternariaBrassicae a dp:BioagressoSpecies ;
+    rdfs:label "Alternaria brassicae" ;
+    rdfs:comment "A pathogenic fungus infecting most Brassica species and causing the 'damping off' disease." ;
+    a bago:FungalPathogenOrganism ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_29911 .
+
+dp:PyrenopezizaBrassicae a dp:BioagressoSpecies ;
+    rdfs:label "Pyrenopeziza brassicae" ;
+    rdfs:comment "A pathogenic fungus infecting Brassicaceae." ;
+    a bago:FungalPathogenOrganism ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_76659 .
+
+dp:PlasmodiophoraBrassicae a dp:BioagressoSpecies ;
+    rdfs:label "Plasmodiophora brassicae" ;
+    rdfs:comment "A microorganism infecting various cruciferous plants, including Brassica napus." ;
+    a bago:PathogenMicroOrganism ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_37360 .
+
+dp:PsylliodesChrysocephalus a dp:BioagressoSpecies ;
+    rdfs:label "Psylliodes chrysocephalus" ;
+    skos:prefLabel "Psylliodes chrysocephala" ;
+    rdfs:comment "A beetle (Coleoptera) whose larvae feeds on Brassica napus and other hosts." ;
+    a bago:PestAnimal ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_2598218 .
+
+dp:ScaptomyzaFlava a dp:BioagressoSpecies ;
+    rdfs:label "Scaptomyza flava" ;
+    rdfs:comment "A fly (Drosophilidae) whose larvae feeds on Brassicales." ;
+    a bago:PestAnimal ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_928822 .
+
+dp:MycosphaerellaGraminicolaOrSeptoriaTritici a dp:BioagressoSpecies ;
+    rdfs:label "Mycosphaerella graminicola / Septoria tritici (Zymoseptoria tritici)" ;
+    skos:prefLabel "Zymoseptoria tritici" ;
+    rdfs:comment "A pathogenic fungi affecting wheat and causing septoria leaf blotch. Synonyms : Mycosphaerella graminicola, Septoria tritici." ;
+    a bago:FungalPathogenOrganism ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_1047171 .
+
+dp:PucciniaStriiformis a dp:BioagressoSpecies ;
+    rdfs:label "Puccinia striiformis" ;
+    rdfs:comment "A pathogenic fungus causing stripe rust on wheat, but which has other hosts as well" ;
+    a bago:FungalPathogenOrganism ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_27350 .
+
+dp:PucciniaRecondita a dp:BioagressoSpecies ;
+    rdfs:label "Puccinia recondita" ;
+    rdfs:comment "A endoparasitic fungus mainly infecting wheat and rye (and others), also known to cause 'brown rust' in wheat." ;
+    a bago:FungalPathogenOrganism ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_27348 .
+
+dp:BlumeriaGraminis a dp:BioagressoSpecies ;
+    rdfs:label "Blumeria graminis" ;
+    rdfs:comment "A pathogenic fungus causing powdery mildew on grasses, including cereals." ;
+    a bago:FungalPathogenOrganism ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_34373 .
+
+dp:TapesiaYallundaeOrRhizoctoniaSolaniOrFusarium a dp:BioagressoSpecies ;
+    rdfs:label "Tapesia Yallundae or Rhizoctonia solani or Fusarium sp." ;
+    rdfs:comment "Parasitic fungi responsible for various crop diseases." ;
+     a bago:FungalPathogenOrganism ;
+    dp:hasNCBITaxonID [ a rdf:Bag; 
+        rdf:li ncbitaxon:NCBITaxon_86028 ; 
+        rdf:li ncbitaxon:NCBITaxon_456999 ; 
+        rdf:li ncbitaxon:NCBITaxon_5506 ] .
+
+dp:GaeumannomycesGraminis a dp:BioagressoSpecies ;
+    rdfs:label "Gaeumannomyces graminis" ;
+    rdfs:comment "A pathogenic fungus causing 'take-all', the most important root disease of wheat worldwide." ;
+    a bago:FungalPathogenOrganism ;
+    dp:hasNCBITaxonID ncbitaxon:NCBITaxon_29850 .
+
+# ------------- #
+# Weeds classes #
+# ------------- #
+# TODO : find better URIs
+
+dp:Abundance a sosa:ObservableProperty ;
+    rdfs:label "Abundance" ;
+    skos:altLabel "ABONDANCE" ;
+    dp:belongsToCategory dp:Adventice ;
+    rdfs:comment ""@en .
+
+dp:DensityClass a sosa:ObservableProperty ;
+    rdfs:label "Density class" ;
+    skos:altLabel "DENSITY_CLASS" ;
+    dp:belongsToCategory dp:Adventice ;
+    rdfs:comment ""@en .
+
+dp:PhenologyStage a sosa:ObservableProperty ;
+    rdfs:label "Phenology stage" ;
+    skos:altLabel "PHENOLOGY_STAGE" ;
+    dp:belongsToCategory dp:Adventice ;
+    rdfs:comment ""@en .
+
+# --------------- #
+# Biomass classes #
+# --------------- #
+
+# TODO : find better URIs
+# TODO : yields : date for sampling on the field then date for measurement !) 
+
+# dp:RowNumber a sosa:ObservableProperty ; # Utiliser dp:NumberOfRanks (c'est la même chose, ils l'ont juste pas appelé pareil ...)
+#    rdfs:label "Row Number" ;
+#    skos:altLabel "ROW_NUMBER" ;
+#    rdfs:comment ""@en .
+
+dp:BiomassCrop a sosa:ObservableProperty ;
+    rdfs:label "Biomass Crop" ;
+    skos:altLabel "BIOMASS_CROP" ;
+    rdfs:comment "The biomass of the cultivated plants sampled on a dp:Plot."@en .
+
+dp:BiomassWeed a sosa:ObservableProperty ; a pato:PATO_0000125 ; # (mass; TODO : find better)
+    rdfs:label "Biomass Weed" ;
+    skos:altLabel "BIOMASS_WEED" ;
+    rdfs:comment "The biomass of weeds sampled on a dp:Plot."@en .
+
+# NumberOfRanks is common to Biomasse and Yields
+dp:NumberOfRanks a sosa:ObservableProperty ; 
+    rdfs:label "Number Of Ranks" ;
+    skos:altLabel "NB_RANKS" ;
+    skos:altLabel "ROW_NUMBER" ;
+    rdfs:comment "A reminder of how many ranks of plants within the dp:Plot were used for the sampling for yields and biomasses analysis"@en .
+
+dp:PlantDensity a sosa:ObservableProperty ;
+    rdfs:label "Plant Density" ;
+    skos:altLabel "PLANT_DENSITY" ;
+    rdfs:comment "A categorical estimation of the density of cultivated plants."@en .
+
+# -------------- #
+# Yields classes #
+# -------------- #
+
+dp:DryWeight1000Seeds a sosa:ObservableProperty ; 
+    rdfs:label "Dry weight 1000 seeds" ;
+    skos:altLabel "DRY_WEIGHT_1000_SEEDS" ;
+    a pato:PATO_0000125 ; # (mass; TODO : find better)
+    rdfs:comment "The dry weight of 1000 seeds of a cultivated crop, used to estimate its yield."@en .
+
+dp:FreshWeight1000Seeds a sosa:ObservableProperty ; 
+    rdfs:label "Fresh weight 1000 seeds" ;
+    skos:altLabel "FRESH_WEIGHT_1000_SEEDS" ;
+    a pato:PATO_0000125 ; # (mass; TODO : find better)
+    rdfs:comment "The fresh weight of 1000 seeds of a cultivated crop, used to estimate its yield."@en .
+
+dp:NumberOfUnits a sosa:ObservableProperty ;
+    rdfs:label "Number of units" ;
+    skos:altLabel "NB_UNITS" ;
+    rdfs:comment "A reminder of how many cultivated plants within the dp:Plot were sampled for yields analysis"@en .
+
+dp:WeightTotal a sosa:ObservableProperty ; 
+    rdfs:label "Weight total" ;
+    skos:altLabel "WEIGHT_TOTAL" ;
+    a pato:PATO_0000125 ; # (mass; TODO : find better)
+    rdfs:comment "The total weight of a sample of a cultivated crop, which serves as a basis to estimate its yield."@en .
+
+# ---------------- #
+# Climatic classes #
+# ---------------- #
+
+dp:prenei_q a sosa:ObservableProperty ;
+    rdfs:label "prenei_q" ;
+    skos:altLabel ""@en ;
+    skos:altLabel "Solid precipitations"@fr ;
+    rdfs:comment "Précipitations solides (cumul quotidien 06-06 UTC)"@fr .
+
+dp:preliq_q a sosa:ObservableProperty ;
+    rdfs:label "preliq_q" ;
+    skos:altLabel "Liquid precipiations"@en ;
+    skos:altLabel "Précipitations liquides"@fr ;
+    rdfs:comment "Précipitations liquides (cumul quotidien 06-06 UTC)"@fr .
+
+dp:pe_q a sosa:ObservableProperty ;
+    rdfs:label "pe_q" ;
+    skos:altLabel ""@en ;
+    skos:altLabel "Pluies efficaces"@fr ;
+    rdfs:comment "Pluies efficaces (cumul quotidien)"@fr .
+
+dp:t_q a sosa:ObservableProperty ;
+    rdfs:label "t_q" ;
+    skos:altLabel "Mean temperature"@en ;
+    skos:altLabel "Température moyenne"@fr ;
+    rdfs:comment "Température moyenne des 24 températures horaires (01-00 UTC)"@fr .
+
+dp:tinf_h_q a sosa:ObservableProperty ;
+    rdfs:label "tinf_h_q" ;
+    skos:altLabel "Minimal temperature"@en ;
+    skos:altLabel "Température minimale"@fr ;
+    rdfs:comment "Température minimale des 24 températures horaires (07-06 UTC)"@fr .
+
+dp:tsup_h_q a sosa:ObservableProperty ;
+    rdfs:label "tsup_h_q" ;
+    skos:altLabel "Maximal Temperature"@en ;
+    skos:altLabel "Température maximale"@fr ;
+    rdfs:comment "Température maximale des 24 températures horaires (19-18 UTC)"@fr .
+
+dp:ff_q a sosa:ObservableProperty ;
+    rdfs:label "ff_q" ;
+    skos:altLabel "Wind"@en ;
+    skos:altLabel "Vent"@fr ;
+    rdfs:comment "Vent (moyenne quotidienne) à 10m"@fr .
+
+dp:dli_q a sosa:ObservableProperty ;
+    rdfs:label "dli_q" ;
+    skos:altLabel "Atmoshperic radiation"@en ;
+    skos:altLabel "Rayonnement atmosphérique"@fr ;
+    rdfs:comment "Rayonnement atmosphérique (cumul quotidien)"@fr .
+
+dp:ssi_q a sosa:ObservableProperty ;
+    rdfs:label "ssi_q" ;
+    skos:altLabel "Visible radiation"@en ;
+    skos:altLabel "Rayonnement visible"@fr ;
+    rdfs:comment "Rayonnement visible (cumul quotidien)"@fr .
+
+dp:evap_q a sosa:ObservableProperty ;
+    rdfs:label "evap_q" ;
+    skos:altLabel ""@en ;
+    skos:altLabel "Évapotranspiration réelle"@fr ;
+    rdfs:comment "Évapotranspiration réelle (cumul quotidien 06-06 UTC)"@fr .
+
+dp:etp_q a sosa:ObservableProperty ;
+    rdfs:label "etp_q" ;
+    skos:altLabel ""@en ;
+    skos:altLabel "Évapotranspiration potentielle"@fr ;
+    rdfs:comment "Évapotranspiration potentielle (formule de Penman-Monteith)"@fr .
+
+dp:q_q a sosa:ObservableProperty ;
+    rdfs:label "q_q" ;
+    skos:altLabel ""@en ;
+    skos:altLabel "Humidité spécifique"@fr ;
+    rdfs:comment "Humidité spécifique (moyenne quotidienne)"@fr .
+
+dp:hu_q a sosa:ObservableProperty ;
+    rdfs:label "hu_q" ;
+    skos:altLabel ""@en ;
+    skos:altLabel "Humidité relative"@fr ;
+    rdfs:comment "Humidité relative (moyenne quotidienne)"@fr .
+
+dp:swi_q a sosa:ObservableProperty ;
+    rdfs:label "swi_q" ;
+    skos:altLabel ""@en ;
+    skos:altLabel "Indice d’humidité des sols"@fr ;
+    rdfs:comment "Indice d’humidité des sols (moyenne quotidienne 06-06 UTC)"@fr .
+
+dp:wg_racine_q a sosa:ObservableProperty ;
+    rdfs:label "wg_racine_q" ;
+    skos:altLabel ""@en ;
+    skos:altLabel "Eau liquide dans la couche racinaire"@fr ;
+    rdfs:comment "Contenu en eau liquide dans la couche racinaire à 06 UTC"@fr .
+
+dp:wgi_racine_q a sosa:ObservableProperty ;
+    rdfs:label "wgi_racine_q" ;
+    skos:altLabel ""@en ;
+    skos:altLabel "Eau gelée dans la couche racinaire"@fr ;
+    rdfs:comment "Contenu en eau gelée dans la couche de racinaire à 06 UTC"@fr .

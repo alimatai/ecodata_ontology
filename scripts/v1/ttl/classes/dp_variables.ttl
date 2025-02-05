@@ -1,0 +1,47 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix thing: <https://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dpinst: <uri/deepimpact/instances> .
+
+# Les FeaturesOfInterest
+# Sont également des sosa:FeatureOfInterest car déclaré tel quel dans le fichier dp_classes_locations_and_time_intervals.ttl
+
+dpinst:WEST a dp:Region ;
+	rdfs:label "WEST"@en ;
+	skos:definition "Big geographical area matching the french region Brittany" .
+
+dpinst:SAFRAN-2762 a dp:Safran .
+
+dpinst:AF001-Bn-Y1 a dp:Field ; 
+	rdfs:label "AF001" ;
+	thing:includedIn dpinst:WEST .
+
+dpinst:AF001-Bn-Y1-PA a dp:Plot ;
+	thing:includedIn dpinst:AF001-Bn-Y1 .
+
+dpinst:AF001-Bn-Y1-P1 a dp:Plot ;
+	thing:includedIn dpinst:AF001-Bn-Y1 .
+
+
+
+# Les variables (les sosa:ObservableProperty)
+# A voir : enlever les om:unit
+
+dp:BiomassCrop a sosa:ObservableProperty ;
+	rdfs:label "BIOMASS_CROP" ;
+	skoks:definition "The dry biomass of sampled cultivated crops in a sampling area."@en .
+
+dp:DryWeight1000Seeds a sosa:ObservableProperty ;
+	rdfs:label "DRY_WEIGHT_1000_SEEDS" ;
+	skoks:definition "The dry weight of 1000 sampled seeds for estimating the yield of cultivated crops in a sampling area."@en .
+
+dp:NirsMoisture a sosa:ObservableProperty ;
+	rdfs:label "MOISTURE" ;
+	skoks:definition "Je sais pas les biologistes m'ont pas dit ce que c'est ._. ."@fr .
+
+dp:CoarseSand a sosa:ObservableProperty ;
+	rdfs:label "COARSE_SAND" ;
+	skoks:definition "Concentration of coarse sands in a soil sample."@en .
