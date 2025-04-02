@@ -1,2 +1,0 @@
-[console_scripts]
-genecodata = genecodata.__main__:main

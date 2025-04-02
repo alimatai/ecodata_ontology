@@ -1,5 +1,6 @@
-data
 various
 env_pkg
 *__pycache__
-genecodata.egg_info
+genecodata.egg-info
+usecase/deepimpact/*.ttl
+usecase/deepimpact/data
