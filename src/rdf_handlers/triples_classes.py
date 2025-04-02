@@ -24,6 +24,11 @@ class RDFTriple(ABC):
 
 class TurtleTriple(RDFTriple):
 
+	def __init__(self):
+		self.sub = None
+		self.pred = None
+		self.obj = None
+
 	def __init__(self, sub:str, pred:str, obj:str):
 		# TODO : warning if no prefix
 		self.sub = sub

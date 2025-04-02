@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from triples_classes import TurtleTriple, TurtleTripleSet
+from ...rdf_handlers.triples_classes import TurtleTriple, TurtleTripleSet
 
 TRIPLE = TurtleTriple("dp:AF001", "rdf:type", "thing:Place")
 

@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "genecodata"
+dynamic = ["version"]
+authors = [{name = "amataign", email = "alice.mataigne@irisa.fr"}, {name = "mlahaye", email = "marie.lahaye@inrae.fr"}]
+readme = "README.md"
+description = "GenEcoData: a generalist schema to integrate environmental and genomic data with holobionts"
+license = {text = "GPL-3.0-or-later"}
+
+dependencies = ['pandas', 'logger']
+
+[project.scripts]
+genecodata_data_converter = "src.data_converter"
+genecodata_data_parser = "src.data_parser"
+genecodata_rdf_handlers = "src.rdf_handlers"
+genecodata_test_usecase = "src.test_usecase"
+
+[project.optional-dependencies]
+TEST = ['pytest',
+  'pytest-mock'
+]
+
+[tool.setuptools]
+packages = ['genecodata_data_converter', 
+  'genecodata_data_parser', 
+  'genecodata_rdf_handlers', 
+  'genecodata_test_usecase']
+package-dir = {'genecodata_data_converter' = 'src/data_converter' , 'genecodata_data_parser' = 'src/genecodata_data_parser' , 'genecodata_rdf_handlers' = 'src/genecodata_rdf_handlers' , 'genecodata_test_usecase' = 'src/genecodata_test_usecase'}
+
+[tool.setuptools.dynamic]
+version = { attr = "genecodata.__version__" }
+dependencies = {file = ["requirements.txt"]}

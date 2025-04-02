@@ -1,74 +1,81 @@
-OservableProperty	InDbName	VariableSet	Unit	DataType	xsd:date	DATE
-ABONDANCE	Abundance	Weed	No unit	xsd:string	xsd:date	DATE
-APHID_COLONIES	AphidColonies	PlantPhenotype	No unit		xsd:date	DATE_DRY_SEEDS
-BIOMASS_CROP	BiomassCrop	Biomass	unit:g	xsd:float	xsd:date	DATE_FRESH_SEEDS
-BIOMASS_WEED	BiomassWeed	Biomass	unit:g	xsd:float	xsd:string	OPERATOR
-C/N	CNRatio	SoilBiochemistry	No unit	xsd:float	xsd:string	WEED_SPECIES
-CALCIUM	Calcium	SoilBiochemistry	unit:cmol.kg	xsd:float		
-CARBON	Carbon	SoilBiochemistry	unit:g.kg-1	xsd:float	DATE	No unit
-CEC	CationExchangeCapacity	SoilBiochemistry	unit:cmol.kg-1	xsd:float	DATE	No unit
-CLAY	Clay	SoilBiochemistry	unit:%5Bppth%5D	xsd:integer	DATE_DRY_SEEDS	No unit
-COARSE_SAND	CoarseSand	SoilBiochemistry	unit:%5Bppth%5D	xsd:integer	DATE_FRESH_SEEDS	No unit
-COARSE_SILT	CoarseSilt	SoilBiochemistry	unit:%5Bppth%5D	xsd:integer	OPERATOR	No unit
-CONDUCTIVITY	Conductivity	SoilBiochemistry	unit:mS.cm-1	xsd:float		
-COPPER	Copper	SoilBiochemistry	unit:mg.kg-1	xsd:float		
-DENSITY_CLASS	DensityClass	Weed	No unit	xsd:string		
-dli_q	dli_q	Climatic	unit:J.cm-2	xsd:float		
-DRY_WEIGHT_1000_SEEDS	DryWeight1000Seeds	Yield	unit:g	xsd:float		
-etp_q	etp_q	Climatic	unit:mm	xsd:float		
-evap_q	evap_q	Climatic	unit:mm	xsd:float		
-ff_q	ff_q	Climatic	unit:m.s-1	xsd:float		
-FINE_SAND	FineSand	SoilBiochemistry	unit:%5Bppth%5D	xsd:integer		
-FINE_SILT	FineSilt	SoilBiochemistry	unit:%5Bppth%5D	xsd:integer		
-FRESH_WEIGHT_1000_SEEDS	FreshWeight1000Seeds	Yield	unit:g	xsd:float		
-GENERAL_STATE	GeneralState	PlantPhenotype	No unit	xsd:string		
-hu_q	hu_q	Climatic	unit:%25	xsd:float		
-IRON	Iron	SoilBiochemistry	unit:mg.kg-1	xsd:float		
-LIME	Lime	SoilBiochemistry	unit:mg.kg-1	xsd:float		
-LIMESTONE_ACTIVE	LimestoneActive	SoilBiochemistry	unit:g.kg-1	xsd:integer		
-LIMESTONE_TOTAL	LimestoneTotal	SoilBiochemistry	unit:g.kg-1	xsd:integer		
-MAGNESIA	Magnesia	SoilBiochemistry	unit:mg.kg-1	xsd:float		
-MAGNESIUM	Magnesium	SoilBiochemistry	unit:cmol.kg	xsd:float		
-MAIN_THALLUS_HEIGHT	MainThallusHeight	PlantPhenotype	unit:cm	xsd:float		
-MANGANESE	Manganese	SoilBiochemistry	unit:mg.kg-1	xsd:float		
-MORE_ONE_METER	MoreThanOneMeterSampling	Biomass	No unit			
-N_SPOTS_PARASITIC_FUNGI	NumberOfFungalParasiticSpots	PlantPhenotype	No unit	xsd:integer		
-NB_ONE_METER	PlantsOnOneMeter	Biomass	No unit	xsd:integer		
-NB_RANKS	NumberOfRanks	Biomass	No unit	xsd:integer		
-NB_UNITS	NumberOfUnits	Biomass	No unit	xsd:integer		
-NITROGEN_TOTAL	NitrogenTotal	SoilBiochemistry	unit:g.kg-1	xsd:float		
-NUMBER_OF_LIVING_LEAVES	NumberOfLivingLeaves	PlantPhenotype	No unit	xsd:integer		
-NUMBER_OF_STEMS	NumberOfStems	PlantPhenotype	No unit	xsd:integer		
-NUMBER_OF_THALLUS_PER_PLANT	ThallusPerPlant	PlantPhenotype	No unit	xsd:integer		
-ORGANIC_MATTER	OrganicMatter	SoilBiochemistry	unit:g.kg-1	xsd:float		
-OVERALL_FOLIAR_PARASITISM	OverallFoliarParasitism	PlantPhenotype	No unit	xsd:string		
-OVERALL_FOLIAR_PHYTOPHAGY	OverallFoliarPhytophagy	PlantPhenotype	No unit	xsd:string		
-pe_q	pe_q	Climatic	unit:mm	xsd:float		
-PEST_DENSITY	PestDensity	PlantPhenotype	No unit	xsd:string		
-PH	PH	SoilBiochemistry	No unit	xsd:float		
-PHENOLOGY_STAGE	PhenologyStage	PlantPhenotype	No unit	xsd:string		
-PHOSPHATE	Phosphate	SoilBiochemistry	unit:mg.kg-1	xsd:float		
-PLANT	SampledPlant	PlantPhenotype	No unit	xsd:string		
-PLANT_DENSITY	PlantDensity	PlantPhenotype	No unit	xsd:integer		
-PLANT_DEVELOPMENT_STAGE	PlantDevelopmentStage	PlantPhenotype	No unit	xsd:string		
-PLANT_HEIGHT	PlantHeight	PlantPhenotype	unit:cm	xsd:float		
-POTASH	Potash	SoilBiochemistry	unit:mg.kg-1	xsd:float		
-POTASSIUM	Potassium	SoilBiochemistry	unit:cmol.kg	xsd:float		
-preliq_q	preliq_q	Climatic	unit:mm	xsd:float		
-prenei_q	prenei_q	Climatic	unit:mm	xsd:float		
-q_q	q_q	Climatic	unit:g.kg-1	xsd:float		
-ROOT_DAMAGES	RootDamages	PlantPhenotype	No unit			
-ROW_NUMBER	NumberOfRanks	Biomass	No unit	xsd:integer		
-SLUG_CHEWING_INSECTS	SlugChewingInsects		No unit			
-SODIUM	Sodium	SoilBiochemistry	unit:cmol.kg	xsd:float		
-SODIUM_OXIDE	SodiumOxide	SoilBiochemistry	unit:mg.kg-1	xsd:float		
-ssi_q	ssi_q	Climatic	unit:J.cm-2	xsd:float		
-swi_q	swi_q	Climatic	unit:%25	xsd:float		
-t_q	t_q	Climatic	unit:Cel	xsd:float		
-tinf_h_q	tinf_h_q	Climatic	unit:Cel	xsd:float		
-tsup_h_q	tsup_h_q	Climatic	unit:Cel	xsd:float		
-WATER_HOLDING_CAPACITY	WaterHoldingCapacity	SoilBiochemistry	unit:%25	xsd:float		
-WEIGHT_TOTAL	WeightTotal		unit:g	xsd:float		
-wg_racine_q	wg_racine_q	Climatic	unit:m3.m-3	xsd:float		
-wgi_racine_q	wgi_racine_q	Climatic	unit:m3.m-3	xsd:float		
-ZINC	Zinc	SoilBiochemistry	unit:mg.kg-1	xsd:float		
+Name	InDbName	Type	AltURI	Set	Unit	DataType	xsd:date	DATE	No unit
+ABONDANCE	Abundance	sosa:OservableProperty	na	Weed	No unit	xsd:string	xsd:date	DATE	No unit
+APHID_COLONIES	AphidColonies	sosa:OservableProperty	na	PlantPhenotype	No unit	xsd:integer	xsd:date	DATE_DRY_SEEDS	No unit
+BIOMASS_CROP	BiomassCrop	sosa:OservableProperty	to:0000352	Biomass	unit:g	xsd:float	xsd:date	DATE_FRESH_SEEDS	No unit
+BIOMASS_WEED	BiomassWeed	sosa:OservableProperty	to:0000352	Biomass	unit:g	xsd:float	xsd:string	OPERATOR	No unit
+C/N	CNRatio	sosa:OservableProperty	agro:00000452	SoilBiochemistry	No unit	xsd:float	xsd:string	WEED_SPECIES	
+CALCIUM	Calcium	sosa:OservableProperty	chebi:22985	SoilBiochemistry	unit:cmol.kg	xsd:float			
+CARBON	Carbon	sosa:OservableProperty	chebi:33582	SoilBiochemistry	unit:g.kg-1	xsd:float			
+CEC	CationExchangeCapacity	sosa:OservableProperty	envo:06105240	SoilBiochemistry	unit:cmol.kg-1	xsd:float			
+CLAY	Clay	sosa:OservableProperty	envo:00002982	SoilBiochemistry	unit:%5Bppth%5D	xsd:integer			
+COARSE_SAND	CoarseSand	sosa:OservableProperty		SoilBiochemistry	unit:%5Bppth%5D	xsd:integer			
+COARSE_SILT	CoarseSilt	sosa:OservableProperty		SoilBiochemistry	unit:%5Bppth%5D	xsd:integer			
+CONDUCTIVITY	Conductivity	sosa:OservableProperty	envo:09200016	SoilBiochemistry	unit:mS.cm-1	xsd:float			
+COPPER	Copper	sosa:OservableProperty	chebi:23377	SoilBiochemistry	unit:mg.kg-1	xsd:float			
+DENSITY_CLASS	DensityClass	sosa:OservableProperty	na	Weed	No unit	xsd:string			
+dli_q	dli_q	sosa:OservableProperty		Climatic	unit:J.cm-2	xsd:float			
+DRY_WEIGHT	DryWeight	sosa:OservableProperty	to:0000352	Yield	unit:g	xsd:float			
+DRY_WEIGHT_1000_SEEDS	DryWeight1000Seeds	sosa:OservableProperty	to:0003019	Yield	unit:g	xsd:float			
+etp_q	etp_q	sosa:OservableProperty		Climatic	unit:mm	xsd:float			
+evap_q	evap_q	sosa:OservableProperty		Climatic	unit:mm	xsd:float			
+ff_q	ff_q	sosa:OservableProperty		Climatic	unit:m.s-1	xsd:float			
+FINE_SAND	FineSand	sosa:OservableProperty	envo:06105273	SoilBiochemistry	unit:%5Bppth%5D	xsd:integer			
+FINE_SILT	FineSilt	sosa:OservableProperty		SoilBiochemistry	unit:%5Bppth%5D	xsd:integer			
+FRESH_WEIGHT_1000_SEEDS	FreshWeight1000Seeds	sosa:OservableProperty	to:0003018	Yield	unit:g	xsd:float			
+GENERAL_STATE	GeneralState	sosa:OservableProperty	na	PlantPhenotype	No unit	xsd:string			
+hu_q	hu_q	sosa:OservableProperty		Climatic	unit:%25	xsd:float			
+IRON	Iron	sosa:OservableProperty	chebi:24873	SoilBiochemistry	unit:mg.kg-1	xsd:float			
+LIME	Lime	sosa:OservableProperty		SoilBiochemistry	unit:mg.kg-1	xsd:float			
+LIMESTONE_ACTIVE	LimestoneActive	sosa:OservableProperty		SoilBiochemistry	unit:g.kg-1	xsd:integer			
+LIMESTONE_TOTAL	LimestoneTotal	sosa:OservableProperty	envo:00002053	SoilBiochemistry	unit:g.kg-1	xsd:integer			
+MAGNESIA	Magnesia	sosa:OservableProperty	chebi:31794	SoilBiochemistry	unit:mg.kg-1	xsd:float			
+MAGNESIUM	Magnesium	sosa:OservableProperty	chebi:25108	SoilBiochemistry	unit:cmol.kg	xsd:float			
+MAIN_THALLUS_HEIGHT	MainThallusHeight	sosa:OservableProperty		PlantPhenotype	unit:cm	xsd:float			
+MANGANESE	Manganese	sosa:OservableProperty	chebi:25154	SoilBiochemistry	unit:mg.kg-1	xsd:float			
+MORE_ONE_METER	MoreThanOneMeterSampling	sosa:OservableProperty	na	Biomass	No unit	xsd:boolean			
+N_SPOTS_PARASITIC_FUNGI	NumberOfFungalParasiticSpots	sosa:OservableProperty	na	PlantPhenotype	No unit	xsd:integer			
+NB_ONE_METER	PlantsOnOneMeter	sosa:OservableProperty	na	Biomass	No unit	xsd:integer			
+NB_RANKS	NumberOfRanks	sosa:OservableProperty	na	Biomass	No unit	xsd:integer			
+NB_UNITS	NumberOfUnits	sosa:OservableProperty	na	Biomass	No unit	xsd:integer			
+NITROGEN_TOTAL	NitrogenTotal	sosa:OservableProperty	chebi:51143	SoilBiochemistry	unit:g.kg-1	xsd:float			
+NUMBER_OF_LIVING_LEAVES	NumberOfLivingLeaves	sosa:OservableProperty	to:0000241	PlantPhenotype	No unit	xsd:integer			
+NUMBER_OF_STEMS	NumberOfStems	sosa:OservableProperty	to:0000953	PlantPhenotype	No unit	xsd:integer			
+NUMBER_OF_THALLUS_PER_PLANT	ThallusPerPlant	sosa:OservableProperty	na	PlantPhenotype	No unit	xsd:integer			
+ORGANIC_MATTER	OrganicMatter	sosa:OservableProperty	envo:04000008	SoilBiochemistry	unit:g.kg-1	xsd:float			
+OVERALL_FOLIAR_PARASITISM	OverallFoliarParasitism	sosa:OservableProperty	na	PlantPhenotype	No unit	xsd:string			
+OVERALL_FOLIAR_PHYTOPHAGY	OverallFoliarPhytophagy	sosa:OservableProperty	na	PlantPhenotype	No unit	xsd:string			
+pe_q	pe_q	sosa:OservableProperty		Climatic	unit:mm	xsd:float			
+PEST_DENSITY	PestDensity	sosa:OservableProperty	na	PlantPhenotype	No unit	xsd:string			
+PH	PH	sosa:OservableProperty	envo:09200010	SoilBiochemistry	No unit	xsd:float			
+PHOSPHATE	Phosphate	sosa:OservableProperty	chebi:26020	SoilBiochemistry	unit:mg.kg-1	xsd:float			
+PLANT	SampledPlant	sosa:OservableProperty	po:0000003	PlantPhenotype	No unit	xsd:string			
+PLANT_DENSITY	PlantDensity	sosa:OservableProperty		PlantPhenotype	No unit	xsd:integer			
+PLANT_DEVELOPMENT_STAGE	PlantDevelopmentStage	sosa:OservableProperty	po:0007033	PlantPhenotype	No unit	xsd:string			
+PLANT_HEIGHT	PlantHeight	sosa:OservableProperty	to:0000207	PlantPhenotype	unit:cm	xsd:float			
+POTASH	Potash	sosa:OservableProperty	chebi:147420	SoilBiochemistry	unit:mg.kg-1	xsd:float			
+POTASSIUM	Potassium	sosa:OservableProperty	chebi:26217	SoilBiochemistry	unit:cmol.kg	xsd:float			
+preliq_q	preliq_q	sosa:OservableProperty		Climatic	unit:mm	xsd:float			
+prenei_q	prenei_q	sosa:OservableProperty		Climatic	unit:mm	xsd:float			
+q_q	q_q	sosa:OservableProperty		Climatic	unit:g.kg-1	xsd:float			
+ROOT_DAMAGES	RootDamages	sosa:OservableProperty	na	PlantPhenotype	No unit	xds:boolean			
+ROW_NUMBER	NumberOfRanks	sosa:OservableProperty	na	Biomass	No unit	xsd:integer			
+SLUG_CHEWING_INSECTS	SlugChewingInsects	sosa:OservableProperty	bago:PestAnimal	PlantPhenotype	No unit	xds:boolean			
+SODIUM	Sodium	sosa:OservableProperty	chebi:26712	SoilBiochemistry	unit:cmol.kg	xsd:float			
+SODIUM_OXIDE	SodiumOxide	sosa:OservableProperty		SoilBiochemistry	unit:mg.kg-1	xsd:float			
+ssi_q	ssi_q	sosa:OservableProperty		Climatic	unit:J.cm-2	xsd:float			
+swi_q	swi_q	sosa:OservableProperty		Climatic	unit:%25	xsd:float			
+t_q	t_q	sosa:OservableProperty		Climatic	unit:Cel	xsd:float			
+tinf_h_q	tinf_h_q	sosa:OservableProperty		Climatic	unit:Cel	xsd:float			
+tsup_h_q	tsup_h_q	sosa:OservableProperty		Climatic	unit:Cel	xsd:float			
+WATER_HOLDING_CAPACITY	WaterHoldingCapacity	sosa:OservableProperty	envo:06105304	SoilBiochemistry	unit:%25	xsd:float			
+WEIGHT_TOTAL	WeightTotal	sosa:OservableProperty		Yields	unit:g	xsd:float			
+wg_racine_q	wg_racine_q	sosa:OservableProperty		Climatic	unit:m3.m-3	xsd:float			
+wgi_racine_q	wgi_racine_q	sosa:OservableProperty		Climatic	unit:m3.m-3	xsd:float			
+ZINC	Zinc	sosa:OservableProperty	chebi:27364	SoilBiochemistry	unit:mg.kg-1	xsd:float			
+FIELD_ID	SampledField	sosa:FeatureOfInterest	thing:Place,envo:00000114	na	na	na			
+PLOT_ID	SamplingPlot	sosa:FeatureOfInterest	thing:Place,agro:00000301	na	na	na			
+REGION	SamplingRegion	sosa:FeatureOfInterest	thing:Place	na	na	na			
+RO	Root	iop:Constraint	po:0009005	na	na	na			
+RS	Rhizosphere	iop:Constraint	envo:00005801	na	na	na			
+LF	Leaf	iop:Constraint	po:0025034	na	na	na			
+PHENOLOGY_STAGE	PhenologyStage	iop:Constraint	po:0007033	PlantPhenotype	na	xsd:string			

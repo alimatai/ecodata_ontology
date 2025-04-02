@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
 from abc import ABC, abstractmethod
-import pandas as pd
+# import pandas as pd
+import datatable as dt
 import json
+
+# TODO : un linter du tableau de config pour repérer les erreurs ?
 
 class TableParser(ABC):
 
@@ -16,15 +19,25 @@ class TableParser(ABC):
 
 class TxtParser(TableParser):
 
-	def __init__(self, path, sep, configfile, **kwargs):
+	def __init__(self, path, sep, **kwargs):
 		self.path = path
 		self.sep = sep
-		self.configfile = json.load(configfile)
-
 		self.table = self.__load(path, sep)
 
-	def __load(self, path, sep):
-		self.table = pd.read_csv(path, index_col=0, header=0, sep=sep)
+	@property
+	def path(self):
+		return self._path
+	
+	@property
+	def sep(self):
+		return self._sep
+	
+	@property
+	def table(self):
+		return self._table
+
+	def __load(self, path):
+		self.table = dt.fread(path, sep=self.sep)
 
 class ExcelParser(TableParser):
 
