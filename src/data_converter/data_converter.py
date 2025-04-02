@@ -7,9 +7,9 @@ import pandas as pd
 
 class DataConverter(ABC):
 
-	def __init__(self, data:TableParser, project_prefix:str):
-		self.data = data
+	def __init__(self,  project_prefix:str, data:TableParser,):
 		self.project_prefix = project_prefix
+		self.data = data		
 
 class ConfigTurtleConverter(DataConverter):
 	"""Convert Config data loaded in a TableParser object into RDF triples"""

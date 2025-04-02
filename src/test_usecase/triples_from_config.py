@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+
+from ..data_converter.data_converter import ConfigTurtleConverter
+from ..data_parser.tabular_data_parsers import ExcelParser, TxtParser
+from ..rdf_handlers.rdf_writer import TurtleWriter
+
+PREFIXDICT = {
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+	"thing": "https://schema.org/Thing",
+	"envo": "http://purl.obolibrary.org/obo/envo.owl",
+	"sosa": "http://www.w3.org/ns/sosa/",
+    "time": "https://www.w3.org/2006/time#",
+    "iop": "https://w3id.org/iadopt/ont/",
+    "chebi": "http://purl.obolibrary.org/obo/chebi.owl",
+    "to": "http://purl.obolibrary.org/obo/to.owl",
+    "agro": "http://purl.obolibrary.org/obo/AGRO_00000301",
+    "unit": "https://w3id.org/uom/",
+    "po": "http://purl.obolibrary.org/obo/po.owl",
+    "bago": "https://opendata.inrae.fr/bag-def",
+    "ncbitaxon": "http://purl.obolibrary.org/obo/ncbitaxon.owl"
+}
+
+
+table = TxtParser("../../config.csv")
+configloader = ConfigTurtleConverter("dp", table)
+
+foi = configloader.features_of_interest_triples()
+obsprops = configloader.observable_properties_triples()
+varsets = configloader.variablesets_triples()
+
+turtlewriter = TurtleWriter()
+
+turtlewriter.write_prefixes(PREFIXDICT)
+turtlewriter.write_tripleset(foi)
+turtlewriter.write_tripleset(obsprops)
+turtlewriter.write_tripleset(varsets)

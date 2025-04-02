@@ -4,7 +4,7 @@
 @prefix time: <https://www.w3.org/2006/time#> .
 @prefix envo: <http://purl.obolibrary.org/obo/envo.owl> .
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
-@prefix iop: <> . 
+@prefix iop: <https://w3id.org/iadopt/ont/> . 
 @prefix ro: <http://purl.obolibrary.org/obo/ro.owl> .
 
 # Observations
