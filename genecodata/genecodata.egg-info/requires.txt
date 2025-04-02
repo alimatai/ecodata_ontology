@@ -1,0 +1,6 @@
+pandas
+logger
+
+[test]
+pytest
+pytest-mock

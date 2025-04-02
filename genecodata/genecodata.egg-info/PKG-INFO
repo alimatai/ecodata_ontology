@@ -1,0 +1,25 @@
+Metadata-Version: 2.4
+Name: genecodata
+Version: 0.0.1
+Summary: GenEcoData: a generalist schema to integrate environmental and genomic data with holobionts
+Author-email: amataign <alice.mataigne@irisa.fr>, mlahaye <marie.lahaye@inrae.fr>
+License: GPL-3.0-or-later
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: logger
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-mock; extra == "test"
+
+# Development of an ontology for formalizing environmental data, from field to sequencing
+
+(Work in Progress)
+
+- Aims to be as generalistic as possible in order to suit any project involving environmental data
+- Based on SOSA for objcets of interest, I-ADOPT for variables
+- Includes secondary graphes to describe nested objcts (for example a sampling plot within an agricultural field) or involved living organisms
+- UseCase data : Work Package 1 of the DeepImpact project (data + scripts for automatic conversion in RDF and / or AskOmics files)
+
+**Developpers**:
+- Marie Lahaye (IGEPP Rennes)
+- Alice Mataigne (IRISA Rennes)

@@ -1,3 +1,5 @@
 data
 various
 env_pkg
+*__pycache__
+genecodata.egg_info

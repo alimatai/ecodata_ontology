@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from abc import ABC, abstractmethod
+from genecodata.rdf_handlers.triples_classes import TurtleTripleSet
 
 class RDFWriter(ABC):
 
@@ -49,6 +50,6 @@ class TurtleWriter(RDFWriter):
 				f.write(f"""@prefix {prefix}: <{uri}> .\n""")
 			f.write("\n")
 
-	def write_tripleset(self, TurtleTripleSet):
+	def write_tripleset(self, TurtleTripleSet:TurtleTripleSet):
 		"""Write a set of triples with the same subject in a turtle (.ttl) file """
 		TurtleTripleSet.write(self.file, "a")

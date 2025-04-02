@@ -1,0 +1,17 @@
+README.md
+pyproject.toml
+src/__init__.py
+src/__main__.py
+src/data_converter/__init__.py
+src/data_converter/data_converter.py
+src/data_parser/__init__.py
+src/data_parser/tabular_data_parsers.py
+src/genecodata.egg-info/PKG-INFO
+src/genecodata.egg-info/SOURCES.txt
+src/genecodata.egg-info/dependency_links.txt
+src/genecodata.egg-info/entry_points.txt
+src/genecodata.egg-info/requires.txt
+src/genecodata.egg-info/top_level.txt
+src/rdf_handlers/__init__.py
+src/rdf_handlers/rdf_writer.py
+src/rdf_handlers/triples_classes.py

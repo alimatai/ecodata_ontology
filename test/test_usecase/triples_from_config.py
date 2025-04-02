@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from ..data_converter.data_converter import ConfigTurtleConverter
-from ..data_parser.tabular_data_parsers import ExcelParser, TxtParser
-from ..rdf_handlers.rdf_writer import TurtleWriter
+from genecodata.data_converter.data_converter import ConfigTurtleConverter
+from genecodata.data_parser.tabular_data_parsers import ExcelParser, TxtParser
+from genecodata.rdf_handlers.rdf_writer import TurtleWriter
 
 PREFIXDICT = {
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",

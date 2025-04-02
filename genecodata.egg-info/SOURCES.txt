@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+genecodata/__init__.py
+genecodata/__main__.py
+genecodata.egg-info/PKG-INFO
+genecodata.egg-info/SOURCES.txt
+genecodata.egg-info/dependency_links.txt
+genecodata.egg-info/entry_points.txt
+genecodata.egg-info/requires.txt
+genecodata.egg-info/top_level.txt

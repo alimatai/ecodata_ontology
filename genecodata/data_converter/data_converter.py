@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from ..data_parser.tabular_data_parsers import TableParser
-from ..rdf_handlers.triples_classes import RDFTriple, TurtleTriple
+from genecodata.data_parser.tabular_data_parsers import TableParser
+from genecodata.rdf_handlers.triples_classes import TurtleTriple
 from abc import ABC
 import pandas as pd
 
@@ -19,19 +19,27 @@ class ConfigTurtleConverter(DataConverter):
 		self.data = data # The config file of the project
 
 	@property
+	def project_prefix(self):
+		return self._project_prefix
+	
+	@property
 	def data(self):
 		return self._data
 	
-	@property
-	def project_prefix(self):
-		return self._project_prefix
-    
+	@project_prefix.setter
+	def project_prefix(self, value):
+		self._project_prefix = value
+
+	@data.setter
+	def data(self, value):
+		self._data = value
+
 	def observable_properties_triples(self):
 		"""Parse config table and set up triples of sosa:ObservableProperties"""
 		# triples = [TurtleTriple()] * self.data.dim[0]
 		# n = 0
 
-		df = self.data.loc[self.data["Type"]=="ObservableProperty"]
+		df = self.data.table.loc[self.data.table["Type"]=="ObservableProperty"]
 
 		triples = []
 
@@ -41,7 +49,11 @@ class ConfigTurtleConverter(DataConverter):
 				"rdf:type", 
 				"sosa:Observableproperty")
 			)
-			triples.append(TurtleTriple(f"{self.project_prefix}:{row["InDbName"]}", "rdf:type", "iop:Variable"))
+			triples.append(
+				TurtleTriple(
+					f"""{self.project_prefix}:{row["InDbName"]}""", 
+					"rdf:type", 
+					"iop:Variable"))
 
 			if row["AltURI"] != "":
 				for uri in row["AltURI"].split(","):
@@ -67,7 +79,7 @@ class ConfigTurtleConverter(DataConverter):
 	def features_of_interest_triples(self):
 		"""Parse config table and set up triples of sosa:FeaturesOfInterest"""
 
-		df = self.data.loc[self.data["Type"]=="FeatureOfInterest"]
+		df = self.data.table.loc[self.data.table["Type"]=="FeatureOfInterest"]
 
 		triples = []
 		for index, row in df.iterrows():
@@ -83,14 +95,16 @@ class ConfigTurtleConverter(DataConverter):
 				for uri in row["AltURI"].split(","):
 					triples.append(
 						TurtleTriple(
-							f"""{self.project_prefix}:{row["InDbName"]}""", "rdf:type", f"""{uri}"""
+							f"""{self.project_prefix}:{row["InDbName"]}""", 
+							"rdf:type", 
+							f"""{uri}"""
 						)
 					)
 	
 	def variablesets_triples(self):
 		"""Parse config file and set up triples of variable sets"""
 
-		varsets = self.data["Set"].unique()
+		varsets = self.data.table["Set"].unique()
 		varsets.dropna(inplace=True)
 
 		triples = []
@@ -98,7 +112,9 @@ class ConfigTurtleConverter(DataConverter):
 		for varset in varsets:
 			triples.append(
 				TurtleTriple(
-					f"""{self.project_prefix}:{varset}""", "rdf:type", "iop:VariableSet"
+					f"""{self.project_prefix}:{varset}""", 
+					"rdf:type", 
+					"iop:VariableSet"
 				)
 			)
 

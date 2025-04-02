@@ -8,18 +8,19 @@ import pandas as pd
 class TableParser(ABC):
 
 	def __init__(self, path):
-		self.path = path
-
-	@abstractmethod
-	def load():
 		pass
+
+	# @abstractmethod
+	# def __load():
+	# 	pass
 
 class TxtParser(TableParser):
 
 	def __init__(self, path, sep):
+		# self.table = self.__load(path, sep)
 		self.path = path
 		self.sep = sep
-		self.table = self.__load(path, sep)
+		self.table = pd.read_csv(path, index_col=0, header=0, sep=sep)
 
 	@property
 	def path(self):
@@ -32,9 +33,21 @@ class TxtParser(TableParser):
 	@property
 	def table(self):
 		return self._table
+	
+	@path.setter
+	def path(self, value):
+		self._path = value
 
-	def __load(self, path):
-		self.table = pd.read_csv(path, index_col=0, header=0, sep=self.sep)
+	@sep.setter
+	def sep(self, value):
+		self._sep = value
+	
+	@table.setter
+	def table(self, value):
+		self._table = value
+
+	# def __load(self, path, sep):
+	# 	self.table = pd.read_csv(path, index_col=0, header=0, sep=sep)
 
 class ExcelParser(TableParser):
 
