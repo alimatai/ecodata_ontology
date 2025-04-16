@@ -1,17 +1,10 @@
 #!/usr/bin/env python
 
 from genecodata.data_parser.tabular_data_parsers import TableParser
-from genecodata.rdf_handlers.triples_classes import TurtleTriple
-from abc import ABC
+from genecodata.rdf_handlers.triples_classes import RDFTriple
 import pandas as pd
 
-class DataConverter(ABC):
-
-	def __init__(self,  project_prefix:str, data:TableParser,):
-		self.project_prefix = project_prefix
-		self.data = data		
-
-class ConfigTurtleConverter(DataConverter):
+class ConfigTurtleConverter():
 	"""Convert Config data loaded in a TableParser object into RDF triples"""
 
 	def __init__(self, project_prefix:str, data:TableParser):
@@ -39,35 +32,37 @@ class ConfigTurtleConverter(DataConverter):
 		# triples = [TurtleTriple()] * self.data.dim[0]
 		# n = 0
 
-		df = self.data.table.loc[self.data.table["Type"]=="ObservableProperty"]
-
+		df = self.data.table.loc[self.data.table["Type"]=="sosa:ObservableProperty"]
 		triples = []
 
 		for index, row in df.iterrows():
-			triples.append(TurtleTriple(
-				f"""{self.project_prefix}:{row["InDbName"]}""", 
-				"rdf:type", 
-				"sosa:Observableproperty")
-			)
 			triples.append(
-				TurtleTriple(
+				RDFTriple(
 					f"""{self.project_prefix}:{row["InDbName"]}""", 
 					"rdf:type", 
-					"iop:Variable"))
+					"sosa:Observableproperty"
+				)
+			)
+			triples.append(
+				RDFTriple(
+					f"""{self.project_prefix}:{row["InDbName"]}""", 
+					"rdf:type", 
+					"iop:Variable")
+				)
 
-			if row["AltURI"] != "":
+			if not pd.isna(row["AltURI"]):
 				for uri in row["AltURI"].split(","):
 					triples.append(
-						TurtleTriple(
+						RDFTriple(
 							f"""{self.project_prefix}:{row["InDbName"]}""", 
 							"rdf:type", 
 							f"""{uri}"""
 						)
 					)
 
-			if row["Set"] != "":
+			if not pd.isna(row["Set"]):
 				triples.append(
-					TurtleTriple(
+					RDFTriple(
 						f"""{self.project_prefix}:{row["Set"]}""", 
 						"iop:hasMember", 
 						f"""{self.project_prefix}:{row["InDbName"]}"""
@@ -79,43 +74,44 @@ class ConfigTurtleConverter(DataConverter):
 	def features_of_interest_triples(self):
 		"""Parse config table and set up triples of sosa:FeaturesOfInterest"""
 
-		df = self.data.table.loc[self.data.table["Type"]=="FeatureOfInterest"]
-
+		df = self.data.table.loc[self.data.table["Type"]=="sosa:FeatureOfInterest"]
+		
 		triples = []
 		for index, row in df.iterrows():
 			triples.append(
-				TurtleTriple(
+				RDFTriple(
 					f"""{self.project_prefix}:{row["InDbName"]}""", 
 					"rdf:type", 
 					"sosa:FeatureOfInterest"
 				)
 			)
 
-			if row["AltURI"] != "No URI":
+			if not pd.isna(row["AltURI"]):
 				for uri in row["AltURI"].split(","):
 					triples.append(
-						TurtleTriple(
+						RDFTriple(
 							f"""{self.project_prefix}:{row["InDbName"]}""", 
 							"rdf:type", 
 							f"""{uri}"""
 						)
 					)
+
+		return triples
 	
 	def variablesets_triples(self):
 		"""Parse config file and set up triples of variable sets"""
 
-		varsets = self.data.table["Set"].unique()
-		varsets.dropna(inplace=True)
+		varsets = self.data.table["Set"].dropna().unique()
 
 		triples = []
 
 		for varset in varsets:
 			triples.append(
-				TurtleTriple(
+				RDFTriple(
 					f"""{self.project_prefix}:{varset}""", 
 					"rdf:type", 
 					"iop:VariableSet"
 				)
 			)
 
-		pass
+		return triples

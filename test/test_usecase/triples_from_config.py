@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
 from genecodata.data_converter.data_converter import ConfigTurtleConverter
-from genecodata.data_parser.tabular_data_parsers import ExcelParser, TxtParser
+from genecodata.data_parser.tabular_data_parsers import TxtParser
 from genecodata.rdf_handlers.rdf_writer import TurtleWriter
+
+import argparse
 
 PREFIXDICT = {
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -22,17 +24,43 @@ PREFIXDICT = {
     "ncbitaxon": "http://purl.obolibrary.org/obo/ncbitaxon.owl"
 }
 
+parser = argparse.ArgumentParser()
+parser.add_argument("-c", "--config-table", help="csv/tsv file describing the dataset")
+# parser.add_argument("-p", "--prefixes", help="json file listing all used prefixes and their URI")
+# parser.add_argument("-i", "--instances-prefix", help="prefix that will used to the project instances")
+parser.add_argument("-o", "--output-rdf", help="output RDF file") # TODO : make several files named with a common prefix/suffix
+args=parser.parse_args()
 
-table = TxtParser("../../config.csv")
+# Load inputs
+table = TxtParser(args.config_table, sep="\t")
 configloader = ConfigTurtleConverter("dp", table)
 
+# Build triplets
 foi = configloader.features_of_interest_triples()
 obsprops = configloader.observable_properties_triples()
 varsets = configloader.variablesets_triples()
 
-turtlewriter = TurtleWriter()
+# Gather triplets as triples sets
+# Skipped
 
-turtlewriter.write_prefixes(PREFIXDICT)
-turtlewriter.write_tripleset(foi)
-turtlewriter.write_tripleset(obsprops)
-turtlewriter.write_tripleset(varsets)
+# Write
+turtlewriter = TurtleWriter(PREFIXDICT, args.output_rdf)
+
+turtlewriter.write_prefixes()
+
+for triple in foi[0:-1]:
+    turtlewriter.write_triple(triple)
+turtlewriter.write_triple(foi[-1], linejump=True)
+
+for triple in obsprops[0:-1]:
+    turtlewriter.write_triple(triple)
+turtlewriter.write_triple(obsprops[-1], linejump=True)
+
+for triple in varsets[0:-1]:
+    turtlewriter.write_triple(triple)
+turtlewriter.write_triple(varsets[-1])
+
+# TODO : to replace by :
+# turtlewriter.write_tripleset(foi)
+# turtlewriter.write_tripleset(obsprops)
+# turtlewriter.write_tripleset(varsets)

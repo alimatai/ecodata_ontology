@@ -4,3 +4,4 @@ env_pkg
 genecodata.egg-info
 usecase/deepimpact/*.ttl
 usecase/deepimpact/data
+test/test_usecase/test_output.ttl
