@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from genecodata.rdf_handlers.triples_classes import RDFTriple
 from genecodata.data_converter.data_converter import ConfigTurtleConverter
 from genecodata.data_parser.tabular_data_parsers import TxtParser
 from genecodata.rdf_handlers.rdf_writer import TurtleWriter
@@ -40,9 +41,15 @@ foi = configloader.features_of_interest_triples()
 obsprops = configloader.observable_properties_triples()
 varsets = configloader.variablesets_triples()
 
-# Gather triplets as triples sets
-# Skipped
+def create_triples_sets(triples:list[RDFTriple]):
+    triples_sets = {triple.subject:[] for triple in triples}
+    for triple in triples:
+        triples_sets[triple.subject].append(triple.predicate, triple.object)
+    return triples_sets
 
+# Gather triplets as triples sets
+foi_triplesets = create_triples_sets(foi)
+obsprops_triplesets = create_triples_sets(obsprops)
 # Write
 turtlewriter = TurtleWriter(PREFIXDICT, args.output_rdf)
 
