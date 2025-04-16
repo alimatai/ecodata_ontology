@@ -50,6 +50,7 @@ def create_triples_sets(triples:list[RDFTriple]):
 # Gather triplets as triples sets
 foi_triplesets = create_triples_sets(foi)
 obsprops_triplesets = create_triples_sets(obsprops)
+
 # Write
 turtlewriter = TurtleWriter(PREFIXDICT, args.output_rdf)
 

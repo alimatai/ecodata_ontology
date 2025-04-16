@@ -1,101 +1,175 @@
 #!/usr/bin/env python
 
+import abc
 import logger
+
+class Prefix():
+	"""Defines a rdf prefix with its abbreviation and its full URI"""
+
+	def __init__(self, abbr:str, uri:str):
+		self.abbr = abbr
+		self.uri = uri
+
+	@property
+	def abbr(self):
+		return self._abbr
+	
+	@property
+	def uri(self):
+		return self._uri
+	
+	@abbr.setter
+	def abbr(self, value):
+		self._abbr = value
+
+	@uri.setter
+	def uri(self, value):
+		self._uri = value
+
+
+class RDFelem(abc.ABC):
+	"""Abstract class for more precise RDF constituants"""
+
+	def __init__(self, name:str, prefix:Prefix):
+		self.name = name
+		self.prefix = prefix
+
+	@property
+	def name(self):
+		return self._name
+	
+	@property
+	def prefix(self):
+		return self._prefix
+
+	@name.setter
+	def name(self, value):
+		self._name = value
+
+	@prefix.setter
+	def prefix(self, value):
+		self._prefix = value
+	
+
+class RDFNode(RDFelem):
+	"""Used as a subject or an object in a RDF triple"""
+
+	def __init__(self, name:str, prefix:Prefix):
+		self.name = name
+		self.prefix = prefix
+
+	@property
+	def name(self):
+		return self._name
+	
+	@property
+	def prefix(self):
+		return self._prefix
+
+	@name.setter
+	def name(self, value):
+		self._name = value
+
+	@prefix.setter
+	def prefix(self, value):
+		self._prefix = value
+
+class Predicate(RDFelem):
+	"""Defines the predicate linking a subject to an object"""
+
+	def __init__(self, name:str, prefix:Prefix):
+		self.name = name
+		self.prefix = prefix
+
+	@property
+	def name(self):
+		return self._name
+	
+	@property
+	def prefix(self):
+		return self._prefix
+
+	@name.setter
+	def name(self, value):
+		self._name = value
+
+	@prefix.setter
+	def prefix(self, value):
+		self._prefix = value
 
 class RDFTriple():
 
-	def __init__(self):
-		self.subject = None
-		self.predicate = None
-		self.object = None
-
-	def __init__(self, sub:str, pred:str, obj:str):
-		# TODO : warning if no prefix
-		self.subject = sub
-		self.predicate = pred
+	def __init__(self, subject:RDFNode, predicate:Predicate, obj:RDFNode):
+		self.subject = subject
+		self.predicate = predicate
 		self.object = obj
 
 	@property
 	def subject(self):
 		return self._subject
-
+	
 	@property
 	def predicate(self):
 		return self._predicate
-
+	
 	@property
 	def object(self):
-		return self._object
+		return self._object	
 
-	@subject.setter
-	def subject(self, value):
-		self._subject = value
-
-	@predicate.setter
-	def predicate(self, value):
-		self._predicate = value
-
-	@object.setter
-	def object(self, value):
-		self._object = value
-
-	def __str__(self, end:str=".") -> str:
-		return f"""{self.subject} {self.predicate} {self.object} {end}"""
+	def __str__(self) -> str:
+		return f"""{self.subject} {self.predicate} {self.object}"""
 
 	def tolist(self) -> list:
 		return [self.subject, self.predicate, self.object]
 
-	def write(self, file, mode, end:str="."):
-		with open(file, mode) as f:
-			f.write(self.__str__())
-			f.write("\n")
-
-	# def modify_end(self) -> str:
-	# 	self.end = {".":";", ";":"."}[self.end]
-
 class RDFTriplesSet():
-	"""Gather triples with a common subject"""
+
+	def __init__(self, subject:RDFNode):
+		"""Initiates only the subject and an empty list of predicate / object couples"""
+		self.subject = subject
+		self.predicates_objects_couples = []
+
+	def __init__(self, subject:RDFNode, predicates_objects_couples:list[tuple]):
+		"""Initiates the subject and the list of predicate / object couples"""
+		self.subject = subject
+		self.predicates_objects_couples = predicates_objects_couples
 
 	def __init__(self, triples:list[RDFTriple]):
-		"""Initialize the set of triples ; verifies if all subjects are the same"""
+		"""Initiates everything from a list of triples"""
 		try:
 			if len(set([triple.sub for triple in triples])) == 1:
 				self.sub = triples[0].sub
 				self.pred_obj_pairs = [(triple.pred, triple.obj) for triple in triples]
 
 		except ValueError as e:
-			logger.error(f"Error : triples do not have the same subject: {e}")
+			logger.error(f"Error : triples of the input list do not have the same subject: {e}")
+
+	@property
+	def subject(self):
+		return self._subject
+	
+	@property
+	def predicates_objects_couples(self):
+		return self._predicates_objects_couples
+
+	@predicates_objects_couples.setter
+	def predicates_objects_couples(self, value):
+		self._predicates_objects_couples = value
+
+	def add_couple(self, triple:RDFTriple):
+		try:
+			if triple.subject == self.subject:
+				self.predicates_objects_couples.append((triple.predicate, triple.object))
+
+		except ValueError as e:
+			logger.error(f"Error : the triple to add do not have the correct subject: {e}")
 
 	def __str__(self):
-		output = f"""{self.sub} {self.pred_obj_pairs[0][0]} {self.pred_obj_pairs[0][1]} ;\n"""
+		output = f"""{self.subject} {self.predicates_objects_couples[0][0]} {self.predicates_objects_couples[0][1]} ;\n"""
 
-		for pair in self.pred_obj_pairs[:-1]:
+		for pair in self.predicates_objects_couples[:-1]:
 			output += f"""\t{pair[0]} {pair[1]} ;\n"""
 
-		output += f"""\t{self.pred_obj_pairs[-1][0]} {self.pred_obj_pairs[-1][0]} .\n\n"""
+		output += f"""\t{self.predicates_objects_couples[-1][0]} {self.predicates_objects_couples[-1][0]} .\n\n"""
 
 		return output
-
-	@property
-	def sub(self):
-		return self._sub
-
-	@property
-	def pred_obj_pairs(self):
-		return self._pred_obj_pairs
-
-	@sub.setter
-	def sub(self, value):
-		self._sub = value
-
-	@pred_obj_pairs.setter
-	def pred_obj_pairs(self, value):
-		self._pred_obj_pairs = value
-
-	def write(self, file, mode:str):
-		"""Write a set of triples with the same subject in a turtle (.ttl) file. The file will be updated or overwritten depending on the value of the mode parameter"""
-		if mode not in {"w", "a"}:
-			raise ValueError("mode must be one of {\"w\", \"a\"}")
-
-		with open(file, mode) as f:
-			f.write(self.__str__())

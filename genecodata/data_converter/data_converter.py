@@ -1,8 +1,14 @@
 #!/usr/bin/env python
 
 from genecodata.data_parser.tabular_data_parsers import TableParser
-from genecodata.rdf_handlers.triples_classes import RDFTriple
+from genecodata.rdf_handlers.triples_classes import RDFTriple, Prefix, RDFNode, Predicate
 import pandas as pd
+
+# Global prefixes
+
+RDF = Prefix("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf")
+SOSA = Prefix("http://www.w3.org/ns/sosa/", "sosa")
+IOP = Prefix("https://w3id.org/iadopt/ont/", "iop")
 
 class ConfigTurtleConverter():
 	"""Convert Config data loaded in a TableParser object into RDF triples"""
@@ -35,28 +41,37 @@ class ConfigTurtleConverter():
 		df = self.data.table.loc[self.data.table["Type"]=="sosa:ObservableProperty"]
 		triples = []
 
+		# Nodes
+		obsprop = RDFNode("ObservableProperty", SOSA)
+		iopvar = RDFNode("Variable", IOP)
+
+		# Predicates
+		rdftype = Predicate("type", RDF)
+
 		for index, row in df.iterrows():
 			triples.append(
 				RDFTriple(
-					f"""{self.project_prefix}:{row["InDbName"]}""", 
-					"rdf:type", 
-					"sosa:Observableproperty"
+					RDFNode(f"""{row["InDbName"]}""", self.project_prefix),
+					rdftype, 
+					obsprop
 				)
 			)
+			
 			triples.append(
 				RDFTriple(
-					f"""{self.project_prefix}:{row["InDbName"]}""", 
-					"rdf:type", 
-					"iop:Variable")
+					RDFNode(f"""{row["InDbName"]}""", self.project_prefix),
+					rdftype, 
+					iopvar
 				)
+			)
 
 			if not pd.isna(row["AltURI"]):
 				for uri in row["AltURI"].split(","):
 					triples.append(
 						RDFTriple(
-							f"""{self.project_prefix}:{row["InDbName"]}""", 
-							"rdf:type", 
-							f"""{uri}"""
+							RDFNode(f"""{row["InDbName"]}""", self.project_prefix),
+							rdftype, 
+							RDFNode(f"""{uri}""", Prefix()) # TO FIX
 						)
 					)
 

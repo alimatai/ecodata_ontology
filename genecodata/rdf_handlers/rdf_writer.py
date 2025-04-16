@@ -66,8 +66,8 @@ class TurtleWriter(RDFWriter):
 
 			f.write(rdf_triple_set.subject)
 
-			for triple in rdf_triple_set[0:-1]:
+			for triple in rdf_triple_set.predicates_objects_couples[0:-1]:
 				f.write(f"""\t {triple.predicate}: <{triple.object}> ;\n""")
 			
-			f.write(f"""\t {rdf_triple_set[-1].predicate}: <{rdf_triple_set[-1].object}> ;\n""")
+			f.write(f"""\t {rdf_triple_set.predicates_objects_couples[-1].predicate}: <{rdf_triple_set.predicates_objects_couples[-1].object}> ;\n""")
 			f.write("\n")
