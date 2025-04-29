@@ -1,0 +1,4 @@
+Name	InDbName	Type	AltURI
+FIELD_ID	SampledField	sosa:FeatureOfInterest	thing:Place,envo:00000114
+PLOT_ID	SamplingPlot	sosa:FeatureOfInterest	thing:Place,agro:00000301
+REGION	SamplingRegion	sosa:FeatureOfInterest	thing:Place

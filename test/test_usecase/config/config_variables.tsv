@@ -1,0 +1,74 @@
+Name	InDbName	AltURI	Set	Unit	DataType
+ABONDANCE	Abundance	nan	Weed	No unit	xsd:string
+APHID_COLONIES	AphidColonies	nan	PlantPhenotype	No unit	xsd:integer
+BIOMASS_CROP	BiomassCrop	to:0000352	Biomass	unit:g	xsd:float
+BIOMASS_WEED	BiomassWeed	to:0000352	Biomass	unit:g	xsd:float
+C/N	CNRatio	agro:00000452	SoilBiochemistry	No unit	xsd:float
+CALCIUM	Calcium	chebi:22985	SoilBiochemistry	unit:cmol.kg	xsd:float
+CARBON	Carbon	chebi:33582	SoilBiochemistry	unit:g.kg-1	xsd:float
+CEC	CationExchangeCapacity	envo:06105240	SoilBiochemistry	unit:cmol.kg-1	xsd:float
+CLAY	Clay	envo:00002982	SoilBiochemistry	unit:%5Bppth%5D	xsd:integer
+COARSE_SAND	CoarseSand		SoilBiochemistry	unit:%5Bppth%5D	xsd:integer
+COARSE_SILT	CoarseSilt		SoilBiochemistry	unit:%5Bppth%5D	xsd:integer
+CONDUCTIVITY	Conductivity	envo:09200016	SoilBiochemistry	unit:mS.cm-1	xsd:float
+COPPER	Copper	chebi:23377	SoilBiochemistry	unit:mg.kg-1	xsd:float
+DENSITY_CLASS	DensityClass	nan	Weed	No unit	xsd:string
+dli_q	dli_q		Climatic	unit:J.cm-2	xsd:float
+DRY_WEIGHT	DryWeight	to:0000352	Yields	unit:g	xsd:float
+DRY_WEIGHT_1000_SEEDS	DryWeight1000Seeds	to:0003019	Yields	unit:g	xsd:float
+etp_q	etp_q		Climatic	unit:mm	xsd:float
+evap_q	evap_q		Climatic	unit:mm	xsd:float
+ff_q	ff_q		Climatic	unit:m.s-1	xsd:float
+FINE_SAND	FineSand	envo:06105273	SoilBiochemistry	unit:%5Bppth%5D	xsd:integer
+FINE_SILT	FineSilt		SoilBiochemistry	unit:%5Bppth%5D	xsd:integer
+FRESH_WEIGHT_1000_SEEDS	FreshWeight1000Seeds	to:0003018	Yields	unit:g	xsd:float
+GENERAL_STATE	GeneralState	nan	PlantPhenotype	No unit	xsd:string
+hu_q	hu_q		Climatic	unit:%25	xsd:float
+IRON	Iron	chebi:24873	SoilBiochemistry	unit:mg.kg-1	xsd:float
+LIME	Lime		SoilBiochemistry	unit:mg.kg-1	xsd:float
+LIMESTONE_ACTIVE	LimestoneActive		SoilBiochemistry	unit:g.kg-1	xsd:integer
+LIMESTONE_TOTAL	LimestoneTotal	envo:00002053	SoilBiochemistry	unit:g.kg-1	xsd:integer
+MAGNESIA	Magnesia	chebi:31794	SoilBiochemistry	unit:mg.kg-1	xsd:float
+MAGNESIUM	Magnesium	chebi:25108	SoilBiochemistry	unit:cmol.kg	xsd:float
+MAIN_THALLUS_HEIGHT	MainThallusHeight		PlantPhenotype	unit:cm	xsd:float
+MANGANESE	Manganese	chebi:25154	SoilBiochemistry	unit:mg.kg-1	xsd:float
+MORE_ONE_METER	MoreThanOneMeterSampling	nan	Biomass	No unit	xsd:boolean
+N_SPOTS_PARASITIC_FUNGI	NumberOfFungalParasiticSpots	nan	PlantPhenotype	No unit	xsd:integer
+NB_ONE_METER	PlantsOnOneMeter	nan	Biomass	No unit	xsd:integer
+NB_RANKS	NumberOfRanks	nan	Biomass	No unit	xsd:integer
+NB_UNITS	NumberOfUnits	nan	Biomass	No unit	xsd:integer
+NITROGEN_TOTAL	NitrogenTotal	chebi:51143	SoilBiochemistry	unit:g.kg-1	xsd:float
+NUMBER_OF_LIVING_LEAVES	NumberOfLivingLeaves	to:0000241	PlantPhenotype	No unit	xsd:integer
+NUMBER_OF_STEMS	NumberOfStems	to:0000953	PlantPhenotype	No unit	xsd:integer
+NUMBER_OF_THALLUS_PER_PLANT	ThallusPerPlant	nan	PlantPhenotype	No unit	xsd:integer
+ORGANIC_MATTER	OrganicMatter	envo:04000008	SoilBiochemistry	unit:g.kg-1	xsd:float
+OVERALL_FOLIAR_PARASITISM	OverallFoliarParasitism	nan	PlantPhenotype	No unit	xsd:string
+OVERALL_FOLIAR_PHYTOPHAGY	OverallFoliarPhytophagy	nan	PlantPhenotype	No unit	xsd:string
+pe_q	pe_q		Climatic	unit:mm	xsd:float
+PEST_DENSITY	PestDensity	nan	PlantPhenotype	No unit	xsd:string
+PH	PH	envo:09200010	SoilBiochemistry	No unit	xsd:float
+PHOSPHATE	Phosphate	chebi:26020	SoilBiochemistry	unit:mg.kg-1	xsd:float
+PLANT	SampledPlant	po:0000003	PlantPhenotype	No unit	xsd:string
+PLANT_DENSITY	PlantDensity		PlantPhenotype	No unit	xsd:integer
+PLANT_DEVELOPMENT_STAGE	PlantDevelopmentStage	po:0007033	PlantPhenotype	No unit	xsd:string
+PLANT_HEIGHT	PlantHeight	to:0000207	PlantPhenotype	unit:cm	xsd:float
+POTASH	Potash	chebi:147420	SoilBiochemistry	unit:mg.kg-1	xsd:float
+POTASSIUM	Potassium	chebi:26217	SoilBiochemistry	unit:cmol.kg	xsd:float
+preliq_q	preliq_q		Climatic	unit:mm	xsd:float
+prenei_q	prenei_q		Climatic	unit:mm	xsd:float
+q_q	q_q		Climatic	unit:g.kg-1	xsd:float
+ROOT_DAMAGES	RootDamages	nan	PlantPhenotype	No unit	xds:boolean
+ROW_NUMBER	NumberOfRanks	nan	Biomass	No unit	xsd:integer
+SLUG_CHEWING_INSECTS	SlugChewingInsects	bago:PestAnimal	PlantPhenotype	No unit	xds:boolean
+SODIUM	Sodium	chebi:26712	SoilBiochemistry	unit:cmol.kg	xsd:float
+SODIUM_OXIDE	SodiumOxide		SoilBiochemistry	unit:mg.kg-1	xsd:float
+ssi_q	ssi_q		Climatic	unit:J.cm-2	xsd:float
+swi_q	swi_q		Climatic	unit:%25	xsd:float
+t_q	t_q		Climatic	unit:Cel	xsd:float
+tinf_h_q	tinf_h_q		Climatic	unit:Cel	xsd:float
+tsup_h_q	tsup_h_q		Climatic	unit:Cel	xsd:float
+WATER_HOLDING_CAPACITY	WaterHoldingCapacity	envo:06105304	SoilBiochemistry	unit:%25	xsd:float
+WEIGHT_TOTAL	WeightTotal		Yields	unit:g	xsd:float
+wg_racine_q	wg_racine_q		Climatic	unit:m3.m-3	xsd:float
+wgi_racine_q	wgi_racine_q		Climatic	unit:m3.m-3	xsd:float
+ZINC	Zinc	chebi:27364	SoilBiochemistry	unit:mg.kg-1	xsd:float

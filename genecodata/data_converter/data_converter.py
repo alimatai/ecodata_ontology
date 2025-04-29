@@ -1,117 +1,151 @@
 #!/usr/bin/env python
 
-from genecodata.data_parser.tabular_data_parsers import TableParser
-from genecodata.rdf_handlers.triples_classes import RDFTriple
+from genecodata.data_parser.tabular_data_parsers import TableParser, ExcelParser
+# from genecodata.rdf_handlers.triples_classes import RDFTriple
 import pandas as pd
 
-class ConfigTurtleConverter():
+from rdflib import Graph, URIRef
+from rdflib.namespace import RDF
+
+import logger
+
+class PrefixesBinder():
+
+	def __init__(self, project_prefixes:pd.DataFrame):
+		try:
+			if not project_prefixes.columns == ("Prefix","URI"):
+				self.project_prefixes = project_prefixes
+		except AssertionError as e:
+			logger.error(f"Error : please check colnames of config_prefixes.tsv: {e}")
+
+	@property
+	def project_prefixes(self):
+		return self._project_prefixes	
+
+	@project_prefixes.setter
+	def project_prefixes(self, value):
+		self._project_prefixes = value
+
+	def bind_prefixes(self, g:Graph):
+		"""Parse all the prefixes and bind them to the graph g"""
+
+		for index, row in self.project_prefixes.iterrows():
+			g.bind(index, row["URI"])
+
+
+class ObservablePropertiesConverter():
 	"""Convert Config data loaded in a TableParser object into RDF triples"""
 
-	def __init__(self, project_prefix:str, data:TableParser):
-		self.project_prefix = project_prefix
-		self.data = data # The config file of the project
+	def __init__(self, obs_props:pd.DataFrame):
+		try:
+			if not obs_props.columns == ("Name","InDbName","AltURI","Set", "Unit","DataType"):
+				self.obs_props = obs_props
+		except AssertionError as e:
+			logger.error(f"Error : please check colnames of config_variables.tsv: {e}")
 
 	@property
-	def project_prefix(self):
-		return self._project_prefix
-	
-	@property
-	def data(self):
-		return self._data
-	
-	@project_prefix.setter
-	def project_prefix(self, value):
-		self._project_prefix = value
+	def obs_props(self):
+		return self._obs_props
 
-	@data.setter
-	def data(self, value):
-		self._data = value
+	@obs_props.setter
+	def obs_props(self, value):
+		self._obs_props = value
 
-	def observable_properties_triples(self):
+	def observable_properties_triples(self, g:Graph):
 		"""Parse config table and set up triples of sosa:ObservableProperties"""
-		# triples = [TurtleTriple()] * self.data.dim[0]
-		# n = 0
 
-		df = self.data.table.loc[self.data.table["Type"]=="sosa:ObservableProperty"]
-		triples = []
-
-		for index, row in df.iterrows():
-			triples.append(
-				RDFTriple(
-					f"""{self.project_prefix}:{row["InDbName"]}""", 
-					"rdf:type", 
-					"sosa:Observableproperty"
+		for _, row in self.obs_props.iterrows():
+			g.add(
+				(
+					# URIRef(f"""{self.project_prefix}:{row["InDbName"]}"""), 
+					URIRef(f"""{row["InDbName"]}"""),					
+					RDF.type, 
+					URIRef("http://www.w3.org/ns/sosa/Observableproperty")
 				)
 			)
-			triples.append(
-				RDFTriple(
-					f"""{self.project_prefix}:{row["InDbName"]}""", 
-					"rdf:type", 
-					"iop:Variable")
+			g.add(
+				(
+					# URIRef(f"""{self.project_prefix}:{row["InDbName"]}"""),
+					URIRef(f"""{row["InDbName"]}"""),
+					RDF.type,
+					URIRef("https://w3id.org/iadopt/ont/Variable")
 				)
+			)
 
 			if not pd.isna(row["AltURI"]):
 				for uri in row["AltURI"].split(","):
-					triples.append(
-						RDFTriple(
-							f"""{self.project_prefix}:{row["InDbName"]}""", 
-							"rdf:type", 
-							f"""{uri}"""
+					#obj = self.project_prefixes.loc[uri.split(":")[0], "uri"]
+					g.add(
+						(
+							# URIRef(f"""{self.project_prefix}:{row["InDbName"]}"""), 
+							URIRef(f"""{row["InDbName"]}"""),
+							RDF.type,
+							URIRef(f"{uri}")
 						)
 					)
 
 			if not pd.isna(row["Set"]):
-				triples.append(
-					RDFTriple(
-						f"""{self.project_prefix}:{row["Set"]}""", 
-						"iop:hasMember", 
-						f"""{self.project_prefix}:{row["InDbName"]}"""
+				g.add(
+					(
+						URIRef(f"""{row["Set"]}"""), 
+						URIRef("https://w3id.org/iadopt/ont/hasMember/"),
+						URIRef(f"""{row["InDbName"]}""")
+						# URIRef(f"""{self.project_prefix}:{row["InDbName"]}""")
 					)
 				)
-
-		return triples
-
-	def features_of_interest_triples(self):
-		"""Parse config table and set up triples of sosa:FeaturesOfInterest"""
-
-		df = self.data.table.loc[self.data.table["Type"]=="sosa:FeatureOfInterest"]
-		
-		triples = []
-		for index, row in df.iterrows():
-			triples.append(
-				RDFTriple(
-					f"""{self.project_prefix}:{row["InDbName"]}""", 
-					"rdf:type", 
-					"sosa:FeatureOfInterest"
-				)
-			)
-
-			if not pd.isna(row["AltURI"]):
-				for uri in row["AltURI"].split(","):
-					triples.append(
-						RDFTriple(
-							f"""{self.project_prefix}:{row["InDbName"]}""", 
-							"rdf:type", 
-							f"""{uri}"""
-						)
-					)
-
-		return triples
 	
-	def variablesets_triples(self):
+	def variablesets_triples(self, g:Graph):
 		"""Parse config file and set up triples of variable sets"""
 
-		varsets = self.data.table["Set"].dropna().unique()
-
-		triples = []
+		varsets = self.obs_props["Set"].dropna().unique()
 
 		for varset in varsets:
-			triples.append(
-				RDFTriple(
-					f"""{self.project_prefix}:{varset}""", 
-					"rdf:type", 
-					"iop:VariableSet"
+			g.add(
+				(
+					URIRef(f"""{varset}"""), 
+					RDF.type, 
+					URIRef("https://w3id.org/iadopt/ont/VariableSet")
 				)
 			)
 
-		return triples
+class ConstraintConverter():
+
+	def __init__(self, constraints:pd.DataFrame):
+		try:
+			if not constraints.columns == ("Name","InDbName","ConstraintOf","AltURI","DataType"):
+				self.constraints = constraints
+		except AssertionError as e:
+			logger.error(f"Error : please check colnames of config_constraints.tsv: {e}")
+
+	@property
+	def constraints(self):
+		return self._constraints
+
+	@constraints.setter
+	def constraints(self, value):
+		self._constraints = value
+
+	def constraints_triples(self, g:Graph):
+		
+		for index, row in self.constraints.iterrows():
+			g.add(
+				(
+					URIRef(row["InDbName"]),
+					RDF.type,
+					URIRef(row["AltURI"])
+				)
+			)
+			g.add(
+				(
+					URIRef(row["InDbName"]),
+					URIRef("iop:constrains"),
+					URIRef(row["ConstraintOf"])
+				)
+			)
+
+class ASVConverter():
+
+	# Wait for Marie's code
+
+	def __init__(self, biomfile):
+		self.biomfile = biomfile

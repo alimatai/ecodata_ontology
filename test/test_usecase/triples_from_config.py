@@ -1,73 +1,43 @@
 #!/usr/bin/env python
 
 from genecodata.rdf_handlers.triples_classes import RDFTriple
-from genecodata.data_converter.data_converter import ConfigTurtleConverter
+from genecodata.data_converter.data_converter import ObservablePropertiesConverter, PrefixesBinder
 from genecodata.data_parser.tabular_data_parsers import TxtParser
 from genecodata.rdf_handlers.rdf_writer import TurtleWriter
 
-import argparse
+from rdflib import Graph, URIRef
+import pandas as pd
 
-PREFIXDICT = {
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-	"thing": "https://schema.org/Thing",
-	"envo": "http://purl.obolibrary.org/obo/envo.owl",
-	"sosa": "http://www.w3.org/ns/sosa/",
-    "time": "https://www.w3.org/2006/time#",
-    "iop": "https://w3id.org/iadopt/ont/",
-    "chebi": "http://purl.obolibrary.org/obo/chebi.owl",
-    "to": "http://purl.obolibrary.org/obo/to.owl",
-    "agro": "http://purl.obolibrary.org/obo/AGRO_00000301",
-    "unit": "https://w3id.org/uom/",
-    "po": "http://purl.obolibrary.org/obo/po.owl",
-    "bago": "https://opendata.inrae.fr/bag-def",
-    "ncbitaxon": "http://purl.obolibrary.org/obo/ncbitaxon.owl"
-}
+import argparse
+import os
+
+"""
+Inputs : directory with all config files
+
+1) 
+"""
+
+from test.test_usecase import usecase_classes
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-c", "--config-table", help="csv/tsv file describing the dataset")
-# parser.add_argument("-p", "--prefixes", help="json file listing all used prefixes and their URI")
-# parser.add_argument("-i", "--instances-prefix", help="prefix that will used to the project instances")
+parser.add_argument("-c", "--config-input-folder", help="directory containing all the tsv config files")
 parser.add_argument("-o", "--output-rdf", help="output RDF file") # TODO : make several files named with a common prefix/suffix
 args=parser.parse_args()
 
-# Load inputs
-table = TxtParser(args.config_table, sep="\t")
-configloader = ConfigTurtleConverter("dp", table)
+temporalities = usecase_classes.DPUseCaseTemporalityConverter(pd.read_csv(os.path.join(args.config_input_folder, "config_temporalities.tsv"), header=0, index_col=0, sep="\t"))
+sensors = usecase_classes.DPUseCaseSensorConverter(pd.read_csv(os.path.join(args.config_input_folder, "config_sensors.tsv"), header=0, index_col=0, sep="\t"))
+features_of_interest = usecase_classes.DPUseCaseFeatureOfInterestCategorizer(pd.read_csv(os.path.join(args.config_input_folder, "config_features_of_interest.tsv"), header=0, index_col=0, sep="\t"))
+observable_properties = ObservablePropertiesConverter(pd.read_csv(os.path.join(args.config_input_folder, "config_variables.tsv"), header=0, index_col=0, sep="\t"))
+prefixes = PrefixesBinder(pd.read_csv(os.path.join(args.config_input_folder, "config_prefixes.tsv"), header=0, index_col=0, sep="\t"))
 
-# Build triplets
-foi = configloader.features_of_interest_triples()
-obsprops = configloader.observable_properties_triples()
-varsets = configloader.variablesets_triples()
+g = Graph()
 
-def create_triples_sets(triples:list[RDFTriple]):
-    triples_sets = {triple.subject:[] for triple in triples}
-    for triple in triples:
-        triples_sets[triple.subject].append(triple.predicate, triple.object)
-    return triples_sets
+prefixes.bind_prefixes(g)
+temporalities.temporalities_triples(g)
+sensors.sensors_triples(g)
+features_of_interest.region_triples(g)
+features_of_interest.locations_triples(g)
+observable_properties.observable_properties_triples(g)
+observable_properties.variablesets_triples(g)
 
-# Gather triplets as triples sets
-foi_triplesets = create_triples_sets(foi)
-obsprops_triplesets = create_triples_sets(obsprops)
-# Write
-turtlewriter = TurtleWriter(PREFIXDICT, args.output_rdf)
-
-turtlewriter.write_prefixes()
-
-for triple in foi[0:-1]:
-    turtlewriter.write_triple(triple)
-turtlewriter.write_triple(foi[-1], linejump=True)
-
-for triple in obsprops[0:-1]:
-    turtlewriter.write_triple(triple)
-turtlewriter.write_triple(obsprops[-1], linejump=True)
-
-for triple in varsets[0:-1]:
-    turtlewriter.write_triple(triple)
-turtlewriter.write_triple(varsets[-1])
-
-# TODO : to replace by :
-# turtlewriter.write_tripleset(foi)
-# turtlewriter.write_tripleset(obsprops)
-# turtlewriter.write_tripleset(varsets)
+g.serialize()
