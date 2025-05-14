@@ -1,0 +1,7 @@
+Name	InDbName	ConstraintOf	AltURI	DataType
+RO	Root	Abundance	po:0009005	nan
+RS	Rhizosphere	Abundance	envo:00005801	nan
+LF	Leaf	Abundance	po:0025034	nan
+PHENOLOGY_STAGE	PhenologyStage	Abundance	po:0007033	xsd:string
+LAB_SAMPLED	LabSampled	SpeciesPresence	nan	xsd:string
+FIELD_SAMPLED	FieldSampled	SpeciesPresence	nan	xsd:string
