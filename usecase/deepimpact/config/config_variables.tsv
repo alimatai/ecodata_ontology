@@ -23,6 +23,7 @@ FINE_SAND	FineSand	envo:06105273	SoilBiochemistry	unit:%5Bppth%5D	xsd:integer
 FINE_SILT	FineSilt		SoilBiochemistry	unit:%5Bppth%5D	xsd:integer
 FRESH_WEIGHT_1000_SEEDS	FreshWeight1000Seeds	to:0003018	Yields	unit:g	xsd:float
 GENERAL_STATE	GeneralState	nan	PlantPhenotype	No unit	xsd:string
+GLUCOSINOLATE	SeedGlucosinolate		Nirs	No unit	xsd:float
 hu_q	hu_q		Climatic	unit:%25	xsd:float
 IRON	Iron	chebi:24873	SoilBiochemistry	unit:mg.kg-1	xsd:float
 LIME	Lime		SoilBiochemistry	unit:mg.kg-1	xsd:float
@@ -32,6 +33,7 @@ MAGNESIA	Magnesia	chebi:31794	SoilBiochemistry	unit:mg.kg-1	xsd:float
 MAGNESIUM	Magnesium	chebi:25108	SoilBiochemistry	unit:cmol.kg	xsd:float
 MAIN_THALLUS_HEIGHT	MainThallusHeight		PlantPhenotype	unit:cm	xsd:float
 MANGANESE	Manganese	chebi:25154	SoilBiochemistry	unit:mg.kg-1	xsd:float
+MOISTURE	SeedMoisture	nan	Nirs	No unit	xsd:float
 MORE_ONE_METER	MoreThanOneMeterSampling	nan	Biomass	No unit	xsd:boolean
 N_SPOTS_PARASITIC_FUNGI	NumberOfFungalParasiticSpots	nan	PlantPhenotype	No unit	xsd:integer
 NB_ONE_METER	PlantsOnOneMeter	nan	Biomass	No unit	xsd:integer
@@ -41,6 +43,7 @@ NITROGEN_TOTAL	NitrogenTotal	chebi:51143	SoilBiochemistry	unit:g.kg-1	xsd:float
 NUMBER_OF_LIVING_LEAVES	NumberOfLivingLeaves	to:0000241	PlantPhenotype	No unit	xsd:integer
 NUMBER_OF_STEMS	NumberOfStems	to:0000953	PlantPhenotype	No unit	xsd:integer
 NUMBER_OF_THALLUS_PER_PLANT	ThallusPerPlant	nan	PlantPhenotype	No unit	xsd:integer
+OIL	SeedOil	nan	Nirs	No unit	xsd:float
 ORGANIC_MATTER	OrganicMatter	envo:04000008	SoilBiochemistry	unit:g.kg-1	xsd:float
 OVERALL_FOLIAR_PARASITISM	OverallFoliarParasitism	nan	PlantPhenotype	No unit	xsd:string
 OVERALL_FOLIAR_PHYTOPHAGY	OverallFoliarPhytophagy	nan	PlantPhenotype	No unit	xsd:string
@@ -56,8 +59,9 @@ POTASH	Potash	chebi:147420	SoilBiochemistry	unit:mg.kg-1	xsd:float
 POTASSIUM	Potassium	chebi:26217	SoilBiochemistry	unit:cmol.kg	xsd:float
 preliq_q	preliq_q		Climatic	unit:mm	xsd:float
 prenei_q	prenei_q		Climatic	unit:mm	xsd:float
+PROTEIN	SeedProteins		Nirs	No unit	xsd:float
 q_q	q_q		Climatic	unit:g.kg-1	xsd:float
-ROOT_DAMAGES	RootDamages	nan	PlantPhenotype	No unit	xds:boolean
+ROOT_DAMAGES	RootDamages	nan	PlantPhenotype	No unit	xsd:boolean
 ROW_NUMBER	NumberOfRanks	nan	Biomass	No unit	xsd:integer
 SLUG_CHEWING_INSECTS	SlugChewingInsects	bago:PestAnimal	PlantPhenotype	No unit	xds:boolean
 SODIUM	Sodium	chebi:26712	SoilBiochemistry	unit:cmol.kg	xsd:float
@@ -72,3 +76,29 @@ WEIGHT_TOTAL	WeightTotal		Yields	unit:g	xsd:float
 wg_racine_q	wg_racine_q		Climatic	unit:m3.m-3	xsd:float
 wgi_racine_q	wgi_racine_q		Climatic	unit:m3.m-3	xsd:float
 ZINC	Zinc	chebi:27364	SoilBiochemistry	unit:mg.kg-1	xsd:float
+L	L		Nirs	No unit	xsd:float
+P	P		Nirs	No unit	xsd:float
+P_L	P_L		Nirs	No unit	xsd:float
+W	W		Nirs	No unit	xsd:float
+ALTERNARIA_BRASSICAE	AlternariaBrassicae	ncbitaxon:29911	BioagressorPresence	No unit	xsd:boolean
+BLUMERIA_GRAMINIS	BlumeriaGraminis	ncbitaxon:34373	BioagressorPresence	No unit	xsd:boolean
+BREVICORYNE_BRASSICAE	BrevicoryneBrassicae	ncbitaxon:69196	BioagressorPresence	No unit	xsd:boolean
+DELIA_RADICUM	DeliaRadicum	ncbitaxon:30064	BioagressorPresence	No unit	xsd:boolean
+ERYSIPHE_CRUCIFERUM	ErysipheCruciferarum	ncbitaxon:69478	BioagressorPresence	No unit	xsd:boolean
+GAEUMANNOMYCES_GRAMINIS	GaeumannomycesGraminis	ncbitaxon:29850	BioagressorPresence	No unit	xsd:boolean
+LEPTOSPHAERIA_BIGLOBOSA	PlenodomusBiglobosus	ncbitaxon:220672	BioagressorPresence	No unit	xsd:boolean
+LEPTOSPHAERIA_MACULANS	PlenodomusLingam	ncbitaxon:5022	BioagressorPresence	No unit	xsd:boolean
+MYCOSPHAERELLA_BRASSICICOLA	NeopseudocercosporellaBrassicae	ncbitaxon:1873267	BioagressorPresence	No unit	xsd:boolean
+MYCOSPHAERELLA_GRAMINICOLA_OR_SEPTORIA_TRITICI	ZymoseptoriaTritici 	ncbitaxon:1047171	BioagressorPresence	No unit	xsd:boolean
+MYZUS_PERSICAE	MyzusPersicae	ncbitaxon:13164	BioagressorPresence	No unit	xsd:boolean
+OULEMA_MELANOPUS	OulemaMelanopus	ncbitaxon:294584	BioagressorPresence	No unit	xsd:boolean
+PLASMODIOPHORA_BRASSICAE	PlasmodiophoraBrassicae	ncbitaxon:37360	BioagressorPresence	No unit	xsd:boolean
+PSEUDOCERCOSPORELLA_CAPSELLAE	PseudocercosporellaCapsellae	ncbitaxon:1873268	BioagressorPresence	No unit	xsd:boolean
+PSYLLIODES_CHRYSOCEPHALUS	PsylliodesChrysocephalus	ncbitaxon:2598218	BioagressorPresence	No unit	xsd:boolean
+PUCCINIA_RECONDITA	PucciniaRecondita	ncbitaxon:27348	BioagressorPresence	No unit	xsd:boolean
+PUCCINIA_STRIIFORMIS	PucciniaStriiformis	ncbitaxon:27350	BioagressorPresence	No unit	xsd:boolean
+PYRENOPEZZIZA_BRASSICAE	PyrenopezizaBrassicae	ncbitaxon:76659	BioagressorPresence	No unit	xsd:boolean
+SCAPTOMYZA_FLAVA	ScaptomyzaFlava	ncbitaxon:928822	BioagressorPresence	No unit	xsd:boolean
+TAPESIA_YALLUNDAE_OR_RHIZOCTONIA_SOLANI_OR_FUSARIUM	TapesiaYallundaeOrRhizoctoniaSolaniOrFusarium	ncbitaxon:456999,ncbitaxon:86028	BioagressorPresence	No unit	xsd:boolean
+UNDEFINED_FOLIAR_PHYTOPHAGY	UndefinedFoliarPhytophagy	nan	BioagressorPresence	No unit	xsd:boolean
+UNDEFINED_FOLIAR_PARASITISM	UndefinedFoliarParasitism	nan	BioagressorPresence	No unit	xsd:boolean
