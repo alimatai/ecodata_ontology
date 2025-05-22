@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 
-from genecodata.data_parser.tabular_data_parsers import TableParser, ExcelParser
-# from genecodata.rdf_handlers.triples_classes import RDFTriple
-
 from rdflib import Graph, URIRef, Literal, BNode, Namespace
 from rdflib.namespace import RDF, XSD
 from abc import ABC, abstractmethod
 
 import pandas as pd
 import logger
+
+from tqdm import tqdm
 
 template = {
 	("les noms de colonnes de observations_templates.tsv"): "observations",
@@ -100,18 +99,18 @@ class DataConverter(ABC):
 
 class TemporalityConverter():
 
-	def __init__(self, temporalities:pd.DataFrame):
+	def __init__(self, table:pd.DataFrame):
 		"""
 		Parameters:
-			temporalities (pd.DataFrame) : read from a 3 columns table : "Name": the temporality name in the user data, "InDbName" the name to use in the integrated RDF data, if different, "Nesting": if applicable, the InDbName of the temporality in which it is included) 
+			table (pd.DataFrame) : read from a 3 columns table : "Name": the temporality name in the user data, "InDbName" the name to use in the integrated RDF data, if different, "Nesting": if applicable, the InDbName of the temporality in which it is included) 
 		"""
 		try:
-			if not temporalities.columns == ("Name","InDbName","Nesting"):
-				self.temporalities = temporalities
+			if not table.columns == ("Name","InDbName","Nesting"):
+				self.table = table
 		except AssertionError as e:
 			logger.error(f"Error : please check colnames of config_temporalities.tsv: {e}")
 
-	def temporalities_triples(self, gm:GraphManager):
+	def build_triples(self, gm:GraphManager):
 		"""
 		Sets up temporalities that will be linked to sosa:Observations according to the user config file 
 
@@ -119,43 +118,43 @@ class TemporalityConverter():
 			g (rdflib:Graph) : an existing RDF graph
 		"""
 
-		for tempo in self.temporalities.index:
+		for tempo in tqdm(self.table.index, total=self.table.shape[0]):
 			gm.g.add(
 				(
-					URIRef(self.temporalities.loc[tempo, "InDbName"]), 
+					URIRef(self.table.loc[tempo, "InDbName"]), 
 					RDF.type, 
 					URIRef("https://www.w3.org/2006/time#TimeInterval")
 				)
 			)
 
-			if not pd.isna(self.temporalities.loc[tempo, "Nesting"]):
+			if not pd.isna(self.table.loc[tempo, "Nesting"]):
 				gm.g.add(
 					(
-						URIRef(self.temporalities.loc[tempo, "InDbName"]), 
+						URIRef(self.table.loc[tempo, "InDbName"]), 
 						URIRef("https://www.w3.org/2006/time#intervalWithin"), 
-						URIRef(self.temporalities.loc[tempo, "Nesting"])
+						URIRef(self.table.loc[tempo, "Nesting"])
 					)
 				)
 				gm.g.add(
 					(
-						URIRef(self.temporalities.loc[tempo, "Nesting"]), 
+						URIRef(self.table.loc[tempo, "Nesting"]), 
 						URIRef("https://www.w3.org/2006/time#intervalContains"), 
-						URIRef(self.temporalities.loc[tempo, "InDbName"])
+						URIRef(self.table.loc[tempo, "InDbName"])
 					)
 				)
 
 class SensorConverter():
 
-	def __init__(self, sensors:pd.DataFrame):
+	def __init__(self, table:pd.DataFrame):
 		try:
-			if not sensors.columns == ("Name","InDbName","Type"):
-				self.sensors = sensors
+			if not table.columns == ("Name","InDbName","Type"):
+				self.table = table
 		except AssertionError as e:
 			logger.error(f"Error : please check colnames of config_sensors.tsv: {e}")
 
-	def sensors_triples(self, gm:GraphManager):
+	def build_triples(self, gm:GraphManager):
 
-		for sensor, row in self.sensors.iterrows():
+		for sensor, row in tqdm(self.table.index, total=self.table.shape[0]):
 			base, value = row["Type"].split()
 			gm.g.add(
 				(
@@ -168,25 +167,25 @@ class SensorConverter():
 class ObservablePropertiesConverter():
 	"""Convert Config data loaded in a TableParser object into RDF triples"""
 
-	def __init__(self, obs_props:pd.DataFrame):
+	def __init__(self, table:pd.DataFrame):
 		try:
-			if tuple(obs_props.columns) == ("Name","InDbName","AltURI","Set", "Unit","DataType"):
-				self.obs_props = obs_props
+			if tuple(table.columns) == ("Name","InDbName","AltURI","Set", "Unit","DataType"):
+				self.table = table
 		except AssertionError as e:
 			logger.error(f"Error : please check colnames of config_variables.tsv: {e}")
 
 	@property
-	def obs_props(self):
-		return self._obs_props
+	def table(self):
+		return self._table
 
-	@obs_props.setter
-	def obs_props(self, value):
-		self._obs_props = value
+	@table.setter
+	def table(self, value):
+		self._table = value
 
-	def observable_properties_triples(self, gm:GraphManager):
+	def build_variables_triples(self, gm:GraphManager):
 		"""Parse config table and set up triples of sosa:ObservableProperties"""
 
-		for _, row in self.obs_props.iterrows():
+		for _, row in tqdm(self.table.index, total=self.table.shape[0]):
 			gm.g.add(
 				(					
 					URIRef(f"""{row["InDbName"]}"""),					
@@ -222,10 +221,10 @@ class ObservablePropertiesConverter():
 					)
 				)
 	
-	def variablesets_triples(self, gm:GraphManager):
+	def build_variables_sets_triples(self, gm:GraphManager):
 		"""Parse config file and set up triples of variable sets"""
 
-		varsets = self.obs_props["Set"].dropna().unique()
+		varsets = self.table["Set"].dropna().unique()
 
 		for varset in varsets:
 			gm.g.add(
@@ -238,24 +237,24 @@ class ObservablePropertiesConverter():
 
 class ConstraintConverter():
 
-	def __init__(self, constraints:pd.DataFrame):
+	def __init__(self, table:pd.DataFrame):
 		try:
-			if tuple(constraints.columns) == ("Name","InDbName","ConstraintOf","AltURI","DataType"):
-				self.constraints = constraints
+			if tuple(table.columns) == ("Name","InDbName","ConstraintOf","AltURI","DataType"):
+				self.table = table
 		except AssertionError as e:
 			logger.error(f"Error : please check colnames of config_constraints.tsv: {e}")
 
 	@property
-	def constraints(self):
-		return self._constraints
+	def table(self):
+		return self._table
 
-	@constraints.setter
-	def constraints(self, value):
-		self._constraints = value
+	@table.setter
+	def table(self, value):
+		self._table = value
 
-	def constraints_triples(self, gm:GraphManager):
+	def build_triples(self, gm:GraphManager):
 		
-		for _, row in self.constraints.iterrows():
+		for _, row in self.table.iterrows():
 			base, value = row["AltURI"].split()
 			gm.g.add(
 				(
@@ -279,45 +278,133 @@ class ASVConverter():
 	def __init__(self, biomfile):
 		self.biomfile = biomfile
 
+# class ObservationConverter(DataConverter):
+
+# 	def __init__(self, table:pd.DataFrame, expected_cols:tuple):
+# 		super().__init__(self, table, expected_cols)
+
+# 	def build_triples(self, gm:GraphManager):
+
+# 		colset = list(self.table.columns)
+# 		colset.remove("sosa:hasultimateFeatureOfinterest", "sosa:hasResult", "unit", "datatype")
+
+# 		# Loop 1 : no particular cases
+# 		for index, row in self.table.iterrows():
+# 			gm.g.add((URIRef(index), RDF.type, URIRef(value="Observation", base=gm.prefixes["sosa"])))
+
+# 			for col in row:
+# 				if col in colset:
+# 					base, value = col.split()
+# 					gm.g.add(
+# 						(
+# 							URIRef(index), 
+# 							URIRef(value=value, base=gm.prefixes["sosa"]), 
+# 							URIRef(row[col])
+# 						)
+# 					)
+
+# 		# Loop 2 : particular cases
+# 		# TODO : skip if result is boolean = False (0)
+# 		for index in self.table.index:
+
+# 			if not pd.isna(self.table.loc[index, "sosa:hasultimateFeatureOfinterest"]):
+# 				gm.g.add(
+# 					(
+# 						URIRef(index), 
+# 			  			URIRef(value="hasUltimateFeatureOfinterest", base=gm.prefixes["sosa"]), 
+# 						URIRef(self.table.loc[index, "sosa:hasUltimateFeatureOfinterest"])
+# 					)
+# 				)
+			
+# 			if not pd.isna(self.table.loc[index, "unit"]):
+# 				bn = BNode()
+# 				gm.g.add(
+# 					(
+# 						URIRef(index), 
+# 						URIRef(value="hasResult", base=gm.prefixes["sosa"]), 
+# 						bn
+# 					)
+# 				)
+# 				gm.g.add(
+# 					(
+# 						bn, 
+# 						RDF.type, 
+# 						URIRef(value="QuantityValue", base=gm.prefixes["qudt"])))
+# 				base, value = self.table.loc[index, "unit"].split() 
+# 				gm.g.add(
+# 					(
+# 						bn, 
+# 						URIRef(value="hasUnit", base=gm.prefixes["qudt"]), 
+# 						URIRef(value=value, base=base)
+# 					)
+# 				)
+# 				_, value = self.table.loc[index, "datatype"].split()			
+# 				gm.g.add(
+# 					(
+# 						bn, 
+# 						URIRef(value="value", base=gm.prefixes["qudt"]), 
+# 						Literal(self.table.loc[index, "sosa:hasResult"], datatype=dtypes[value])
+# 					)
+# 				) # TODO Fix dtype
+			
+# 			else:
+# 				# Use the alternate Result property if no unit
+# 				_, value = self.table.loc[index, "datatype"].split()
+# 				gm.g.add(
+# 					(
+# 						URIRef(index), 
+# 						URIRef(value="hasSimpleResult", base=gm.prefixes["sosa"]), 
+# 						Literal(self.table.loc[index, "sosa:hasResult"], datatype=dtypes[value])
+# 					)
+# 				)
+
 class ObservationConverter(DataConverter):
 
-	def __init__(self, data:pd.DataFrame, expected_cols:tuple):
-		super().__init__(self, data, expected_cols)
+	def __init__(self, table:pd.DataFrame, expected_cols:tuple):
+		super().__init__(self, table, expected_cols)
 
 	def build_triples(self, gm:GraphManager):
 
-		colset = list(self.data.columns)
+		colset = list(self.table.columns)
 		colset.remove("sosa:hasultimateFeatureOfinterest", "sosa:hasResult", "unit", "datatype")
 
 		# Loop 1 : no particular cases
-		for index, row in self.data.iterrows():
-			gm.g.add((URIRef(index), RDF.type, URIRef(value="Observation", base=gm.prefixes["sosa"])))
+		for index, row in tqdm(self.table.iterrows(), total=self.table.shape[0]):
 
-			for col in row:
-				if col in colset:
-					base, value = col.split()
-					gm.g.add(
-						(
-							URIRef(index), 
-							URIRef(value=value, base=gm.prefixes["sosa"]), 
-							URIRef(row[col])
-						)
+			# No particular cases
+			if pd.isna(self.table.loc[index, "sosa:hasultimateFeatureOfinterest"]):
+				gm.g.add(
+					(
+						URIRef(index), 
+						RDF.type, 
+						URIRef(value="Observation", base=gm.prefixes["sosa"])
 					)
+				)
 
-		# Loop 2 : particular cases
-		# TODO : skip if result is boolean = False (0)
-		for index in self.data.index:
+				for col in row:
+					if col in colset:
+						base, value = col.split()
+						gm.g.add(
+							(
+								URIRef(index), 
+								URIRef(value=value, base=gm.prefixes["sosa"]), 
+								URIRef(row[col])
+							)
+						)
 
-			if not pd.isna(self.data.loc[index, "sosa:hasultimateFeatureOfinterest"]):
+			# Particular cases
+			# TODO : skip if result is boolean = False (0)
+			elif not pd.isna(self.table.loc[index, "sosa:hasultimateFeatureOfinterest"]):
 				gm.g.add(
 					(
 						URIRef(index), 
 			  			URIRef(value="hasUltimateFeatureOfinterest", base=gm.prefixes["sosa"]), 
-						URIRef(self.data.loc[index, "sosa:hasUltimateFeatureOfinterest"])
+						URIRef(self.table.loc[index, "sosa:hasUltimateFeatureOfinterest"])
 					)
 				)
 			
-			if not pd.isna(self.data.loc[index, "unit"]):
+			# Differentiate sosa:hasResult and sosa:hasSimpleresult
+			if not pd.isna(self.table.loc[index, "unit"]):
 				bn = BNode()
 				gm.g.add(
 					(
@@ -331,7 +418,7 @@ class ObservationConverter(DataConverter):
 						bn, 
 						RDF.type, 
 						URIRef(value="QuantityValue", base=gm.prefixes["qudt"])))
-				base, value = self.data.loc[index, "unit"].split() 
+				base, value = self.table.loc[index, "unit"].split() 
 				gm.g.add(
 					(
 						bn, 
@@ -339,23 +426,23 @@ class ObservationConverter(DataConverter):
 						URIRef(value=value, base=base)
 					)
 				)
-				_, value = self.data.loc[index, "datatype"].split()			
+				_, value = self.table.loc[index, "datatype"].split()			
 				gm.g.add(
 					(
 						bn, 
 						URIRef(value="value", base=gm.prefixes["qudt"]), 
-						Literal(self.data.loc[index, "sosa:hasResult"], datatype=dtypes[value])
+						Literal(self.table.loc[index, "sosa:hasResult"], datatype=dtypes[value])
 					)
 				) # TODO Fix dtype
 			
 			else:
 				# Use the alternate Result property if no unit
-				_, value = self.data.loc[index, "datatype"].split()
+				_, value = self.table.loc[index, "datatype"].split()
 				gm.g.add(
 					(
 						URIRef(index), 
 						URIRef(value="hasSimpleResult", base=gm.prefixes["sosa"]), 
-						Literal(self.data.loc[index, "sosa:hasResult"], datatype=dtypes[value])
+						Literal(self.table.loc[index, "sosa:hasResult"], datatype=dtypes[value])
 					)
 				)
 
