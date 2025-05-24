@@ -13,7 +13,8 @@ description = "GenEcoData: a generalist schema to integrate environmental and ge
 license = {text = "GPL-3.0-or-later"}
 
 dependencies = [
-  'pandas', 
+  'pandas',
+  'rdflib',
   'logger']
 
 [project.scripts]

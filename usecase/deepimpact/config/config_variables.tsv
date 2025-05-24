@@ -80,25 +80,25 @@ L	L		Nirs	No unit	xsd:float
 P	P		Nirs	No unit	xsd:float
 P_L	P_L		Nirs	No unit	xsd:float
 W	W		Nirs	No unit	xsd:float
-ALTERNARIA_BRASSICAE	AlternariaBrassicae	ncbitaxon:29911	BioagressorPresence	No unit	xsd:boolean
-BLUMERIA_GRAMINIS	BlumeriaGraminis	ncbitaxon:34373	BioagressorPresence	No unit	xsd:boolean
-BREVICORYNE_BRASSICAE	BrevicoryneBrassicae	ncbitaxon:69196	BioagressorPresence	No unit	xsd:boolean
-DELIA_RADICUM	DeliaRadicum	ncbitaxon:30064	BioagressorPresence	No unit	xsd:boolean
-ERYSIPHE_CRUCIFERUM	ErysipheCruciferarum	ncbitaxon:69478	BioagressorPresence	No unit	xsd:boolean
-GAEUMANNOMYCES_GRAMINIS	GaeumannomycesGraminis	ncbitaxon:29850	BioagressorPresence	No unit	xsd:boolean
-LEPTOSPHAERIA_BIGLOBOSA	PlenodomusBiglobosus	ncbitaxon:220672	BioagressorPresence	No unit	xsd:boolean
-LEPTOSPHAERIA_MACULANS	PlenodomusLingam	ncbitaxon:5022	BioagressorPresence	No unit	xsd:boolean
-MYCOSPHAERELLA_BRASSICICOLA	NeopseudocercosporellaBrassicae	ncbitaxon:1873267	BioagressorPresence	No unit	xsd:boolean
-MYCOSPHAERELLA_GRAMINICOLA_OR_SEPTORIA_TRITICI	ZymoseptoriaTritici 	ncbitaxon:1047171	BioagressorPresence	No unit	xsd:boolean
-MYZUS_PERSICAE	MyzusPersicae	ncbitaxon:13164	BioagressorPresence	No unit	xsd:boolean
-OULEMA_MELANOPUS	OulemaMelanopus	ncbitaxon:294584	BioagressorPresence	No unit	xsd:boolean
-PLASMODIOPHORA_BRASSICAE	PlasmodiophoraBrassicae	ncbitaxon:37360	BioagressorPresence	No unit	xsd:boolean
-PSEUDOCERCOSPORELLA_CAPSELLAE	PseudocercosporellaCapsellae	ncbitaxon:1873268	BioagressorPresence	No unit	xsd:boolean
+ALTERNARIA_BRASSICAE	AlternariaBrassicae	ncbitaxon:29911,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
+BLUMERIA_GRAMINIS	BlumeriaGraminis	ncbitaxon:34373,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
+BREVICORYNE_BRASSICAE	BrevicoryneBrassicae	ncbitaxon:69196,bago:PestAnimal	BioagressorPresence	No unit	xsd:boolean
+DELIA_RADICUM	DeliaRadicum	ncbitaxon:30064,bago:PestAnimal	BioagressorPresence	No unit	xsd:boolean
+ERYSIPHE_CRUCIFERUM	ErysipheCruciferarum	ncbitaxon:69478,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
+GAEUMANNOMYCES_GRAMINIS	GaeumannomycesGraminis	ncbitaxon:29850,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
+LEPTOSPHAERIA_BIGLOBOSA	PlenodomusBiglobosus	ncbitaxon:220672,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
+LEPTOSPHAERIA_MACULANS	PlenodomusLingam	ncbitaxon:5022,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
+MYCOSPHAERELLA_BRASSICICOLA	NeopseudocercosporellaBrassicae	ncbitaxon:1873267,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
+MYCOSPHAERELLA_GRAMINICOLA_OR_SEPTORIA_TRITICI	ZymoseptoriaTritici	ncbitaxon:1047171,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
+MYZUS_PERSICAE	MyzusPersicae	ncbitaxon:13164,bago:PestAnimal	BioagressorPresence	No unit	xsd:boolean
+OULEMA_MELANOPUS	OulemaMelanopus	ncbitaxon:294584,bago:PestAnimal	BioagressorPresence	No unit	xsd:boolean
+PLASMODIOPHORA_BRASSICAE	PlasmodiophoraBrassicae	ncbitaxon:37360,bago:PathogenMicroOrganism	BioagressorPresence	No unit	xsd:boolean
+PSEUDOCERCOSPORELLA_CAPSELLAE	PseudocercosporellaCapsellae	ncbitaxon:1873268,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
 PSYLLIODES_CHRYSOCEPHALUS	PsylliodesChrysocephalus	ncbitaxon:2598218	BioagressorPresence	No unit	xsd:boolean
-PUCCINIA_RECONDITA	PucciniaRecondita	ncbitaxon:27348	BioagressorPresence	No unit	xsd:boolean
-PUCCINIA_STRIIFORMIS	PucciniaStriiformis	ncbitaxon:27350	BioagressorPresence	No unit	xsd:boolean
-PYRENOPEZZIZA_BRASSICAE	PyrenopezizaBrassicae	ncbitaxon:76659	BioagressorPresence	No unit	xsd:boolean
-SCAPTOMYZA_FLAVA	ScaptomyzaFlava	ncbitaxon:928822	BioagressorPresence	No unit	xsd:boolean
-TAPESIA_YALLUNDAE_OR_RHIZOCTONIA_SOLANI_OR_FUSARIUM	TapesiaYallundaeOrRhizoctoniaSolaniOrFusarium	ncbitaxon:456999,ncbitaxon:86028	BioagressorPresence	No unit	xsd:boolean
+PUCCINIA_RECONDITA	PucciniaRecondita	ncbitaxon:27348,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
+PUCCINIA_STRIIFORMIS	PucciniaStriiformis	ncbitaxon:27350,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
+PYRENOPEZZIZA_BRASSICAE	PyrenopezizaBrassicae	ncbitaxon:76659,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
+SCAPTOMYZA_FLAVA	ScaptomyzaFlava	ncbitaxon:928822,bago:PestAnimal	BioagressorPresence	No unit	xsd:boolean
+TAPESIA_YALLUNDAE_OR_RHIZOCTONIA_SOLANI_OR_FUSARIUM	TapesiaYallundaeOrRhizoctoniaSolaniOrFusarium	ncbitaxon:456999,ncbitaxon:86028,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
 UNDEFINED_FOLIAR_PHYTOPHAGY	UndefinedFoliarPhytophagy	nan	BioagressorPresence	No unit	xsd:boolean
 UNDEFINED_FOLIAR_PARASITISM	UndefinedFoliarParasitism	nan	BioagressorPresence	No unit	xsd:boolean

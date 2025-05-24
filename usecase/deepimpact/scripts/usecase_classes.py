@@ -315,8 +315,6 @@ class DPUseCaseBioagressorsLabConverter():
 		self.table.set_index(["DATE", "OPERATOR"], inplace=True, append=True)
 		self.table = self.table.stack(future_stack=True)
 
-		print(self.table.head())
-
 		counter = 1
 
 		for index, val in tqdm(self.table.items(), total=self.table.shape[0]):
@@ -327,11 +325,12 @@ class DPUseCaseBioagressorsLabConverter():
 				
 				new_row = {k:None for k in colum_names_with_constraints}
 				new_row["sosa:Observation"] = f"""Obs-BioAgr-LabSampled-{ident[0]}-{ident[4]}-{ident[5]}-{ident[2]}-{ident[3]}-{counter}"""
-				new_row["sosa:observedProperty"] = f"""Presence-{config_variables.loc[index[3], "InDbName"]}-on-LabSampled-plants"""
-				new_row["sosa:hasFeatureOfInterest"] = "-".join((ident[0], ident[4]))
-				new_row["sosa:hasUltimateFeatureOfInterest"] = ident[0]
+				new_row["sosa:observedProperty"] = f"""{config_variables.loc[index[3], "InDbName"]}-on-LabSampled-plants"""
+				new_row["sosa:hasFeatureOfInterest"] = index[0]
+				new_row["sosa:hasUltimateFeatureOfInterest"] = "-".join((ident[0], ident[4]))
 				new_row["sosa:phenomenonTime"] = "".join((ident[2], ident[3]))
 				
+				# Veeeery dirty (fix later when more free-time)
 				if val == 0.0:
 					new_row["sosa:hasResult"] = 0
 				elif val == 1.0:
@@ -340,14 +339,20 @@ class DPUseCaseBioagressorsLabConverter():
 					new_row["sosa:hasResult"] = val
 
 				new_row["sosa:resultTime"] = index[1]
-				new_row["sosa:madeBySensor"] = ident[2] # Warning : not in FieldSampled tables
+				new_row["sosa:madeBySensor"] = index[2]
 				new_row["unit"] = config_variables.loc[index[3], "Unit"]
 				new_row["datatype"] = config_variables.loc[index[3], "DataType"]
 
 				new_row["iop:Entity"] = config_variables.loc[index[3], "InDbName"]
-				new_row["iop:Property"] = "SpeciesPresence"
-				new_row["iop:Constraint"] = "LabSampled"
 
+				if config_variables.loc[index[3], "Set"] == "BioagressorPresence":
+					new_row["iop:Property"] = "SpeciesPresence"
+				elif config_variables.loc[index[3], "Set"] == "PlantPhenotype":
+					new_row["iop:Property"] = "Phenotype"
+				else :
+					new_row["iop:Property"] = "Undefined"
+
+				new_row["iop:Constraint"] = "LabSampled"
 				out_table.loc[len(out_table)] = new_row
 				counter += 1
 
