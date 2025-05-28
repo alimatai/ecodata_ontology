@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from genecodata.data_converter.data_converter import GraphManager, TemporalityConverter, SensorConverter, ObservablePropertiesConverter, ConstraintConverter, ObservationConverter
+from genecodata.data_converter.data_converter import GraphManager, TemporalityConverter, SensorConverter, ObservablePropertiesConverter, ConstraintConverter, ObservationConverter, FeatureOfInterestConverter, SampleConverter
 
 #import genecodata.data_converter as gdc
 
@@ -8,6 +8,7 @@ import pandas as pd
 import argparse
 import os
 import json
+import time
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--obs-dir", help="directory with all required tab-separated files of sosa:Observations" )
@@ -35,6 +36,8 @@ def main():
 
 	# Configuration
 	# -------------
+
+	start = time.time()
 	
 	df = TemporalityConverter(pd.read_csv(os.path.join(args.config_dir, "config_temporalities.tsv"), 
 		header=0, 
@@ -69,108 +72,161 @@ def main():
 
 	df.build_triples(graph)
 
-	# Missing : FeatureOfInterest
+	df = FeatureOfInterestConverter(pd.read_csv(os.path.join(args.config_dir, "config_features_of_interest.tsv"), 
+		header=0, 
+		index_col=0, 
+		sep="\t"))		
+
+	print("Features Of Interest triples...")
+	df.build_triples(graph)
+
+	df = SampleConverter(pd.read_csv(os.path.join(args.config_dir, "config_samples.tsv"), 
+		header=0, 
+		index_col=0, 
+		sep="\t"))		
+
+	print("Samples triples...")
+	df.build_triples(graph)
+
+	end = time.time()
+
+	print(f"""Configuration triples built in {end - start} seconds""")
 
 	# Observations
 	# ------------
 
 	# TODO fix dates format before main script
+	# TODO : do a loop on the observations folder instead
 
-	# df = ObservationConverter(
-	# 	pd.read_csv(os.path.join(args.obs_dir, "observations_biomasses.tsv"),
-	# 		header=0,
-	# 		index_col=0,
-	# 		sep="\t"))
+	start = time.time()
 
-	# print("Biomasses observations triples...")
-	# df.build_triples(graph)
+	df = ObservationConverter(
+		pd.read_csv(os.path.join(args.obs_dir, "observations_biomasses.tsv"),
+			header=0,
+			index_col=0,
+			sep="\t"))
 
-	# df = ObservationConverter(
-	# 	pd.read_csv(os.path.join(args.obs_dir, "observations_yields.tsv"),
-	# 		header=0,
-	# 		index_col=0,
-	# 		sep="\t"))	
-	# df.table["sosa:resultTime"] = df.table["sosa:resultTime"].str.strip(" 00:00:00")
+	print("Biomasses observations triples...")
+	df.build_triples(graph)
 
-	# print("Yields observations triples...")
-	# df.build_triples(graph)
+	df = ObservationConverter(
+		pd.read_csv(os.path.join(args.obs_dir, "observations_yields.tsv"),
+			header=0,
+			index_col=0,
+			sep="\t"))	
+	df.table["sosa:resultTime"] = df.table["sosa:resultTime"].str.strip(" 00:00:00") # tofix in classes
 
-	# df = ObservationConverter(
-	# 	pd.read_csv(os.path.join(args.obs_dir, "observations_nirs.tsv"),
-	# 		header=0,
-	# 		index_col=0,
-	# 		sep="\t"))
+	print("Yields observations triples...")
+	df.build_triples(graph)
 
-	# print("NIRS observations triples...")
-	# df.build_triples(graph)
+	df = ObservationConverter(
+		pd.read_csv(os.path.join(args.obs_dir, "observations_nirs.tsv"),
+			header=0,
+			index_col=0,
+			sep="\t"))
 
-	# df = ObservationConverter(
-	# 	pd.read_csv(os.path.join(args.obs_dir, "observations_soils_biochemistry.tsv"),
-	# 		header=0,
-	# 		index_col=0,
-	# 		sep="\t"))
+	print("NIRS observations triples...")
+	df.build_triples(graph)
 
-	# print("Soils biochemistry observations triples...")
-	# df.build_triples(graph)
+	df = ObservationConverter(
+		pd.read_csv(os.path.join(args.obs_dir, "observations_agriculture.tsv"),
+			header=0,
+			index_col=0,
+			sep="\t"))
 
-	# df = ObservationConverter(
-	# 	pd.read_csv(os.path.join(args.obs_dir, "observations_weeds.tsv"),
-	# 		header=0,
-	# 		index_col=0,
-	# 		sep="\t"))
-	# df.table["sosa:resultTime"] = df.table["sosa:resultTime"].str.strip(" 00:00:00")
+	print("Agriculture practices observations triples...")
+	df.build_triples(graph)
 
-	# print("Weeds observations triples...")
-	# df.build_triples(graph)
+	df = ObservationConverter(
+		pd.read_csv(os.path.join(args.obs_dir, "observations_soils_biochemistry.tsv"),
+			header=0,
+			index_col=0,
+			sep="\t"))
 
-	# df = ObservationConverter(
-	# 	pd.read_csv(os.path.join(args.obs_dir, "observations_bioagressors_field_general.tsv"),
-	# 		header=0,
-	# 		index_col=0,
-	# 		sep="\t"))
-	# df.table["sosa:resultTime"] = df.table["sosa:resultTime"].str.strip(" 00:00:00")	
+	print("Soils biochemistry observations triples...")
+	df.build_triples(graph)
 
-	# print("Bioagressors field (1) observations triples...")
-	# df.build_triples(graph)
+	df = ObservationConverter(
+		pd.read_csv(os.path.join(args.obs_dir, "observations_weeds.tsv"),
+			header=0,
+			index_col=0,
+			sep="\t"))
+	df.table["sosa:resultTime"] = df.table["sosa:resultTime"].str.strip(" 00:00:00") # tofix in classes
 
-	# df = ObservationConverter(
-	# 	pd.read_csv(os.path.join(args.obs_dir, "observations_bioagressors_field.tsv"),
-	# 		header=0,
-	# 		index_col=0,
-	# 		sep="\t"))
-	# df.table["sosa:resultTime"] = df.table["sosa:resultTime"].str.strip(" 00:00:00")
+	print("Weeds observations triples...")
+	df.build_triples(graph)
 
-	# # Fix all types before, in usecase classes - (very bullying !)
-	# df.table["sosa:hasResult"] = df.table["sosa:hasResult"].astype(float)
-	# df.table["sosa:hasResult"] = df.table["sosa:hasResult"].astype(int)
+	df = ObservationConverter(
+		pd.read_csv(os.path.join(args.obs_dir, "observations_bioagressors_field_general.tsv"),
+			header=0,
+			index_col=0,
+			sep="\t"))
+	df.table["sosa:resultTime"] = df.table["sosa:resultTime"].str.strip(" 00:00:00") # tofix in classes
 
-	# print("Bioagressors field (2) observations triples...")
-	# df.build_triples(graph)
+	print("Bioagressors field (1) observations triples...")
+	df.build_triples(graph)
 
-	# df = ObservationConverter(
-	# 	pd.read_csv(os.path.join(args.obs_dir, "observations_bioagressors_lab.tsv"),
-	# 		header=0,
-	# 		index_col=0,
-	# 		sep="\t"))
-	# #df.table["sosa:resultTime"] = df.table["sosa:resultTime"].fillna("").str.strip(" 00:00:00") # To fix : all dates are emtpy
-	# df.table["sosa:hasResult"] = df.table["sosa:hasResult"].str.strip(".0")
+	df = ObservationConverter(
+		pd.read_csv(os.path.join(args.obs_dir, "observations_bioagressors_field_details.tsv"),
+			header=0,
+			index_col=0,
+			sep="\t"))
+	df.table["sosa:resultTime"] = df.table["sosa:resultTime"].str.strip(" 00:00:00")
 
-	# print("Bioagressors lab observations triples...")
-	# df.build_triples(graph)
+	# Fix all types before, in usecase classes - (very bullying !)
+	df.table["sosa:hasResult"] = df.table["sosa:hasResult"].astype(float) # tofix in classes
+	df.table["sosa:hasResult"] = df.table["sosa:hasResult"].astype(int) # tofix in classes
+
+	print("Bioagressors field (2) observations triples...")
+	df.build_triples(graph)
+
+	types = {
+		"sosa:observedProperty": str,
+		"sosa:hasFeatureOfInterest": str,
+		"sosa:hasUltimateFeatureOfInterest": str,
+		"sosa:hasResult": str,
+		"sosa:resultTime": str,
+		"sosa:phenomenonTime": str,
+		"sosa:madeBySensor": str,
+		"unit": str,
+		"datatype": str,
+		"iop:Entity": str,
+		"iop:Property": str,
+		"iop:Constraint": str
+	}
+
+	df = ObservationConverter(
+		pd.read_csv(os.path.join(args.obs_dir, "observations_bioagressors_lab.tsv"),
+			header=0,
+			index_col=0,
+			sep="\t",
+			dtype = types))
+	df.table["sosa:resultTime"] = df.table["sosa:resultTime"].fillna("").str.strip(" 00:00:00") # tofix in classes
+	df.table["sosa:hasResult"] = df.table["sosa:hasResult"].str.strip(".0") # tofix in classes
+
+	print("Bioagressors lab observations triples...")
+	df.build_triples(graph)
 
 	df = ObservationConverter(
 		pd.read_csv(os.path.join(args.obs_dir, "observations_climatic.tsv"),
 			header=0,
 			index_col=0,
 			sep="\t"))
-	#df.table["sosa:hasFeatureOfInterest"] = df.table["sosa:hasFeatureOfInterest"].to_string()
-	df.table["sosa:hasFeatureOfInterest"] = df.table["sosa:hasFeatureOfInterest"].to_string()
+
+	# df.table["sosa:hasFeatureOfInterest"] = df.table["sosa:hasFeatureOfInterest"].apply(str)
 
 	print("Climatic observations triples...")
 	df.build_triples(graph)
+
+	end = time.time()
+
+	print(f"""Observation triples built in {end - start} seconds""")
 	
 	print("Saving graph...")
+	start = time.time()
 	graph.g.serialize(destination=args.output_rdf ,format="turtle")
+	end = time.time()
+	print(f"""Graph saved in {end - start} seconds""")	
 
 if __name__ == '__main__':
 	main()

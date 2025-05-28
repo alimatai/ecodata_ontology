@@ -1,104 +1,116 @@
 Name	InDbName	AltURI	Set	Unit	DataType
-ABONDANCE	Abundance	nan	Weed	No unit	xsd:string
-APHID_COLONIES	AphidColonies	nan	PlantPhenotype	No unit	xsd:integer
-BIOMASS_CROP	BiomassCrop	to:0000352	Biomass	unit:g	xsd:float
-BIOMASS_WEED	BiomassWeed	to:0000352	Biomass	unit:g	xsd:float
-C/N	CNRatio	agro:00000452	SoilBiochemistry	No unit	xsd:float
-CALCIUM	Calcium	chebi:22985	SoilBiochemistry	unit:cmol.kg	xsd:float
-CARBON	Carbon	chebi:33582	SoilBiochemistry	unit:g.kg-1	xsd:float
-CEC	CationExchangeCapacity	envo:06105240	SoilBiochemistry	unit:cmol.kg-1	xsd:float
-CLAY	Clay	envo:00002982	SoilBiochemistry	unit:%5Bppth%5D	xsd:integer
+ABONDANCE	Abundance		Weed		xsd:string
+APHID_COLONIES	AphidColonies		PlantPhenotype		xsd:integer
+BIOMASS_CROP	BiomassCrop	obo:TO_0000352	Biomass	unit:g	xsd:float
+BIOMASS_WEED	BiomassWeed	obo:TO_0000352	Biomass	unit:g	xsd:float
+C/N	CNRatio	obo:AGRO_00000452	SoilBiochemistry		xsd:float
+CALCIUM	Calcium	obo:CHEBI_22985	SoilBiochemistry	unit:cmol.kg	xsd:float
+CARBON	Carbon	obo:CHEBI_33582	SoilBiochemistry	unit:g.kg-1	xsd:float
+CEC	CationExchangeCapacity	obo:ENVO_06105240	SoilBiochemistry	unit:cmol.kg-1	xsd:float
+CLAY	Clay	obo:ENVO_00002982	SoilBiochemistry	unit:%5Bppth%5D	xsd:integer
 COARSE_SAND	CoarseSand		SoilBiochemistry	unit:%5Bppth%5D	xsd:integer
 COARSE_SILT	CoarseSilt		SoilBiochemistry	unit:%5Bppth%5D	xsd:integer
-CONDUCTIVITY	Conductivity	envo:09200016	SoilBiochemistry	unit:mS.cm-1	xsd:float
-COPPER	Copper	chebi:23377	SoilBiochemistry	unit:mg.kg-1	xsd:float
-DENSITY_CLASS	DensityClass	nan	Weed	No unit	xsd:string
+CONDUCTIVITY	Conductivity	obo:ENVO_09200016	SoilBiochemistry	unit:mS.cm-1	xsd:float
+COPPER	Copper	obo:CHEBI_23377	SoilBiochemistry	unit:mg.kg-1	xsd:float
+DENSITY_CLASS	DensityClass		Weed		xsd:string
 dli_q	dli_q		Climatic	unit:J.cm-2	xsd:float
-DRY_WEIGHT	DryWeight	to:0000352	Yields	unit:g	xsd:float
-DRY_WEIGHT_1000_SEEDS	DryWeight1000Seeds	to:0003019	Yields	unit:g	xsd:float
+DRY_WEIGHT	DryWeight	obo:TO_0000352	Yields	unit:g	xsd:float
+DRY_WEIGHT_1000_SEEDS	DryWeight1000Seeds	obo:TO_0003019	Yields	unit:g	xsd:float
 etp_q	etp_q		Climatic	unit:mm	xsd:float
 evap_q	evap_q		Climatic	unit:mm	xsd:float
 ff_q	ff_q		Climatic	unit:m.s-1	xsd:float
-FINE_SAND	FineSand	envo:06105273	SoilBiochemistry	unit:%5Bppth%5D	xsd:integer
+FINE_SAND	FineSand	obo:ENVO_06105273	SoilBiochemistry	unit:%5Bppth%5D	xsd:integer
 FINE_SILT	FineSilt		SoilBiochemistry	unit:%5Bppth%5D	xsd:integer
-FRESH_WEIGHT_1000_SEEDS	FreshWeight1000Seeds	to:0003018	Yields	unit:g	xsd:float
-GENERAL_STATE	GeneralState	nan	PlantPhenotype	No unit	xsd:string
-GLUCOSINOLATE	SeedGlucosinolate		Nirs	No unit	xsd:float
+FRESH_WEIGHT_1000_SEEDS	FreshWeight1000Seeds	obo:TO_0003018	Yields	unit:g	xsd:float
+GENERAL_STATE	GeneralState		PlantPhenotype		xsd:string
+GLUCOSINOLATE	SeedGlucosinolate		Nirs		xsd:float
 hu_q	hu_q		Climatic	unit:%25	xsd:float
-IRON	Iron	chebi:24873	SoilBiochemistry	unit:mg.kg-1	xsd:float
+IRON	Iron	obo:CHEBI_24873	SoilBiochemistry	unit:mg.kg-1	xsd:float
 LIME	Lime		SoilBiochemistry	unit:mg.kg-1	xsd:float
 LIMESTONE_ACTIVE	LimestoneActive		SoilBiochemistry	unit:g.kg-1	xsd:integer
-LIMESTONE_TOTAL	LimestoneTotal	envo:00002053	SoilBiochemistry	unit:g.kg-1	xsd:integer
-MAGNESIA	Magnesia	chebi:31794	SoilBiochemistry	unit:mg.kg-1	xsd:float
-MAGNESIUM	Magnesium	chebi:25108	SoilBiochemistry	unit:cmol.kg	xsd:float
+LIMESTONE_TOTAL	LimestoneTotal	obo:ENVO_00002053	SoilBiochemistry	unit:g.kg-1	xsd:integer
+MAGNESIA	Magnesia	obo:CHEBI_31794	SoilBiochemistry	unit:mg.kg-1	xsd:float
+MAGNESIUM	Magnesium	obo:CHEBI_25108	SoilBiochemistry	unit:cmol.kg	xsd:float
 MAIN_THALLUS_HEIGHT	MainThallusHeight		PlantPhenotype	unit:cm	xsd:float
-MANGANESE	Manganese	chebi:25154	SoilBiochemistry	unit:mg.kg-1	xsd:float
-MOISTURE	SeedMoisture	nan	Nirs	No unit	xsd:float
-MORE_ONE_METER	MoreThanOneMeterSampling	nan	Biomass	No unit	xsd:boolean
-N_SPOTS_PARASITIC_FUNGI	NumberOfFungalParasiticSpots	nan	PlantPhenotype	No unit	xsd:integer
-NB_ONE_METER	PlantsOnOneMeter	nan	Biomass	No unit	xsd:integer
-NB_RANKS	NumberOfRanks	nan	Biomass	No unit	xsd:integer
-NB_UNITS	NumberOfUnits	nan	Biomass	No unit	xsd:integer
-NITROGEN_TOTAL	NitrogenTotal	chebi:51143	SoilBiochemistry	unit:g.kg-1	xsd:float
-NUMBER_OF_LIVING_LEAVES	NumberOfLivingLeaves	to:0000241	PlantPhenotype	No unit	xsd:integer
-NUMBER_OF_STEMS	NumberOfStems	to:0000953	PlantPhenotype	No unit	xsd:integer
-NUMBER_OF_THALLUS_PER_PLANT	ThallusPerPlant	nan	PlantPhenotype	No unit	xsd:integer
-OIL	SeedOil	nan	Nirs	No unit	xsd:float
-ORGANIC_MATTER	OrganicMatter	envo:04000008	SoilBiochemistry	unit:g.kg-1	xsd:float
-OVERALL_FOLIAR_PARASITISM	OverallFoliarParasitism	nan	PlantPhenotype	No unit	xsd:string
-OVERALL_FOLIAR_PHYTOPHAGY	OverallFoliarPhytophagy	nan	PlantPhenotype	No unit	xsd:string
+MANGANESE	Manganese	obo:CHEBI_25154	SoilBiochemistry	unit:mg.kg-1	xsd:float
+MOISTURE	SeedMoisture		Nirs		xsd:float
+MORE_ONE_METER	MoreThanOneMeterSampling		Biomass		xsd:boolean
+N_SPOTS_PARASITIC_FUNGI	NumberOfFungalParasiticSpots		PlantPhenotype		xsd:integer
+NB_ONE_METER	PlantsOnOneMeter		Biomass		xsd:integer
+NB_RANKS	NumberOfRanks		Biomass		xsd:integer
+NB_UNITS	NumberOfUnits		Biomass		xsd:integer
+NITROGEN_TOTAL	NitrogenTotal	obo:CHEBI_51143	SoilBiochemistry	unit:g.kg-1	xsd:float
+NUMBER_OF_LIVING_LEAVES	NumberOfLivingLeaves	obo:TO_0000241	PlantPhenotype		xsd:integer
+NUMBER_OF_STEMS	NumberOfStems	obo:TO_0000953	PlantPhenotype		xsd:integer
+NUMBER_OF_THALLUS_PER_PLANT	ThallusPerPlant		PlantPhenotype		xsd:integer
+OIL	SeedOil		Nirs		xsd:float
+ORGANIC_MATTER	OrganicMatter	obo:ENVO_04000008	SoilBiochemistry	unit:g.kg-1	xsd:float
+OVERALL_FOLIAR_PARASITISM	OverallFoliarParasitism		PlantPhenotype		xsd:string
+OVERALL_FOLIAR_PHYTOPHAGY	OverallFoliarPhytophagy		PlantPhenotype		xsd:string
 pe_q	pe_q		Climatic	unit:mm	xsd:float
-PEST_DENSITY	PestDensity	nan	PlantPhenotype	No unit	xsd:string
-PH	PH	envo:09200010	SoilBiochemistry	No unit	xsd:float
-PHOSPHATE	Phosphate	chebi:26020	SoilBiochemistry	unit:mg.kg-1	xsd:float
-PLANT	SampledPlant	po:0000003	PlantPhenotype	No unit	xsd:string
-PLANT_DENSITY	PlantDensity		PlantPhenotype	No unit	xsd:integer
-PLANT_DEVELOPMENT_STAGE	PlantDevelopmentStage	po:0007033	PlantPhenotype	No unit	xsd:string
-PLANT_HEIGHT	PlantHeight	to:0000207	PlantPhenotype	unit:cm	xsd:float
-POTASH	Potash	chebi:147420	SoilBiochemistry	unit:mg.kg-1	xsd:float
-POTASSIUM	Potassium	chebi:26217	SoilBiochemistry	unit:cmol.kg	xsd:float
+PEST_DENSITY	PestDensity		PlantPhenotype		xsd:string
+PH	PH	obo:ENVO_09200010	SoilBiochemistry		xsd:float
+PHOSPHATE	Phosphate	obo:CHEBI_26020	SoilBiochemistry	unit:mg.kg-1	xsd:float
+PLANT	SampledPlant	obo:PO_0000003	PlantPhenotype		xsd:string
+PLANT_DENSITY	PlantDensity		PlantPhenotype		xsd:integer
+PLANT_DEVELOPMENT_STAGE	PlantDevelopmentStage	obo:PO_0007033	PlantPhenotype		xsd:string
+PLANT_HEIGHT	PlantHeight	obo:TO_0000207	PlantPhenotype	unit:cm	xsd:float
+POTASH	Potash	obo:CHEBI_147420	SoilBiochemistry	unit:mg.kg-1	xsd:float
+POTASSIUM	Potassium	obo:CHEBI_26217	SoilBiochemistry	unit:cmol.kg	xsd:float
 preliq_q	preliq_q		Climatic	unit:mm	xsd:float
 prenei_q	prenei_q		Climatic	unit:mm	xsd:float
-PROTEIN	SeedProteins		Nirs	No unit	xsd:float
+PROTEIN	SeedProteins		Nirs		xsd:float
 q_q	q_q		Climatic	unit:g.kg-1	xsd:float
-ROOT_DAMAGES	RootDamages	nan	PlantPhenotype	No unit	xsd:boolean
-ROW_NUMBER	NumberOfRanks	nan	Biomass	No unit	xsd:integer
-SLUG_CHEWING_INSECTS	SlugChewingInsects	bago:PestAnimal	PlantPhenotype	No unit	xds:boolean
-SODIUM	Sodium	chebi:26712	SoilBiochemistry	unit:cmol.kg	xsd:float
+ROOT_DAMAGES	RootDamages		PlantPhenotype		xsd:boolean
+ROW_NUMBER	NumberOfRanks		Biomass		xsd:integer
+SLUG_CHEWING_INSECTS	SlugChewingInsects	bago:PestAnimal	PlantPhenotype		xds:boolean
+SODIUM	Sodium	obo:CHEBI_26712	SoilBiochemistry	unit:cmol.kg	xsd:float
 SODIUM_OXIDE	SodiumOxide		SoilBiochemistry	unit:mg.kg-1	xsd:float
 ssi_q	ssi_q		Climatic	unit:J.cm-2	xsd:float
 swi_q	swi_q		Climatic	unit:%25	xsd:float
 t_q	t_q		Climatic	unit:Cel	xsd:float
 tinf_h_q	tinf_h_q		Climatic	unit:Cel	xsd:float
 tsup_h_q	tsup_h_q		Climatic	unit:Cel	xsd:float
-WATER_HOLDING_CAPACITY	WaterHoldingCapacity	envo:06105304	SoilBiochemistry	unit:%25	xsd:float
+WATER_HOLDING_CAPACITY	WaterHoldingCapacity	obo:ENVO_06105304	SoilBiochemistry	unit:%25	xsd:float
 WEIGHT_TOTAL	WeightTotal		Yields	unit:g	xsd:float
 wg_racine_q	wg_racine_q		Climatic	unit:m3.m-3	xsd:float
 wgi_racine_q	wgi_racine_q		Climatic	unit:m3.m-3	xsd:float
-ZINC	Zinc	chebi:27364	SoilBiochemistry	unit:mg.kg-1	xsd:float
-L	L		Nirs	No unit	xsd:float
-P	P		Nirs	No unit	xsd:float
-P_L	P_L		Nirs	No unit	xsd:float
-W	W		Nirs	No unit	xsd:float
-ALTERNARIA_BRASSICAE	AlternariaBrassicae	ncbitaxon:29911,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
-BLUMERIA_GRAMINIS	BlumeriaGraminis	ncbitaxon:34373,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
-BREVICORYNE_BRASSICAE	BrevicoryneBrassicae	ncbitaxon:69196,bago:PestAnimal	BioagressorPresence	No unit	xsd:boolean
-DELIA_RADICUM	DeliaRadicum	ncbitaxon:30064,bago:PestAnimal	BioagressorPresence	No unit	xsd:boolean
-ERYSIPHE_CRUCIFERUM	ErysipheCruciferarum	ncbitaxon:69478,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
-GAEUMANNOMYCES_GRAMINIS	GaeumannomycesGraminis	ncbitaxon:29850,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
-LEPTOSPHAERIA_BIGLOBOSA	PlenodomusBiglobosus	ncbitaxon:220672,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
-LEPTOSPHAERIA_MACULANS	PlenodomusLingam	ncbitaxon:5022,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
-MYCOSPHAERELLA_BRASSICICOLA	NeopseudocercosporellaBrassicae	ncbitaxon:1873267,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
-MYCOSPHAERELLA_GRAMINICOLA_OR_SEPTORIA_TRITICI	ZymoseptoriaTritici	ncbitaxon:1047171,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
-MYZUS_PERSICAE	MyzusPersicae	ncbitaxon:13164,bago:PestAnimal	BioagressorPresence	No unit	xsd:boolean
-OULEMA_MELANOPUS	OulemaMelanopus	ncbitaxon:294584,bago:PestAnimal	BioagressorPresence	No unit	xsd:boolean
-PLASMODIOPHORA_BRASSICAE	PlasmodiophoraBrassicae	ncbitaxon:37360,bago:PathogenMicroOrganism	BioagressorPresence	No unit	xsd:boolean
-PSEUDOCERCOSPORELLA_CAPSELLAE	PseudocercosporellaCapsellae	ncbitaxon:1873268,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
-PSYLLIODES_CHRYSOCEPHALUS	PsylliodesChrysocephalus	ncbitaxon:2598218	BioagressorPresence	No unit	xsd:boolean
-PUCCINIA_RECONDITA	PucciniaRecondita	ncbitaxon:27348,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
-PUCCINIA_STRIIFORMIS	PucciniaStriiformis	ncbitaxon:27350,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
-PYRENOPEZZIZA_BRASSICAE	PyrenopezizaBrassicae	ncbitaxon:76659,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
-SCAPTOMYZA_FLAVA	ScaptomyzaFlava	ncbitaxon:928822,bago:PestAnimal	BioagressorPresence	No unit	xsd:boolean
-TAPESIA_YALLUNDAE_OR_RHIZOCTONIA_SOLANI_OR_FUSARIUM	TapesiaYallundaeOrRhizoctoniaSolaniOrFusarium	ncbitaxon:456999,ncbitaxon:86028,bago:FungalPathogenOrganism	BioagressorPresence	No unit	xsd:boolean
-UNDEFINED_FOLIAR_PHYTOPHAGY	UndefinedFoliarPhytophagy	nan	BioagressorPresence	No unit	xsd:boolean
-UNDEFINED_FOLIAR_PARASITISM	UndefinedFoliarParasitism	nan	BioagressorPresence	No unit	xsd:boolean
+ZINC	Zinc	obo:CHEBI_27364	SoilBiochemistry	unit:mg.kg-1	xsd:float
+L	L		Nirs		xsd:float
+P	P		Nirs		xsd:float
+P_L	P_L		Nirs		xsd:float
+W	W		Nirs		xsd:float
+ALTERNARIA_BRASSICAE	AlternariaBrassicae	obo:NCBITaxon_29911,bago:FungalPathogenOrganism	BioagressorPresence		xsd:boolean
+BLUMERIA_GRAMINIS	BlumeriaGraminis	obo:NCBITaxon_34373,bago:FungalPathogenOrganism	BioagressorPresence		xsd:boolean
+BREVICORYNE_BRASSICAE	BrevicoryneBrassicae	obo:NCBITaxon_69196,bago:PestAnimal	BioagressorPresence		xsd:boolean
+DELIA_RADICUM	DeliaRadicum	obo:NCBITaxon_30064,bago:PestAnimal	BioagressorPresence		xsd:boolean
+ERYSIPHE_CRUCIFERUM	ErysipheCruciferarum	obo:NCBITaxon_69478,bago:FungalPathogenOrganism	BioagressorPresence		xsd:boolean
+GAEUMANNOMYCES_GRAMINIS	GaeumannomycesGraminis	obo:NCBITaxon_29850,bago:FungalPathogenOrganism	BioagressorPresence		xsd:boolean
+LEPTOSPHAERIA_BIGLOBOSA	PlenodomusBiglobosus	obo:NCBITaxon_220672,bago:FungalPathogenOrganism	BioagressorPresence		xsd:boolean
+LEPTOSPHAERIA_MACULANS	PlenodomusLingam	obo:NCBITaxon_5022,bago:FungalPathogenOrganism	BioagressorPresence		xsd:boolean
+MYCOSPHAERELLA_BRASSICICOLA	NeopseudocercosporellaBrassicae	obo:NCBITaxon_1873267,bago:FungalPathogenOrganism	BioagressorPresence		xsd:boolean
+MYCOSPHAERELLA_GRAMINICOLA_OR_SEPTORIA_TRITICI	ZymoseptoriaTritici	obo:NCBITaxon_1047171,bago:FungalPathogenOrganism	BioagressorPresence		xsd:boolean
+MYZUS_PERSICAE	MyzusPersicae	obo:NCBITaxon_13164,bago:PestAnimal	BioagressorPresence		xsd:boolean
+OULEMA_MELANOPUS	OulemaMelanopus	obo:NCBITaxon_294584,bago:PestAnimal	BioagressorPresence		xsd:boolean
+PLASMODIOPHORA_BRASSICAE	PlasmodiophoraBrassicae	obo:NCBITaxon_37360,bago:PathogenMicroOrganism	BioagressorPresence		xsd:boolean
+PSEUDOCERCOSPORELLA_CAPSELLAE	PseudocercosporellaCapsellae	obo:NCBITaxon_1873268,bago:FungalPathogenOrganism	BioagressorPresence		xsd:boolean
+PSYLLIODES_CHRYSOCEPHALUS	PsylliodesChrysocephalus	obo:NCBITaxon_2598218	BioagressorPresence		xsd:boolean
+PUCCINIA_RECONDITA	PucciniaRecondita	obo:NCBITaxon_27348,bago:FungalPathogenOrganism	BioagressorPresence		xsd:boolean
+PUCCINIA_STRIIFORMIS	PucciniaStriiformis	obo:NCBITaxon_27350,bago:FungalPathogenOrganism	BioagressorPresence		xsd:boolean
+PYRENOPEZZIZA_BRASSICAE	PyrenopezizaBrassicae	obo:NCBITaxon_76659,bago:FungalPathogenOrganism	BioagressorPresence		xsd:boolean
+SCAPTOMYZA_FLAVA	ScaptomyzaFlava	obo:NCBITaxon_928822,bago:PestAnimal	BioagressorPresence		xsd:boolean
+TAPESIA_YALLUNDAE_OR_RHIZOCTONIA_SOLANI_OR_FUSARIUM	TapesiaYallundaeOrRhizoctoniaSolaniOrFusarium	obo:NCBITaxon_456999,obo:NCBITaxon_86028,bago:FungalPathogenOrganism	BioagressorPresence		xsd:boolean
+UNDEFINED_FOLIAR_PHYTOPHAGY	UndefinedFoliarPhytophagy		BioagressorPresence		xsd:boolean
+UNDEFINED_FOLIAR_PARASITISM	UndefinedFoliarParasitism		BioagressorPresence		xsd:boolean
+CROP	Crop		AgriculturalPractice		xsd:string
+AGRI_TYPE	AgricultureType		AgriculturalPractice		xsd:string
+CONVENTIONAL_ORGANIC	ConventionalOrOrganic		AgriculturalPractice		xsd:string
+PRODUCTION_POTENTIAL	ProductionPotential		AgriculturalPractice		xsd:string
+SOIL_DEPTH	SoilDepth		AgriculturalPractice		xsd:string
+LIVESTOCK	Livestock		AgriculturalPractice		xsd:string
+NAME_CROP_Y	NameOfCropY		AgriculturalPractice		xsd:string
+MAIN_CROP_Y	MainCropY		AgriculturalPractice		xsd:string
+NB_COMPANION_PLANT_Y	NumberOfCompanionPlantY		AgriculturalPractice		xsd:integer
+COMPANION_PLANT_Y	CompanionPlantY		AgriculturalPractice		xsd:string
+NB_COVER_CROPPING_Y	NbCoverCroppingY		AgriculturalPractice		xsd:integer
+NAME_COVER_CROPPING_Y	NameCoverCroppingY		AgriculturalPractice		xsd:string

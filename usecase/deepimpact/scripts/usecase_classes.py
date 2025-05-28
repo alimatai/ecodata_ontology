@@ -184,7 +184,7 @@ class DPUseCaseWeedsConverter():
 	def convert(self, config_variables:pd.DataFrame, outfile:str):
 
 		counter = 1
-		colum_names_with_constraints = COLUMN_NAMES + ["iop:Entity", "iop:Property", "iop:Constraint"]
+		colum_names_with_constraints = COLUMN_NAMES + ["iop:hasObjectOfInterest", "iop:hasProperty", "iop:hasConstraint"]
 		out_table = pd.DataFrame(columns=colum_names_with_constraints)
 
 		for index, row in tqdm(self.table.iterrows(), total=self.table.shape[0]):
@@ -205,9 +205,9 @@ class DPUseCaseWeedsConverter():
 				new_row["unit"] = config_variables.loc["ABONDANCE", "Unit"]
 				new_row["datatype"] = config_variables.loc["DENSITY_CLASS", "DataType"]
 
-				new_row["iop:Entity"] = row["WEED_SPECIES"]
-				new_row["iop:Property"] = "Density"
-				new_row["iop:Constraint"] = row["PHENOLOGY_STAGE"]
+				new_row["iop:hasObjectOfInterest"] = row["WEED_SPECIES"]
+				new_row["iop:hasProperty"] = "Density"
+				new_row["iop:hasConstraint"] = row["PHENOLOGY_STAGE"]
 
 				out_table.loc[len(out_table)] = new_row
 				counter += 1
@@ -250,57 +250,63 @@ class DPUseCaseBioagressorsGeneralConverter():
 
 		out_table.to_csv(outfile, index=False, sep="\t")
 
-class DPUseCaseBioagressorsDetailsConverter():
+class DPUseCaseBioagressorsFieldConverter():
 
-	def __init__(self, table:pd.DataFrame):
-		self.table = table
+	def __init__(self, general_table:pd.DataFrame, detail_table:pd.DataFrame):
+		self.general_table = general_table
+		self.detail_table = detail_table
 
-	def convert(self, config_variables:pd.DataFrame, sampling:str, outfile:str):
+	def convert(self, config_variables:pd.DataFrame, outfile:str):
 
-		values = {"FieldSampled", "LabSampled"}
-		if sampling not in values:
-			raise ValueError("'sampling' must be one of %r" % values)
-
-		
-		columns = [col for col in list(self.table.columns) if col not in ["PLANT", "DATE", "OPERATOR"]]
-
-		colum_names_with_constraints = COLUMN_NAMES + ["iop:Entity", "iop:Property", "iop:Constraint"]
+		colum_names_with_constraints = COLUMN_NAMES + ["iop:hasObjectOfInterest", "iop:hasProperty", "iop:hasConstraint"]
 		out_table = pd.DataFrame(columns=colum_names_with_constraints)
+
+		self.detail_table = self.detail_table.stack(future_stack=True)
 
 		counter = 1
 
-		for index, row in tqdm(self.table.iterrows(), total=self.table.shape[0]):
+		for index, val in tqdm(self.detail_table.items(), total=self.detail_table.shape[0]):
 
-			field, _, year, season, plot, plant = index.split("-")
+			variable = index[1]
 
-			for col in columns:
-				# print(index, col, self.table.loc[index, col])
-				try:
-					if not pd.isna(self.table.loc[index, col]):
-						new_row = {k:None for k in colum_names_with_constraints}
-						new_row["sosa:Observation"] = f"""Obs-BioAgr-{sampling}-{field}-{plot}-{plant}-{"".join((year, season))}-{counter}"""
-						new_row["sosa:observedProperty"] = f"""Presence-{config_variables.loc[col, "InDbName"]}-on-{sampling}-plants"""
-						new_row["sosa:hasFeatureOfInterest"] = "-".join((field, plot))
-						new_row["sosa:hasUltimateFeatureOfInterest"] = field
-						new_row["sosa:phenomenonTime"] = "".join((year, season))
-						new_row["sosa:hasResult"] = self.table.loc[index, col] # TODO: very ugly, find better way to parse
-						new_row["sosa:resultTime"] = "" # FIX ? Missing in this table because indicated in the general table ...
-						if "OPERATOR" in self.table.columns:
-							new_row["sosa:madeBySensor"] = row["OPERATOR"] # ?? Not in all tables
-						new_row["unit"] = config_variables.loc[col, "Unit"]
-						new_row["datatype"] = config_variables.loc[col, "DataType"]
+			if not pd.isna(val):
 
-						new_row["iop:Entity"] = col
-						new_row["iop:Property"] = "SpeciesPresence"
-						new_row["iop:Constraint"] = sampling
+				ident = index[0].split("-")
+				
+				new_row = {k:None for k in colum_names_with_constraints}
+				new_row["sosa:Observation"] = f"""Obs-BioAgr-FieldSampled-{ident[0]}-{ident[4]}-{ident[5]}-{ident[2]}-{ident[3]}-{counter}"""
+				new_row["sosa:observedProperty"] = f"""{config_variables.loc[variable, "InDbName"]}-on-FieldSampled-plants"""
+				new_row["sosa:hasFeatureOfInterest"] = f"""{ident[0]}-{ident[4]}-{ident[5]}-Field"""
+				new_row["sosa:hasUltimateFeatureOfInterest"] = "-".join((ident[0], ident[4]))
+				new_row["sosa:phenomenonTime"] = "".join((ident[2], ident[3]))
+				
+				if val == 0.0:
+					new_row["sosa:hasResult"] = 0
+				elif val == 1.0:
+					new_row["sosa:hasResult"] = 1
+				else:
+					new_row["sosa:hasResult"] = val
 
-						out_table.loc[len(out_table)] = new_row
-						counter += 1
-				except ValueError as e:
-					print(f"the index {index} is duplicated somewhere : all data of all involved rows will be ignored")
-					#print(index, col, self.table.loc[index, col])
+				new_row["sosa:resultTime"] = self.general_table.loc["-".join(ident[0:5]),"DATE"]
+				new_row["sosa:madeBySensor"] = self.general_table.loc["-".join(ident[0:5]),"OPERATOR"]
+				new_row["unit"] = config_variables.loc[variable, "Unit"]
+				new_row["datatype"] = config_variables.loc[variable, "DataType"]
 
-		out_table.to_csv(outfile, index=False, sep="\t")
+				new_row["iop:hasObjectOfInterest"] = config_variables.loc[variable, "InDbName"]
+
+				if config_variables.loc[variable, "Set"] == "BioagressorPresence":
+					new_row["iop:hasProperty"] = "SpeciesPresence"
+				elif config_variables.loc[variable, "Set"] == "PlantPhenotype":
+					new_row["iop:hasProperty"] = "Phenotype"
+				else :
+					new_row["iop:hasProperty"] = "Undefined"
+
+				new_row["iop:hasConstraint"] = "FieldSampled"
+
+				out_table.loc[len(out_table)] = new_row
+				counter += 1
+
+		out_table.to_csv(outfile, float_format='%.0f', index=False, sep="\t")
 
 class DPUseCaseBioagressorsLabConverter():
 
@@ -309,7 +315,7 @@ class DPUseCaseBioagressorsLabConverter():
 
 	def convert(self, config_variables:pd.DataFrame, outfile:str):
 
-		colum_names_with_constraints = COLUMN_NAMES + ["iop:Entity", "iop:Property", "iop:Constraint"]
+		colum_names_with_constraints = COLUMN_NAMES + ["iop:hasObjectOfInterest", "iop:hasProperty", "iop:hasConstraint"]
 		out_table = pd.DataFrame(columns=colum_names_with_constraints)
 
 		self.table.set_index(["DATE", "OPERATOR"], inplace=True, append=True)
@@ -326,11 +332,11 @@ class DPUseCaseBioagressorsLabConverter():
 				new_row = {k:None for k in colum_names_with_constraints}
 				new_row["sosa:Observation"] = f"""Obs-BioAgr-LabSampled-{ident[0]}-{ident[4]}-{ident[5]}-{ident[2]}-{ident[3]}-{counter}"""
 				new_row["sosa:observedProperty"] = f"""{config_variables.loc[index[3], "InDbName"]}-on-LabSampled-plants"""
-				new_row["sosa:hasFeatureOfInterest"] = index[0]
+				new_row["sosa:hasFeatureOfInterest"] = f"""{ident[0]}-{ident[4]}-{ident[5]}-Lab"""
 				new_row["sosa:hasUltimateFeatureOfInterest"] = "-".join((ident[0], ident[4]))
 				new_row["sosa:phenomenonTime"] = "".join((ident[2], ident[3]))
 				
-				# Veeeery dirty (fix later when more free-time)
+				# Veeeery dirty (fix later when more free-time, likely in the concatenation script run before)
 				if val == 0.0:
 					new_row["sosa:hasResult"] = 0
 				elif val == 1.0:
@@ -343,16 +349,16 @@ class DPUseCaseBioagressorsLabConverter():
 				new_row["unit"] = config_variables.loc[index[3], "Unit"]
 				new_row["datatype"] = config_variables.loc[index[3], "DataType"]
 
-				new_row["iop:Entity"] = config_variables.loc[index[3], "InDbName"]
+				new_row["iop:hasObjectOfInterest"] = config_variables.loc[index[3], "InDbName"]
 
 				if config_variables.loc[index[3], "Set"] == "BioagressorPresence":
-					new_row["iop:Property"] = "SpeciesPresence"
+					new_row["iop:hasProperty"] = "SpeciesPresence"
 				elif config_variables.loc[index[3], "Set"] == "PlantPhenotype":
-					new_row["iop:Property"] = "Phenotype"
+					new_row["iop:hasProperty"] = "Phenotype"
 				else :
-					new_row["iop:Property"] = "Undefined"
+					new_row["iop:hasProperty"] = "Undefined"
 
-				new_row["iop:Constraint"] = "LabSampled"
+				new_row["iop:hasConstraint"] = "LabSampled"
 				out_table.loc[len(out_table)] = new_row
 				counter += 1
 
@@ -376,9 +382,9 @@ class DPUseCaseClimaticConverter():
 
 		for idx, val in tqdm(self.table.items(), total=self.table.shape[0]):
 			new_row = {k:None for k in COLUMN_NAMES}
-			new_row["sosa:Observation"] = f"""Obs-Climatic-{idx[0]}-{idx[1]}-{idx[2]}"""
+			new_row["sosa:Observation"] = f"""Obs-Climatic-Safran-{idx[0]}-{idx[1]}-{idx[2]}"""
 			new_row["sosa:observedProperty"] = idx[2]
-			new_row["sosa:hasFeatureOfInterest"] = idx[0]
+			new_row["sosa:hasFeatureOfInterest"] = f"""Safran-{idx[0]}"""
 			new_row["sosa:hasUltimateFeatureOfInterest"] = np.nan
 			new_row["sosa:phenomenonTime"] = np.nan
 			new_row["sosa:hasResult"] = val
@@ -388,6 +394,46 @@ class DPUseCaseClimaticConverter():
 			new_row["datatype"] = config_variables.loc[idx[2], "DataType"]
 
 			out_table.loc[len(out_table)] = new_row
+
+		out_table.to_csv(outfile, index=False, sep="\t")
+
+
+class DPUseCaseAgriculturalPracticesCOnverter():
+
+	def __init__(self, table:pd.DataFrame):
+		self.table = table
+
+	def convert(self, config_variables:pd.DataFrame, outfile:str):		
+
+		out_table = pd.DataFrame(columns=COLUMN_NAMES)
+		
+		# We do not integrate verything, just a few
+		test_columns = ["OPERATOR","CROP","AGRI_TYPE","CONVENTIONAL_ORGANIC","PRODUCTION_POTENTIAL","SOIL_DEPTH","LIVESTOCK","NAME_CROP_Y","MAIN_CROP_Y","NB_COMPANION_PLANT_Y","COMPANION_PLANT_Y","NB_COVER_CROPPING_Y","NAME_COVER_CROPPING_Y"]
+
+		self.table = self.table[test_columns]
+		self.table.set_index(["OPERATOR"], inplace=True, append=True)
+		self.table = self.table.stack(future_stack=True)
+		self.table.dropna(inplace=True)
+
+		counter = 1
+		for index, val in tqdm(self.table.items(), total=self.table.shape[0]):
+
+			ident = index[0].split("-")
+
+			new_row = {k:None for k in COLUMN_NAMES}
+			new_row["sosa:Observation"] = f"""Obs-AgriParctice-{ident[0]}-{counter}"""
+			new_row["sosa:observedProperty"] = index[2]
+			new_row["sosa:hasFeatureOfInterest"] = ident[0]
+			new_row["sosa:hasUltimateFeatureOfInterest"] = np.nan
+			new_row["sosa:phenomenonTime"] = ident[2]
+			new_row["sosa:hasResult"] = val
+			new_row["sosa:resultTime"] = np.nan
+			new_row["sosa:madeBySensor"] = index[1]
+			new_row["unit"] = "No unit"
+			new_row["datatype"] = "xsd:string"
+
+			out_table.loc[len(out_table)] = new_row
+			counter +=1
 
 		out_table.to_csv(outfile, index=False, sep="\t")
 
@@ -402,10 +448,10 @@ class DPUseCaseFeatureOfInterestConverter():
 		out_table = pd.DataFrame(columns=["Name", "InDbName", "InDbType", "AltURI", "thing:locatedIn"])
 
 		# Regions
-		regions = self.table["REGION".unique()]
+		regions = self.table["REGION"].unique()
 		regions = {k:k[0]+k[1:].lower() for k in regions}
 
-		for k, v in regions.keys():
+		for k,v in regions.items():
 			new_row = {k:"" for k in out_table.columns}
 
 			new_row["Name"] = k
@@ -416,7 +462,7 @@ class DPUseCaseFeatureOfInterestConverter():
 			out_table.loc[len(out_table)] = new_row
 
 		# SAFRAN
-		safran = self.table["SAFRAN".unique()]
+		safran = self.table["SAFRAN"].unique()
 		safran = {k:"" for k in safran}
 
 		for _, row in self.table.iterrows():
@@ -425,10 +471,10 @@ class DPUseCaseFeatureOfInterestConverter():
 				new_row = {k:"" for k in out_table.columns}
 
 				new_row["Name"] = row["SAFRAN"]
-				new_row["InDbName"] = f"""MailleSafran-{row["SAFRAN"]}"""
+				new_row["InDbName"] = f"""Safran-{row["SAFRAN"]}"""
 				new_row["InDbType"] = "SampledField"
 				new_row["AltURI"] = "thing:Place"
-				new_row["thing:locatedIn"] = row["REGION"]
+				new_row["thing:locatedIn"] = regions[row["REGION"]]
 
 				out_table.loc[len(out_table)] = new_row
 		
@@ -440,7 +486,7 @@ class DPUseCaseFeatureOfInterestConverter():
 			new_row["Name"] = index
 			new_row["InDbName"] = index.split()[0]
 			new_row["InDbType"] = "SampledField"
-			new_row["AltURI"] = "thing:Place,envo:00000114"
+			new_row["AltURI"] = "thing:Place,obo:ENVO_00000114"
 			new_row["thing:locatedIn"] = regions[row["REGION"]]
 
 			out_table.loc[len(out_table)] = new_row
@@ -456,9 +502,49 @@ class DPUseCaseFeatureOfInterestConverter():
 				new_row["Name"] = f"{index}-{plot}"
 				new_row["InDbName"] = f"{index.split()[0]}-{plot}"
 				new_row["InDbType"] = "SamplingPlot"
-				new_row["AltURI"] = "thing:Place,agro:00000301"
+				new_row["AltURI"] = "thing:Place,obo:AGRO_00000301"
 				new_row["thing:locatedIn"] = f"{index.split()[0]}"
 
 				out_table.loc[len(out_table)] = new_row
 
-		out_table.to_csv(outfile, sep="\t")		
+		out_table.to_csv(outfile, sep="\t", index=False)	
+
+class DPUseCaseSampleConverter():
+		
+	def __init__(self, tablefield:pd.DataFrame, tablelab:pd.DataFrame):
+		self.tablefield = tablefield
+		self.tablelab = tablelab
+
+	def convert(self, outfile:str):
+
+		out_table = pd.DataFrame(columns=["Name", "InDbName", "InDbType", "AltURI", "sosa:isSampleOf"])
+
+		print("Field samples ...")
+		for idx in tqdm(self.tablefield.index, total=self.tablefield.shape[0]):
+
+			ident = idx.split("-")
+
+			new_row = {k:"" for k in out_table.columns}
+			new_row["Name"] = f"""{ident[0]}-{ident[4]}-{ident[5]}-field"""
+			new_row["InDbName"] = f"""{ident[0]}-{ident[4]}-{ident[5]}-field"""
+			new_row["InDbType"] = "SampledPlant"
+			new_row["AltURI"] = "obo:PO_0000003"
+			new_row["sosa:isSampleOf"] = f"""{ident[0]}-{ident[4]}"""
+
+			out_table.loc[len(out_table)] = new_row
+
+		print("Lab samples ...")
+		for idx in tqdm(self.tablelab.index, total=self.tablelab.shape[0]):
+
+			ident = idx.split("-")
+
+			new_row = {k:"" for k in out_table.columns}
+			new_row["Name"] = f"""{ident[0]}-{ident[4]}-{ident[5]}-lab"""
+			new_row["InDbName"] = f"""{ident[0]}-{ident[4]}-{ident[5]}-lab"""
+			new_row["InDbType"] = "SampledPlant"
+			new_row["AltURI"] = "obo:PO_0000003"
+			new_row["sosa:isSampleOf"] = f"""{ident[0]}-{ident[4]}"""
+
+			out_table.loc[len(out_table)] = new_row
+		
+		out_table.to_csv(outfile, sep="\t", index=False)	

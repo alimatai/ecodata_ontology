@@ -168,7 +168,7 @@ class ObservablePropertiesConverter():
 				(					
 					URIRef(f"""{row["InDbName"]}"""),					
 					RDF.type, 
-					URIRef("property", gm.namespaces["sosa"])
+					URIRef("Property", gm.namespaces["sosa"])
 				)
 			)
 			gm.g.add(
@@ -182,6 +182,7 @@ class ObservablePropertiesConverter():
 			if not pd.isna(row["AltURI"]):
 				for uri in row["AltURI"].split(","):
 					base, value = uri.split(":")
+
 					gm.g.add(
 						(							
 							URIRef(f"""{row["InDbName"]}"""),
@@ -239,7 +240,7 @@ class ConstraintConverter():
 					RDF.type,
 					URIRef("Constraint", gm.namespaces["iop"])
 				)
-			)						
+			)
 
 			gm.g.add(
 				(
@@ -258,6 +259,78 @@ class ConstraintConverter():
 						URIRef(value, gm.namespaces[base])
 					)
 				)
+
+class FeatureOfInterestConverter():
+
+	def __init__(self, table:pd.DataFrame):
+		self.table = table
+
+	def build_triples(self, gm:GraphManager):
+
+		for index, row in tqdm(self.table.iterrows(), total=self.table.shape[0]):
+
+			gm.g.add(
+				(
+					URIRef(row["InDbName"]),
+					RDF.type,
+					URIRef("FeatureOfInterest", gm.namespaces["sosa"])
+				)
+			)
+
+			if not pd.isna(row["AltURI"]):
+				for uri in row["AltURI"].split(","):
+					base, value = uri.split(":")
+					gm.g.add(
+						(
+							URIRef(row["InDbName"]),
+							RDF.type,
+							URIRef(value, gm.namespaces[base])
+						)
+					)
+
+			if not pd.isna(row["thing:locatedIn"]):
+				gm.g.add(
+					(
+						URIRef(row["InDbName"]),
+						URIRef("locatedIn", gm.namespaces["thing"]),
+						URIRef(row["thing:locatedIn"])
+					)
+				)
+
+class SampleConverter():
+
+	def __init__(self, table:pd.DataFrame):
+		self.table = table
+
+	def build_triples(self, gm:GraphManager):
+		
+		for index, row in tqdm(self.table.iterrows(), total=self.table.shape[0]):
+			gm.g.add(
+				(
+					URIRef(row["InDbName"]),
+					RDF.type,
+					URIRef("Sample", gm.namespaces["sosa"])
+				)
+			)
+
+			if not pd.isna(row["AltURI"]):
+				for uri in row["AltURI"].split(","):
+					base, value = uri.split(":")
+					gm.g.add(
+						(
+							URIRef(row["InDbName"]),
+							RDF.type,
+							URIRef(value, gm.namespaces[base])
+						)
+					)
+
+			gm.g.add(
+				(
+					URIRef(row["InDbName"]),
+					URIRef("isSampleOf", gm.namespaces["sosa"]),
+					URIRef(row["sosa:isSampleOf"])
+				)
+			)
 
 class ASVConverter():
 
@@ -286,14 +359,21 @@ class ObservationConverter():
 			"string": XSD.string}
 
 		for index, row in tqdm(self.table.iterrows(), total=self.table.shape[0]):
+			gm.g.add(
+				(
+					URIRef(index),
+					RDF.type,
+					URIRef("Observation", gm.namespaces["sosa"])
+				)
+			)
 			# Common to every triplet			
 			for col in colset:
 				base, value = col.split(":")
-				if not pd.isna(row[col]):					
+				if not pd.isna(row[col]):		
 					gm.g.add(
 						(
 							URIRef(index), 
-							URIRef(value, gm.namespaces["sosa"]), 
+							URIRef(value, gm.namespaces[base]),
 							URIRef(row[col])
 						)
 					)
@@ -309,7 +389,8 @@ class ObservationConverter():
 				)
 			
 			# Differentiate sosa:hasResult and sosa:hasSimpleresult
-			if  self.table.loc[index, "unit"] != "No unit":
+			#if  not pd.isna(row["unit"]):
+			if  row["unit"] != "No unit":
 				bn = BNode()
 				gm.g.add(
 					(
@@ -334,23 +415,24 @@ class ObservationConverter():
 						URIRef(value=value, base=base)
 					)
 				)
-				_, value = self.table.loc[index, "datatype"].split(":")			
+				_, value = self.table.loc[index, "datatype"].split(":")
 				gm.g.add(
 					(
 						bn, 
 						URIRef(value="value", base=gm.namespaces["qudt"]), 
-						Literal(self.table.loc[index, "sosa:hasResult"], datatype=xsd[value])
+						Literal(row["sosa:hasResult"])#, datatype=xsd[value]) # Investigate : datatype might raise warnings / errors
 					)
-				) # TODO Fix dtype
+				)
 			
 			else:
 				# Use the alternate Result property if no unit
-				_, value = self.table.loc[index, "datatype"].split(":")
+				_, value = row["datatype"].split(":")
+
 				gm.g.add(
 					(
 						URIRef(index), 
 						URIRef(value="hasSimpleResult", base=gm.namespaces["sosa"]), 
-						Literal(self.table.loc[index, "sosa:hasResult"], datatype=xsd[value])
+						Literal(row["sosa:hasResult"])#, datatype=xsd[value])
 					)
 				)
 
