@@ -5,4 +5,5 @@ genecodata.egg-info
 usecase/deepimpact/*.ttl
 usecase/deepimpact/data
 usecase/deepimpact/rdf
-test/test_usecase/test_output.ttl
+usecase/deepimpact/run
+
