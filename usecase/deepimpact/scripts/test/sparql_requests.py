@@ -138,19 +138,38 @@ for r in res:
 
 # Returns the full SoilBiochemistry data for fields in the region `South` sampled in year 1, season 2
 q = """
-	PREFIX iop: <https://w3id.org/iadopt/ont/>
+	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 	PREFIX sosa: <http://www.w3.org/ns/sosa/>
-	PREFIX thing: <https://schema.org/>
-
-	SELECT ?obsprop, ?field, ?value
+	PREFIX iop: <https://w3id.org/iadopt/ont/>
+	PREFIX di: <file:///home/vmataign/Documents/genecodata/usecase/deepimpact/data/output_data/rdf/>
+	
+	SELECT ?obsprop ?value ?field
 	WHERE {
-		?obsprop rdf:type sosa:Property .
-		?observation sosa:observedProperty ?obsprop .
-		dp:SoilBiochemistry iop:hasmember ?obsprop .
-		?field thing:containedInPlace dp:West .
-		?observation sosa:phenomenonTime dp:y1s1 .
-		?observation sosa:hasResult ?value .
+		?obsprop_ rdf:type sosa:Property .
+		?observation_ sosa:observedProperty ?obsprop_ .
+  		di:SoilBiochemistry iop:hasMember ?obsprop_ .
+  		?observation_ sosa:hasFeatureOfInterest ?field_ .
+  		?observation_ sosa:hasSimpleResult ?value .
+  		?observation_ sosa:phenomenonTime di:Y1S2 .
+
+  		BIND (REPLACE(str(?obsprop_), "^.*/([^/]*)$", "$1") AS ?obsprop) .
+  		BIND (REPLACE(str(?field_), "^.*/([^/]*)$", "$1") AS ?field) .
 	}
+"""
+
+with CodeTimer('Request : SoilBiochemistry data for fields in teh region South, year 1 season 2', unit='ms'):
+	res = g.query(q)
+
+for r in res:
+	print(r["value"])
+
+# Returns yields of B. napus fields of year 2, alongside farming type, organic matter in soil
+
+q = """
+	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+	PREFIX sosa: <http://www.w3.org/ns/sosa/>
+	PREFIX iop: <https://w3id.org/iadopt/ont/>
+	PREFIX di: <file:///home/vmataign/Documents/genecodata/usecase/deepimpact/data/output_data/rdf/>
 """
 
 with CodeTimer('Request : SoilBiochemistry data for fields in teh region South, year 1 season 2', unit='ms'):

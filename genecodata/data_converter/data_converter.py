@@ -260,6 +260,26 @@ class ConstraintConverter():
 					)
 				)
 
+class IAdoptEntityConverter():
+
+	def __init__(self, table:pd.DataFrame):
+		try:
+			if table.index.name == "Name" and tuple(table.columns) == ("Name","InDbName","AltURI","iop:Property","iop:Constraint","Unit","DataType"):
+				self.table = table
+		except AssertionError as e:
+			logger.error(f"Error : please check colnames of config_constraints.tsv: {e}")
+
+	@property
+	def table(self):
+		return self._table
+
+	@table.setter
+	def table(self, value):
+		self._table = value
+
+	def build_triples(self, gm:GraphManager):
+		pass
+
 class FeatureOfInterestConverter():
 
 	def __init__(self, table:pd.DataFrame):
@@ -390,7 +410,7 @@ class ObservationConverter():
 			
 			# Differentiate sosa:hasResult and sosa:hasSimpleresult
 			#if  not pd.isna(row["unit"]):
-			if  row["unit"] != "No unit":
+			if  not pd.isna(row["unit"]):
 				bn = BNode()
 				gm.g.add(
 					(

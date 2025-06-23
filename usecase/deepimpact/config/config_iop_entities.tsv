@@ -1,0 +1,243 @@
+Name	InDbName	AltURI	iop:Property	iop:Constraint	Unit	DataType
+APHID_COLONIES	AphidColonies		PhenotypicTrait	FieldSampled		xsd:integer
+GENERAL_STATE	FieldGeneralState		PhenotypicTrait	FieldSampled		xsd:string
+MAIN_THALLUS_HEIGHT	MainThallusHeight		PhenotypicTrait	LabSampled	unit:cm	xsd:float
+N_SPOTS_PARASITIC_FUNGI	NumberOfFungalParasiticSpots		PhenotypicTrait	LabSampled		xsd:integer
+NUMBER_OF_LIVING_LEAVES	NumberOfLivingLeaves	obo:TO_0000241	PhenotypicTrait	LabSampled		xsd:integer
+NUMBER_OF_STEMS	NumberOfStems	obo:TO_0000953	PhenotypicTrait	LabSampled		xsd:integer
+NUMBER_OF_THALLUS_PER_PLANT	ThallusPerPlant		PhenotypicTrait	FieldSampled,LabSampled		xsd:integer
+OVERALL_FOLIAR_PARASITISM	OverallFoliarParasitism		PhenotypicTrait	FieldSampled,LabSampled		xsd:string
+OVERALL_FOLIAR_PHYTOPHAGY	OverallFoliarPhytophagy		PhenotypicTrait	FieldSampled,LabSampled		xsd:string
+PEST_DENSITY	PestDensity		PhenotypicTrait	FieldSampled		xsd:string
+PLANT_DEVELOPMENT_STAGE	PlantDevelopmentStage	obo:PO_0007033	PhenotypicTrait	LabSampled,LabSampled		xsd:string
+PLANT_HEIGHT	PlantHeight	obo:TO_0000207	PhenotypicTrait	LabSampled	unit:cm	xsd:float
+ROOT_DAMAGES	RootDamages		PhenotypicTrait	LabSampled		xsd:boolean
+SLUG_CHEWING_INSECTS	SlugChewingInsects	bago:PestAnimal	PhenotypicTrait	FieldSampled,LabSampled		xsd:boolean
+UNDEFINED_FOLIAR_PARASITISM	UndefinedFoliarParasitism		PhenotypicTrait	FieldSampled		xsd:boolean
+UNDEFINED_FOLIAR_PHYTOPHAGY	UndefinedFoliarPhytophagy		PhenotypicTrait	FieldSampled		xsd:boolean
+ALTERNARIA_BRASSICAE	AlternariaBrassicae	obo:NCBITaxon_29911,bago:FungalPathogenOrganism	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+BLUMERIA_GRAMINIS	BlumeriaGraminis	obo:NCBITaxon_34373,bago:FungalPathogenOrganism	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+BREVICORYNE_BRASSICAE	BrevicoryneBrassicae	obo:NCBITaxon_69196,bago:PestAnimal	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+DELIA_RADICUM	DeliaRadicum	obo:NCBITaxon_30064,bago:PestAnimal	SpeciesPresence	LabSampled		xsd:boolean
+ERYSIPHE_CRUCIFERUM	ErysipheCruciferarum	obo:NCBITaxon_69478,bago:FungalPathogenOrganism	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+GAEUMANNOMYCES_GRAMINIS	GaeumannomycesGraminis	obo:NCBITaxon_29850,bago:FungalPathogenOrganism	SpeciesPresence	LabSampled		xsd:boolean
+LEPTOSPHAERIA_BIGLOBOSA	PlenodomusBiglobosus	obo:NCBITaxon_220672,bago:FungalPathogenOrganism	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+LEPTOSPHAERIA_MACULANS	PlenodomusLingam	obo:NCBITaxon_5022,bago:FungalPathogenOrganism	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+MYCOSPHAERELLA_BRASSICICOLA	NeopseudocercosporellaBrassicae	obo:NCBITaxon_1873267,bago:FungalPathogenOrganism	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+MYCOSPHAERELLA_GRAMINICOLA_OR_SEPTORIA_TRITICI	ZymoseptoriaTritici	obo:NCBITaxon_1047171,bago:FungalPathogenOrganism	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+MYZUS_PERSICAE	MyzusPersicae	obo:NCBITaxon_13164,bago:PestAnimal	SpeciesPresence	FieldSampled		xsd:boolean
+OULEMA_MELANOPUS	OulemaMelanopus	obo:NCBITaxon_294584,bago:PestAnimal	SpeciesPresence	FieldSampled		xsd:boolean
+PLASMODIOPHORA_BRASSICAE	PlasmodiophoraBrassicae	obo:NCBITaxon_37360,bago:PathogenMicroOrganism	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+PSEUDOCERCOSPORELLA_CAPSELLAE	PseudocercosporellaCapsellae	obo:NCBITaxon_1873268,bago:FungalPathogenOrganism	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+PSYLLIODES_CHRYSOCEPHALUS	PsylliodesChrysocephalus	obo:NCBITaxon_2598218	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+PUCCINIA_RECONDITA	PucciniaRecondita	obo:NCBITaxon_27348,bago:FungalPathogenOrganism	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+PUCCINIA_STRIIFORMIS	PucciniaStriiformis	obo:NCBITaxon_27350,bago:FungalPathogenOrganism	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+PYRENOPEZZIZA_BRASSICAE	PyrenopezizaBrassicae	obo:NCBITaxon_76659,bago:FungalPathogenOrganism	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+SCAPTOMYZA_FLAVA	ScaptomyzaFlava	obo:NCBITaxon_928822,bago:PestAnimal	SpeciesPresence	FieldSampled,LabSampled		xsd:boolean
+TAPESIA_YALLUNDAE_OR_RHIZOCTONIA_SOLANI_OR_FUSARIUM	TapesiaYallundaeOrRhizoctoniaSolaniOrFusarium	obo:NCBITaxon_456999,obo:NCBITaxon_86028,bago:FungalPathogenOrganism	SpeciesPresence	LabSampled		xsd:boolean
+3GRAC	3GRAC		SpeciesDensityClass	PlantPhenologicalStage		
+ACHMI	ACHMI		SpeciesDensityClass	PlantPhenologicalStage		
+AETCY	AETCY		SpeciesDensityClass	PlantPhenologicalStage		
+AGRRE	AGRRE		SpeciesDensityClass	PlantPhenologicalStage		
+ALOMY	ALOMY		SpeciesDensityClass	PlantPhenologicalStage		
+AMACH	AMACH		SpeciesDensityClass	PlantPhenologicalStage		
+AMADE	AMADE		SpeciesDensityClass	PlantPhenologicalStage		
+AMALI	AMALI		SpeciesDensityClass	PlantPhenologicalStage		
+AMARE	AMARE		SpeciesDensityClass	PlantPhenologicalStage		
+AMASS	AMASS		SpeciesDensityClass	PlantPhenologicalStage		
+AMBEL	AMBEL		SpeciesDensityClass	PlantPhenologicalStage		
+AMIMA	AMIMA		SpeciesDensityClass	PlantPhenologicalStage		
+ANGAR	ANGAR		SpeciesDensityClass	PlantPhenologicalStage		
+ANRCA	ANRCA		SpeciesDensityClass	PlantPhenologicalStage		
+ANTAL	ANTAL		SpeciesDensityClass	PlantPhenologicalStage		
+ANTAR	ANTAR		SpeciesDensityClass	PlantPhenologicalStage		
+ANTCO	ANTCO		SpeciesDensityClass	PlantPhenologicalStage		
+ANTTI	ANTTI		SpeciesDensityClass	PlantPhenologicalStage		
+APHAR	APHAR		SpeciesDensityClass	PlantPhenologicalStage		
+ARBTH	ARBTH		SpeciesDensityClass	PlantPhenologicalStage		
+ARFLA	ARFLA		SpeciesDensityClass	PlantPhenologicalStage		
+ARREB	ARREB		SpeciesDensityClass	PlantPhenologicalStage		
+ARTVU	ARTVU		SpeciesDensityClass	PlantPhenologicalStage		
+ASTSE	ASTSE		SpeciesDensityClass	PlantPhenologicalStage		
+ATXPA	ATXPA		SpeciesDensityClass	PlantPhenologicalStage		
+AVEFA	AVEFA		SpeciesDensityClass	PlantPhenologicalStage		
+AVESA	AVESA		SpeciesDensityClass	PlantPhenologicalStage		
+BARVU	BARVU		SpeciesDensityClass	PlantPhenologicalStage		
+BEAVX	BEAVX		SpeciesDensityClass	PlantPhenologicalStage		
+BROMO	BROMO		SpeciesDensityClass	PlantPhenologicalStage		
+BRORA	BRORA		SpeciesDensityClass	PlantPhenologicalStage		
+BROSS	BROSS		SpeciesDensityClass	PlantPhenologicalStage		
+BROST	BROST		SpeciesDensityClass	PlantPhenologicalStage		
+BRSCA	BRSCA		SpeciesDensityClass	PlantPhenologicalStage		
+BRSNW	BRSNW		SpeciesDensityClass	PlantPhenologicalStage		
+CAGSE	CAGSE		SpeciesDensityClass	PlantPhenologicalStage		
+CAPBP	CAPBP		SpeciesDensityClass	PlantPhenologicalStage		
+CARHI	CARHI		SpeciesDensityClass	PlantPhenologicalStage		
+CENCY	CENCY		SpeciesDensityClass	PlantPhenologicalStage		
+CERGL	CERGL		SpeciesDensityClass	PlantPhenologicalStage		
+CHEAL	CHEAL		SpeciesDensityClass	PlantPhenologicalStage		
+CHEHY	CHEHY		SpeciesDensityClass	PlantPhenologicalStage		
+CHEPO	CHEPO		SpeciesDensityClass	PlantPhenologicalStage		
+CIEAR	CIEAR		SpeciesDensityClass	PlantPhenologicalStage		
+CIRAR	CIRAR		SpeciesDensityClass	PlantPhenologicalStage		
+CIROL	CIROL		SpeciesDensityClass	PlantPhenologicalStage		
+CIRVU	CIRVU		SpeciesDensityClass	PlantPhenologicalStage		
+CLDAR	CLDAR		SpeciesDensityClass	PlantPhenologicalStage		
+CMASA	CMASA		SpeciesDensityClass	PlantPhenologicalStage		
+CONAR	CONAR		SpeciesDensityClass	PlantPhenologicalStage		
+CVPSS	CVPSS		SpeciesDensityClass	PlantPhenologicalStage		
+CYNDA	CYNDA		SpeciesDensityClass	PlantPhenologicalStage		
+DACGL	DACGL		SpeciesDensityClass	PlantPhenologicalStage		
+DATST	DATST		SpeciesDensityClass	PlantPhenologicalStage		
+DAUCA	DAUCA		SpeciesDensityClass	PlantPhenologicalStage		
+DIGSA	DIGSA		SpeciesDensityClass	PlantPhenologicalStage		
+DIPTE	DIPTE		SpeciesDensityClass	PlantPhenologicalStage		
+ECHCG	ECHCG		SpeciesDensityClass	PlantPhenologicalStage		
+EHIVU	EHIVU		SpeciesDensityClass	PlantPhenologicalStage		
+EPHEX	EPHEX		SpeciesDensityClass	PlantPhenologicalStage		
+EPHHE	EPHHE		SpeciesDensityClass	PlantPhenologicalStage		
+EPHPT	EPHPT		SpeciesDensityClass	PlantPhenologicalStage		
+EPIAD	EPIAD		SpeciesDensityClass	PlantPhenologicalStage		
+EQUAR	EQUAR		SpeciesDensityClass	PlantPhenologicalStage		
+ERIAN	ERIAN		SpeciesDensityClass	PlantPhenologicalStage		
+ERICA	ERICA		SpeciesDensityClass	PlantPhenologicalStage		
+ERISS	ERISS		SpeciesDensityClass	PlantPhenologicalStage		
+ERISU	ERISU		SpeciesDensityClass	PlantPhenologicalStage		
+EROCI	EROCI		SpeciesDensityClass	PlantPhenologicalStage		
+FAGES	FAGES		SpeciesDensityClass	PlantPhenologicalStage		
+FESAR	FESAR		SpeciesDensityClass	PlantPhenologicalStage		
+FESRU	FESRU		SpeciesDensityClass	PlantPhenologicalStage		
+FICVE	FICVE		SpeciesDensityClass	PlantPhenologicalStage		
+FOEVU	FOEVU		SpeciesDensityClass	PlantPhenologicalStage		
+FUMOF	FUMOF		SpeciesDensityClass	PlantPhenologicalStage		
+GALAP	GALAP		SpeciesDensityClass	PlantPhenologicalStage		
+GALMO	GALMO		SpeciesDensityClass	PlantPhenologicalStage		
+GERDI	GERDI		SpeciesDensityClass	PlantPhenologicalStage		
+GERMO	GERMO		SpeciesDensityClass	PlantPhenologicalStage		
+GERPU	GERPU		SpeciesDensityClass	PlantPhenologicalStage		
+GERRT	GERRT		SpeciesDensityClass	PlantPhenologicalStage		
+GERSS	GERSS		SpeciesDensityClass	PlantPhenologicalStage		
+GNAUL	GNAUL		SpeciesDensityClass	PlantPhenologicalStage		
+GUIAB	GUIAB		SpeciesDensityClass	PlantPhenologicalStage		
+HELAN	HELAN		SpeciesDensityClass	PlantPhenologicalStage		
+HOLLA	HOLLA		SpeciesDensityClass	PlantPhenologicalStage		
+HRYRA	HRYRA		SpeciesDensityClass	PlantPhenologicalStage		
+HYPHU	HYPHU		SpeciesDensityClass	PlantPhenologicalStage		
+HYPPE	HYPPE		SpeciesDensityClass	PlantPhenologicalStage		
+IUNBU	IUNBU		SpeciesDensityClass	PlantPhenologicalStage		
+KICEL	KICEL		SpeciesDensityClass	PlantPhenologicalStage		
+KICSP	KICSP		SpeciesDensityClass	PlantPhenologicalStage		
+KICSS	KICSS		SpeciesDensityClass	PlantPhenologicalStage		
+KNAAR	KNAAR		SpeciesDensityClass	PlantPhenologicalStage		
+LACSE	LACSE		SpeciesDensityClass	PlantPhenologicalStage		
+LACSS	LACSS		SpeciesDensityClass	PlantPhenologicalStage		
+LACVI	LACVI		SpeciesDensityClass	PlantPhenologicalStage		
+LAMAM	LAMAM		SpeciesDensityClass	PlantPhenologicalStage		
+LAMIN	LAMIN		SpeciesDensityClass	PlantPhenologicalStage		
+LAMPU	LAMPU		SpeciesDensityClass	PlantPhenologicalStage		
+LAPCO	LAPCO		SpeciesDensityClass	PlantPhenologicalStage		
+LENCU	LENCU		SpeciesDensityClass	PlantPhenologicalStage		
+LEPCA	LEPCA		SpeciesDensityClass	PlantPhenologicalStage		
+LITAR	LITAR		SpeciesDensityClass	PlantPhenologicalStage		
+LIUUT	LIUUT		SpeciesDensityClass	PlantPhenologicalStage		
+LOLPE	LOLPE		SpeciesDensityClass	PlantPhenologicalStage		
+LOLSS	LOLSS		SpeciesDensityClass	PlantPhenologicalStage		
+LOTCO	LOTCO		SpeciesDensityClass	PlantPhenologicalStage		
+LTHSA	LTHSA		SpeciesDensityClass	PlantPhenologicalStage		
+MALNE	MALNE		SpeciesDensityClass	PlantPhenologicalStage		
+MALSS	MALSS		SpeciesDensityClass	PlantPhenologicalStage		
+MATCH	MATCH		SpeciesDensityClass	PlantPhenologicalStage		
+MATIN	MATIN		SpeciesDensityClass	PlantPhenologicalStage		
+MEDAB	MEDAB		SpeciesDensityClass	PlantPhenologicalStage		
+MEDPO	MEDPO		SpeciesDensityClass	PlantPhenologicalStage		
+MEDSA	MEDSA		SpeciesDensityClass	PlantPhenologicalStage		
+MEDSS	MEDSS		SpeciesDensityClass	PlantPhenologicalStage		
+MENSS	MENSS		SpeciesDensityClass	PlantPhenologicalStage		
+MERAN	MERAN		SpeciesDensityClass	PlantPhenologicalStage		
+MEUAL	MEUAL		SpeciesDensityClass	PlantPhenologicalStage		
+MEUOF	MEUOF		SpeciesDensityClass	PlantPhenologicalStage		
+MNTFO	MNTFO		SpeciesDensityClass	PlantPhenologicalStage		
+MYGPE	MYGPE		SpeciesDensityClass	PlantPhenologicalStage		
+MYOAR	MYOAR		SpeciesDensityClass	PlantPhenologicalStage		
+MYOSS	MYOSS		SpeciesDensityClass	PlantPhenologicalStage		
+NNNVP	NNNVP		SpeciesDensityClass	PlantPhenologicalStage		
+PANMI	PANMI		SpeciesDensityClass	PlantPhenologicalStage		
+PAPRH	PAPRH		SpeciesDensityClass	PlantPhenologicalStage		
+PAVSA	PAVSA		SpeciesDensityClass	PlantPhenologicalStage		
+PHCTA	PHCTA		SpeciesDensityClass	PlantPhenologicalStage		
+PIBSX	PIBSX		SpeciesDensityClass	PlantPhenologicalStage		
+PICEC	PICEC		SpeciesDensityClass	PlantPhenologicalStage		
+PICHI	PICHI		SpeciesDensityClass	PlantPhenologicalStage		
+PICSS	PICSS		SpeciesDensityClass	PlantPhenologicalStage		
+PLALA	PLALA		SpeciesDensityClass	PlantPhenologicalStage		
+PLAMA	PLAMA		SpeciesDensityClass	PlantPhenologicalStage		
+POAAN	POAAN		SpeciesDensityClass	PlantPhenologicalStage		
+POATR	POATR		SpeciesDensityClass	PlantPhenologicalStage		
+POLAV	POLAV		SpeciesDensityClass	PlantPhenologicalStage		
+POLCO	POLCO		SpeciesDensityClass	PlantPhenologicalStage		
+POLLA	POLLA		SpeciesDensityClass	PlantPhenologicalStage		
+POLPE	POLPE		SpeciesDensityClass	PlantPhenologicalStage		
+POROL	POROL		SpeciesDensityClass	PlantPhenologicalStage		
+PTLRE	PTLRE		SpeciesDensityClass	PlantPhenologicalStage		
+RANAR	RANAR		SpeciesDensityClass	PlantPhenologicalStage		
+RANMU	RANMU		SpeciesDensityClass	PlantPhenologicalStage		
+RANPA	RANPA		SpeciesDensityClass	PlantPhenologicalStage		
+RANPF	RANPF		SpeciesDensityClass	PlantPhenologicalStage		
+RANRE	RANRE		SpeciesDensityClass	PlantPhenologicalStage		
+RANSA	RANSA		SpeciesDensityClass	PlantPhenologicalStage		
+RANSS	RANSS		SpeciesDensityClass	PlantPhenologicalStage		
+RAPRA	RAPRA		SpeciesDensityClass	PlantPhenologicalStage		
+RAPSR	RAPSR		SpeciesDensityClass	PlantPhenologicalStage		
+RASRU	RASRU		SpeciesDensityClass	PlantPhenologicalStage		
+RESPH	RESPH		SpeciesDensityClass	PlantPhenologicalStage		
+RUBSS	RUBSS		SpeciesDensityClass	PlantPhenologicalStage		
+RUMAA	RUMAA		SpeciesDensityClass	PlantPhenologicalStage		
+RUMAC	RUMAC		SpeciesDensityClass	PlantPhenologicalStage		
+RUMCR	RUMCR		SpeciesDensityClass	PlantPhenologicalStage		
+RUMOB	RUMOB		SpeciesDensityClass	PlantPhenologicalStage		
+RUMSS	RUMSS		SpeciesDensityClass	PlantPhenologicalStage		
+SCAPV	SCAPV		SpeciesDensityClass	PlantPhenologicalStage		
+SENJA	SENJA		SpeciesDensityClass	PlantPhenologicalStage		
+SENVU	SENVU		SpeciesDensityClass	PlantPhenologicalStage		
+SETPU	SETPU		SpeciesDensityClass	PlantPhenologicalStage		
+SETVI	SETVI		SpeciesDensityClass	PlantPhenologicalStage		
+SHRAR	SHRAR		SpeciesDensityClass	PlantPhenologicalStage		
+SINAL	SINAL		SpeciesDensityClass	PlantPhenologicalStage		
+SINAR	SINAR		SpeciesDensityClass	PlantPhenologicalStage		
+SINSS	SINSS		SpeciesDensityClass	PlantPhenologicalStage		
+SLYMA	SLYMA		SpeciesDensityClass	PlantPhenologicalStage		
+SOLNI	SOLNI		SpeciesDensityClass	PlantPhenologicalStage		
+SONAR	SONAR		SpeciesDensityClass	PlantPhenologicalStage		
+SONAS	SONAS		SpeciesDensityClass	PlantPhenologicalStage		
+SONOL	SONOL		SpeciesDensityClass	PlantPhenologicalStage		
+SONSS	SONSS		SpeciesDensityClass	PlantPhenologicalStage		
+SORSS	SORSS		SpeciesDensityClass	PlantPhenologicalStage		
+SPRAR	SPRAR		SpeciesDensityClass	PlantPhenologicalStage		
+SSYOF	SSYOF		SpeciesDensityClass	PlantPhenologicalStage		
+STEHO	STEHO		SpeciesDensityClass	PlantPhenologicalStage		
+STEME	STEME		SpeciesDensityClass	PlantPhenologicalStage		
+TAROF	TAROF		SpeciesDensityClass	PlantPhenologicalStage		
+TOIAR	TOIAR		SpeciesDensityClass	PlantPhenologicalStage		
+TRFAL	TRFAL		SpeciesDensityClass	PlantPhenologicalStage		
+TRFAR	TRFAR		SpeciesDensityClass	PlantPhenologicalStage		
+TRFCA	TRFCA		SpeciesDensityClass	PlantPhenologicalStage		
+TRFIN	TRFIN		SpeciesDensityClass	PlantPhenologicalStage		
+TRFPR	TRFPR		SpeciesDensityClass	PlantPhenologicalStage		
+TRFRE	TRFRE		SpeciesDensityClass	PlantPhenologicalStage		
+TRFSS	TRFSS		SpeciesDensityClass	PlantPhenologicalStage		
+TRFSU	TRFSU		SpeciesDensityClass	PlantPhenologicalStage		
+TRKFG	TRKFG		SpeciesDensityClass	PlantPhenologicalStage		
+TRODM	TRODM		SpeciesDensityClass	PlantPhenologicalStage		
+VEBOF	VEBOF		SpeciesDensityClass	PlantPhenologicalStage		
+VERAR	VERAR		SpeciesDensityClass	PlantPhenologicalStage		
+VERHE	VERHE		SpeciesDensityClass	PlantPhenologicalStage		
+VERPE	VERPE		SpeciesDensityClass	PlantPhenologicalStage		
+VERSE	VERSE		SpeciesDensityClass	PlantPhenologicalStage		
+VESSS	VESSS		SpeciesDensityClass	PlantPhenologicalStage		
+VICFX	VICFX		SpeciesDensityClass	PlantPhenologicalStage		
+VICSA	VICSA		SpeciesDensityClass	PlantPhenologicalStage		
+VICSS	VICSS		SpeciesDensityClass	PlantPhenologicalStage		
+VIOAR	VIOAR		SpeciesDensityClass	PlantPhenologicalStage		
+VLLSS	VLLSS		SpeciesDensityClass	PlantPhenologicalStage		
+VLPMY	VLPMY		SpeciesDensityClass	PlantPhenologicalStage		
+XANST'	XANST'		SpeciesDensityClass	PlantPhenologicalStage		

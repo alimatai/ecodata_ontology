@@ -51,11 +51,16 @@ class DPUseCaseBiomassConverter():
 
 			field, _, year, plot = index.split("-")
 
-			for col in columns:				
+			for col in columns:			
 				if not pd.isna(self.table.loc[index, col]):
 					new_row = {k:None for k in COLUMN_NAMES}
 					new_row["sosa:Observation"] = f"""Obs-biomass-{field}-{counter}"""
-					new_row["sosa:observedProperty"] = col
+					
+					if not pd.isna(config_variables.loc[col, "InDbName"]):
+						new_row["sosa:observedProperty"] = config_variables.loc[col, "InDbName"]
+					else:
+						new_row["sosa:observedProperty"] = col
+
 					new_row["sosa:hasFeatureOfInterest"] = "-".join((field, plot))
 					new_row["sosa:hasUltimateFeatureOfInterest"] = field
 					new_row["sosa:phenomenonTime"] = year
@@ -90,7 +95,12 @@ class DPUseCaseYieldsConverter():
 				if not pd.isna(self.table.loc[index, col]):
 					new_row = {k:None for k in COLUMN_NAMES}
 					new_row["sosa:Observation"] = f"""Obs-yield-{field}-{counter}"""
-					new_row["sosa:observedProperty"] = col
+					
+					if not pd.isna(config_variables.loc[col, "InDbName"]):
+						new_row["sosa:observedProperty"] = config_variables.loc[col, "InDbName"]
+					else:
+						new_row["sosa:observedProperty"] = col
+
 					new_row["sosa:hasFeatureOfInterest"] = "-".join((field, plot))
 					new_row["sosa:hasUltimateFeatureOfInterest"] = field
 					new_row["sosa:phenomenonTime"] = year
@@ -121,11 +131,16 @@ class DPUseCaseNirsConverter():
 
 			field, _, year, plot = index.split("-")
 
-			for col in columns:				
+			for col in columns:	
 				if not pd.isna(self.table.loc[index, col]):
 					new_row = {k:None for k in COLUMN_NAMES}
 					new_row["sosa:Observation"] = f"""Obs-nirs-{field}-{year}-{counter}"""
-					new_row["sosa:observedProperty"] = col
+					
+					if not pd.isna(config_variables.loc[col, "InDbName"]):
+						new_row["sosa:observedProperty"] = config_variables.loc[col, "InDbName"]
+					else:
+						new_row["sosa:observedProperty"] = col
+
 					new_row["sosa:hasFeatureOfInterest"] = "-".join((field, plot))
 					new_row["sosa:hasUltimateFeatureOfInterest"] = field
 					new_row["sosa:phenomenonTime"] = year
@@ -160,7 +175,12 @@ class DPUseCaseSoiBiochemistryConverter():
 				if not pd.isna(self.table.loc[index, col]):
 					new_row = {k:None for k in COLUMN_NAMES}
 					new_row["sosa:Observation"] = f"""Obs-Soil-{field}-{"".join((year, season))}-{counter}"""
-					new_row["sosa:observedProperty"] = col
+					
+					if not pd.isna(config_variables.loc[col, "InDbName"]):
+						new_row["sosa:observedProperty"] = config_variables.loc[col, "InDbName"]
+					else:
+						new_row["sosa:observedProperty"] = col
+
 					new_row["sosa:hasFeatureOfInterest"] = field
 					new_row["sosa:hasUltimateFeatureOfInterest"] = ""
 					new_row["sosa:phenomenonTime"] = "".join((year, season))
@@ -235,7 +255,12 @@ class DPUseCaseBioagressorsGeneralConverter():
 				if not pd.isna(self.table.loc[index, col]):
 					new_row = {k:None for k in COLUMN_NAMES}
 					new_row["sosa:Observation"] = f"""Obs-fieldState-{field}-{"".join((year, season))}-{counter}"""
-					new_row["sosa:observedProperty"] = col
+										
+					if not pd.isna(config_variables.loc[col, "InDbName"]):
+						new_row["sosa:observedProperty"] = config_variables.loc[col, "InDbName"]
+					else:
+						new_row["sosa:observedProperty"] = col
+
 					new_row["sosa:hasFeatureOfInterest"] = "-".join((field, plot))
 					new_row["sosa:hasUltimateFeatureOfInterest"] = field
 					new_row["sosa:phenomenonTime"] = "".join((year, season))
@@ -275,7 +300,12 @@ class DPUseCaseBioagressorsFieldConverter():
 				
 				new_row = {k:None for k in colum_names_with_constraints}
 				new_row["sosa:Observation"] = f"""Obs-BioAgr-FieldSampled-{ident[0]}-{ident[4]}-{ident[5]}-{ident[2]}-{ident[3]}-{counter}"""
-				new_row["sosa:observedProperty"] = f"""{config_variables.loc[variable, "InDbName"]}-on-FieldSampled-plants"""
+									
+				if not pd.isna(config_variables.loc[variable, "InDbName"]):
+					new_row["sosa:observedProperty"] = f"""{config_variables.loc[variable, "InDbName"]}-on-FieldSampled-plants"""
+				else:
+					new_row["sosa:observedProperty"] = f"""{variable}-on-FieldSampled-plants"""
+				
 				new_row["sosa:hasFeatureOfInterest"] = f"""{ident[0]}-{ident[4]}-{ident[5]}-Field"""
 				new_row["sosa:hasUltimateFeatureOfInterest"] = "-".join((ident[0], ident[4]))
 				new_row["sosa:phenomenonTime"] = "".join((ident[2], ident[3]))
@@ -331,7 +361,12 @@ class DPUseCaseBioagressorsLabConverter():
 				
 				new_row = {k:None for k in colum_names_with_constraints}
 				new_row["sosa:Observation"] = f"""Obs-BioAgr-LabSampled-{ident[0]}-{ident[4]}-{ident[5]}-{ident[2]}-{ident[3]}-{counter}"""
-				new_row["sosa:observedProperty"] = f"""{config_variables.loc[index[3], "InDbName"]}-on-LabSampled-plants"""
+
+				if not pd.isna(config_variables.loc[index[3], "InDbName"]):
+					new_row["sosa:observedProperty"] = f"""{config_variables.loc[index[3], "InDbName"]}-on-LabSampled-plants"""
+				else:
+					new_row["sosa:observedProperty"] = f"""{index[3]}-on-LabSampled-plants"""
+				
 				new_row["sosa:hasFeatureOfInterest"] = f"""{ident[0]}-{ident[4]}-{ident[5]}-Lab"""
 				new_row["sosa:hasUltimateFeatureOfInterest"] = "-".join((ident[0], ident[4]))
 				new_row["sosa:phenomenonTime"] = "".join((ident[2], ident[3]))
@@ -383,7 +418,12 @@ class DPUseCaseClimaticConverter():
 		for idx, val in tqdm(self.table.items(), total=self.table.shape[0]):
 			new_row = {k:None for k in COLUMN_NAMES}
 			new_row["sosa:Observation"] = f"""Obs-Climatic-Safran-{idx[0]}-{idx[1]}-{idx[2]}"""
-			new_row["sosa:observedProperty"] = idx[2]
+			
+			if not pd.isna(config_variables.loc[idx[2], "InDbName"]):
+				new_row["sosa:observedProperty"] = config_variables.loc[idx[2], "InDbName"]
+			else:
+				new_row["sosa:observedProperty"] = idx[2]
+
 			new_row["sosa:hasFeatureOfInterest"] = f"""Safran-{idx[0]}"""
 			new_row["sosa:hasUltimateFeatureOfInterest"] = np.nan
 			new_row["sosa:phenomenonTime"] = np.nan
@@ -398,7 +438,7 @@ class DPUseCaseClimaticConverter():
 		out_table.to_csv(outfile, index=False, sep="\t")
 
 
-class DPUseCaseAgriculturalPracticesCOnverter():
+class DPUseCaseAgriculturalPracticesConverter():
 
 	def __init__(self, table:pd.DataFrame):
 		self.table = table
@@ -422,14 +462,19 @@ class DPUseCaseAgriculturalPracticesCOnverter():
 
 			new_row = {k:None for k in COLUMN_NAMES}
 			new_row["sosa:Observation"] = f"""Obs-AgriParctice-{ident[0]}-{counter}"""
-			new_row["sosa:observedProperty"] = index[2]
+
+			if not pd.isna(config_variables.loc[index[2], "InDbName"]):
+				new_row["sosa:observedProperty"] = config_variables.loc[index[2], "InDbName"]
+			else:
+				new_row["sosa:observedProperty"] = index[2]
+
 			new_row["sosa:hasFeatureOfInterest"] = ident[0]
 			new_row["sosa:hasUltimateFeatureOfInterest"] = np.nan
 			new_row["sosa:phenomenonTime"] = ident[2]
 			new_row["sosa:hasResult"] = val
 			new_row["sosa:resultTime"] = np.nan
 			new_row["sosa:madeBySensor"] = index[1]
-			new_row["unit"] = "No unit"
+			new_row["unit"] = config_variables.loc[index[2], "Unit"]
 			new_row["datatype"] = "xsd:string"
 
 			out_table.loc[len(out_table)] = new_row

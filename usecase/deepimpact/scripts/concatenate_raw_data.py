@@ -30,8 +30,18 @@ def concat_yearly_data(content):
 
     df = pd.concat(df_list, axis=0)
 
-    if 'DATE' in df.columns:
-        df['DATE'] = df['DATE'].astype(str)
+    # if 'DATE' in df.columns:
+    #     df['DATE'] = df['DATE'].astype(str)
+    df = pd.concat(df_list, axis=0)
+
+    if "DATE" in df.columns:
+        df['DATE'] = df['DATE'].apply(lambda x: pd.to_datetime(x, format='%d/%m/%Y'))
+
+    if "DATE_FRESH_SEEDS" in df.columns:
+        df['DATE_FRESH_SEEDS'] = df['DATE_FRESH_SEEDS'].apply(lambda x: pd.to_datetime(x, format='%d/%m/%Y'))
+
+    if "DATE_DRY_SEEDS" in df.columns:
+        df['DATE_DRY_SEEDS'] = df['DATE_DRY_SEEDS'].apply(lambda x: pd.to_datetime(x, format='%d/%m/%Y'))
 
     df.to_csv(os.path.join(args.output_folder, f'{content}.tsv'), sep="\t")
 
@@ -55,12 +65,11 @@ def concat_seasonal_data(content):
                pd.read_excel(ta_y2_s2, sheet_name=1, index_col=0, header=0)]
 
     df = pd.concat(df_list, axis=0)
-    # df.rename(columns={'FIELD_ID': 'season_of@FIELD_ID'}, inplace=True)
 
-    # if "DATE" in df.columns:        
-    #     # df['DATE']=df['DATE'].dt.strftime('%m/%d/%Y')
-    #     df['DATE'] = pd.to_datetime(df['DATE'], dayfirst=True)
-    #     df['DATE'] = df['DATE'].dt.strftime('%d/%m/%y')
+    df.to_csv("~/Documents/testbioagconcat.csv")
+
+    if "DATE" in df.columns:
+        df['DATE'] = df['DATE'].apply(lambda x: pd.to_datetime(x, format='%d/%m/%Y'))
 
     if "PLANT" in df.columns:
         df["PLOT_ID_SEASONAL"] = df.index
@@ -73,19 +82,19 @@ def concat_seasonal_data(content):
 
 # concat_yearly_data('location')
 # concat_yearly_data('biomass')
-# concat_yearly_data('nirs')
+concat_yearly_data('nirs')
 # concat_yearly_data('yields')
 # concat_yearly_data('agriculture')
 # concat_seasonal_data('soils')
 # concat_seasonal_data('weeds')
 # concat_seasonal_data('bioagressors_field_general')
 # concat_seasonal_data('bioagressors_field_details')
-concat_seasonal_data('bioagressors_lab')
+# concat_seasonal_data('bioagressors_lab')
 
 # ------------
 # Weather data
 # ------------
 
-# df = pd.read_csv(os.path.join(args.input_folder, 'weather_data', 'siclima_extraction_quotidien_1898_20240422.csv'), header=0, index_col=0, sep=";")
-# df.index.rename('SAFRAN', inplace=True)
-# df.to_csv(os.path.join(args.output_folder, 'climatic.tsv'), sep="\t")
+df = pd.read_csv(os.path.join(args.input_folder, 'weather_data', 'siclima_extraction_quotidien_1898_20240422.csv'), header=0, index_col=0, sep=";")
+df.index.rename('SAFRAN', inplace=True)
+df.to_csv(os.path.join(args.output_folder, 'climatic.tsv'), sep="\t")

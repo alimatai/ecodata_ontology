@@ -50,7 +50,7 @@ features_of_interest = pd.read_csv(os.path.join(args.input_data, "location.tsv")
 
 config_variables = pd.read_csv(os.path.join(args.config_folder, "config_variables.tsv"), header=0, index_col=0, sep="\t")
 
-agriculture = DPUseCaseAgriculturalPracticesCOnverter(agriculture)
+agriculture = DPUseCaseAgriculturalPracticesConverter(agriculture)
 biomasses = DPUseCaseBiomassConverter(biomasses)
 yields = DPUseCaseYieldsConverter(yields)
 nirs = DPUseCaseNirsConverter(nirs)

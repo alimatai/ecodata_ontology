@@ -1,0 +1,5 @@
+Name	InDbName	AltURI				
+PhenotypicTrait	PhenotypicTrait					
+SpeciesPresence	SpeciesPresence					
+SpeciesAbundance	SpeciesAbundance					
+DENSITY_CLASS	SpeciesDensityClass		SpeciesAbundance	PlantPhenologicalStage		xsd:string
