@@ -80,16 +80,16 @@ def concat_seasonal_data(content):
 
     df.to_csv(os.path.join(args.output_folder, f'{content}.tsv'), sep="\t")
 
-# concat_yearly_data('location')
-# concat_yearly_data('biomass')
+concat_yearly_data('location')
+concat_yearly_data('biomass')
 concat_yearly_data('nirs')
-# concat_yearly_data('yields')
-# concat_yearly_data('agriculture')
-# concat_seasonal_data('soils')
-# concat_seasonal_data('weeds')
-# concat_seasonal_data('bioagressors_field_general')
-# concat_seasonal_data('bioagressors_field_details')
-# concat_seasonal_data('bioagressors_lab')
+concat_yearly_data('yields')
+concat_yearly_data('agriculture')
+concat_seasonal_data('soils')
+concat_seasonal_data('weeds')
+concat_seasonal_data('bioagressors_field_general')
+concat_seasonal_data('bioagressors_field_details')
+concat_seasonal_data('bioagressors_lab')
 
 # ------------
 # Weather data
