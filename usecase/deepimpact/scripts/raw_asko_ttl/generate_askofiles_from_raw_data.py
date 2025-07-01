@@ -13,13 +13,25 @@ In summary, for each loaded data table :
 - Some askomics columns are added : @Temporality, @Sensors, @Date ...
 """
 
-# TODO : many copy warnings when using pd.apply(); try to fix
-# TODO : a few ugly code lines, especially for bioagressors data
+# Ugly code to fix (done quickly to have a working prototype to show):
+# TODO 1) : many copy warnings when using pd.apply()
+# TODO 2) : hardly readable code lines in the bioagressors part
+# TODO 3) pandas columns typing : ".0" are added to numerical data. 
+# 	-> Fixed in a really ugly way by parsing columns and replace ".0" by "".
+#	-> redo that properly (with dtypes when reading files ?)
+
+# ISSUE : how to declare iop:Entities for the formalisation of variables in I-Adopt ?
+
+# -> An iop:Entity is a part of a iop:Variable which can have the property the iop:ObjectOfInterest, 
+# on which is bound a iop:Constraint. in DeepImpact, iop:Entities are WeedSpecies and
+# Bioagressors species (respectively constrained by the phenological stage and the 
+# sampling method (lab / field))
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--input-dir", help="Directory with all data" )
 parser.add_argument("-o", "--output-dir", help="Output directory")
 args=parser.parse_args()
+
 
 # Agricultural practices
 # ----------------------
@@ -35,6 +47,12 @@ df["AgriculturalPractice"] = ["AgriPracticeData-{}".format(i) for i in range(1, 
 df.rename({"FIELD_ID": "FeatureOfInterest@SampledField", "OPERATOR": "madeBySensor@Sensor"}, axis=1, inplace=True)
 df.set_index(df["AgriculturalPractice"], inplace=True, drop=True)
 df.drop(["REGION", "AgriculturalPractice"], axis=1, inplace=True)
+
+for col in df.columns:
+	df[col] = df[col].apply(lambda x: str(x).replace(".0", ""))
+df = df.replace("nan", '', regex=True)
+
+df = df.reindex(sorted(df.columns), axis=1)
 
 df.to_csv(os.path.join(args.output_dir, "agriculture.tsv"), sep="\t")
 
@@ -110,7 +128,13 @@ dfbf.set_index(dfbf["Bioagressor"], inplace=True, drop=True)
 dfbf.drop(["Bioagressor"], axis=1, inplace=True)
 dfbf["constrainedBy@Constraint"] = ["FieldSampled"] * len(dfbf.index)
 
-pd.concat([dfbl, dfbf]).to_csv(os.path.join(args.output_dir, "bioagressors.tsv"), sep="\t")
+dff = pd.concat([dfbl, dfbf])
+
+for col in dff.columns:
+	dff[col] = dff[col].apply(lambda x: str(x).replace(".0", ""))
+dff = dff.replace("nan", '', regex=True)
+
+dff.to_csv(os.path.join(args.output_dir, "bioagressors.tsv"), sep="\t")
 
 # Plant Phenotype
 # ---------------
@@ -133,8 +157,6 @@ dfppf = dffielddet[["SAMPLED_PLANT", "OVERALL_FOLIAR_PARASITISM", "OVERALL_FOLIA
 dfppf["phenomenonTime@Temporality"] = dfppf["SAMPLED_PLANT"].apply(lambda x: f"""{x.split("-")[2]}{x.split("-")[3]}""")
 dfppf["hasUltimateFeatureOfInterest@SampledField"] = dfppf["SAMPLED_PLANT"].apply(lambda x: f"""{x.split("-")[0]}-{x.split("-")[1]}-{x.split("-")[2]}""")
 dfppf["SampledPlantPhenotype"] = ["FieldSampledPlantPhenotype-{}".format(i) for i in range(1, len(dfppf.index)+1)]
-# dfppf["resultTime@Date"] = dfppf["SAMPLED_PLANT"].apply(lambda x: dffieldgen.loc[x[:-3], "DATE"])
-# dfppf["madeBySensor@Sensor"] = dfppf["SAMPLED_PLANT"].apply(lambda x: dffieldgen.loc[x[:-3], "OPERATOR"])
 dfppf["resultTime@Date"] = dfppf["SAMPLED_PLANT"].apply(lambda x: dffieldgen.loc[f"""{x.split("-")[0]}-{x.split("-")[1]}-{x.split("-")[2]}-{x.split("-")[3]}-{x.split("-")[4]}""", "DATE"])
 dfppf["madeBySensor@Sensor"] = dfppf["SAMPLED_PLANT"].apply(lambda x: dffieldgen.loc[f"""{x.split("-")[0]}-{x.split("-")[1]}-{x.split("-")[2]}-{x.split("-")[3]}-{x.split("-")[4]}""", "OPERATOR"])
 dfppf["SAMPLED_PLANT"] = dfppf["SAMPLED_PLANT"].apply(lambda x: f"""{x}-FieldSampled""")
@@ -144,7 +166,13 @@ dfppf.drop(["SampledPlantPhenotype"], axis=1, inplace=True)
 dfppf["constrainedBy@Constraint"] = ["FieldSampled"] * len(dfppf.index)
 
 # Merge and write
-pd.concat([dfppl, dfppf]).to_csv(os.path.join(args.output_dir, "plant_phenotype.tsv"), sep="\t")
+dff = pd.concat([dfppl, dfppf])
+
+for col in ["NUMBER_OF_LIVING_LEAVES","NUMBER_OF_STEMS","PLANT_HEIGHT","N_SPOTS_PARASITIC_FUNGI","ROOT_DAMAGES","NUMBER_OF_THALLUS_PER_PLANT","MAIN_THALLUS_HEIGHT"]:
+	dff[col] = dff[col].apply(lambda x: str(x).replace(".0", ""))
+dff = dff.replace("nan", '', regex=True)
+
+dff.to_csv(os.path.join(args.output_dir, "plant_phenotype.tsv"), sep="\t")
 
 # Field Health State
 # ------------------
@@ -158,9 +186,13 @@ df = pd.read_csv(os.path.join(args.input_dir, "bioagressors_field_general.tsv"),
 df["phenomenonTime@Temporality"] = df["PLOT_ID_SEASONAL"].apply(lambda x: f"""{x.split("-")[2]}{x.split("-")[3]}""")
 df["FieldHealthState"] = ["FieldHealthState-{}".format(i) for i in range(1, len(df.index)+1)]
 df["PLOT_ID_SEASONAL"] = df["PLOT_ID_SEASONAL"].apply(lambda x: f"""{x.split("-")[0]}-{x.split("-")[1]}-{x.split("-")[2]}-{x.split("-")[4]}""")
-df.rename({"PLOT_ID_SEASONAL": "FeatureOfInterest@SamplingPlot", "DATE": "resultTime@date", "OPERATOR": "madeBySensor@Sensor"}, axis=1, inplace=True)
+df.rename({"PLOT_ID_SEASONAL": "FeatureOfInterest@SamplingPlot", "DATE": "resultTime@Date", "OPERATOR": "madeBySensor@Sensor"}, axis=1, inplace=True)
 df.set_index(df["FieldHealthState"], inplace=True, drop=True)
 df.drop(["FieldHealthState"], axis=1, inplace=True)
+
+for col in ["NB_ONE_METER","MORE_ONE_METER"]:
+	df[col] = df[col].apply(lambda x: str(x).replace(".0", ""))
+df = df.replace("nan", '', regex=True)
 
 df.to_csv(os.path.join(args.output_dir, "field_health_state.tsv"), sep="\t")
 
@@ -179,6 +211,10 @@ df.rename({"PLOT_ID_ANNUAL": "FeatureOfInterest@SamplingPlot", "OPERATOR": "made
 df.set_index(df["BiomassData"], inplace=True, drop=True)
 df.drop(["BiomassData"], axis=1, inplace=True)
 
+for col in ["ROW_NUMBER", "PLANT_DENSITY"]:
+	df[col] = df[col].apply(lambda x: str(x).replace(".0", ""))
+df = df.replace("nan", '', regex=True)
+
 df.to_csv(os.path.join(args.output_dir, "biomass.tsv"), sep="\t")
 
 # Climatic
@@ -190,6 +226,10 @@ df = pd.read_csv(os.path.join(args.input_dir, "climatic.tsv"),
 	sep="\t", 
 	decimal=",")
 
+# Add leading 0 for correct date format
+df["month"] = df["month"].astype(str).apply('{:0>2}'.format)
+df["day_of_month"] = df["day_of_month"].astype(str).apply('{:0>2}'.format)
+
 df["resultTime@Date"] = df[["year", "month","day_of_month", ]].apply(lambda x: '-'.join(x.values.astype(str)), axis=1)
 df.drop(["day_of_year","day_of_month", "month", "year"], axis=1, inplace=True)
 
@@ -200,6 +240,14 @@ df.set_index(df["ClimaticData"], inplace=True, drop=True)
 df.drop(["ClimaticData"], axis=1, inplace=True)
 
 df.to_csv(os.path.join(args.output_dir, "climatic.tsv"), sep="\t")
+
+# Dates
+# -----
+# (All dates of the project are included in climatic data)
+dates = df["resultTime@Date"].unique()
+df = pd.DataFrame({"Date": ["Date-{}".format(i) for i in range(1, len(dates)+1)], "DateValue": dates})
+df.to_csv(os.path.join(args.output_dir, "dates.tsv"), sep="\t", index=False)
+
 
 # Nirs
 # ----
@@ -234,6 +282,10 @@ df.rename({"FIELD_SUB_ID": "FeatureOfInterest@SampledField"}, axis=1, inplace=Tr
 df.set_index(df["SoilBiochemData"], inplace=True, drop=True)
 df.drop(["SoilBiochemData"], axis=1, inplace=True)
 
+for col in ["COARSE_SAND","FINE_SAND","COARSE_SILT","FINE_SILT","CLAY", "CEC"]:
+	df[col] = df[col].apply(lambda x: str(x).replace(".0", ""))
+df = df.replace("nan", '', regex=True)
+
 df.to_csv(os.path.join(args.output_dir, "soils.tsv"), sep="\t")
 
 # Weeds
@@ -252,7 +304,7 @@ df["PLOT_ID_SEASONAL"] = df["PLOT_ID_SEASONAL"].apply(lambda x: f"""{x.split("-"
 df.rename({"PLOT_ID_SEASONAL": "FeatureOfInterest@SamplingPlot", 
 	"OPERATOR": "madeBySensor@Sensor", 
 	"DATE": "resultTime@Date",
-	"WEED_SPECIES": "objectOfInterest@WeedSpecies",
+	"WEED_SPECIES": "ObjectOfInterest@Entity", # Declared as a iop:Entity
 	"PHENOLOGY_STAGE": "constrainedBy@Constraint"}, axis=1, inplace=True)
 df.set_index(df["WeedsData"], inplace=True, drop=True)
 df.drop(["WeedsData", "ABONDANCE"], axis=1, inplace=True)
@@ -269,10 +321,28 @@ df = pd.read_csv(os.path.join(args.input_dir, "yields.tsv"),
 	decimal=",")
 
 df["phenomenonTime@Temporality"] = df["PLOT_ID_ANNUAL"].apply(lambda x: x.split("-")[2])
-df["NirsData"] = ["NirsData-{}".format(i) for i in range(1, len(df.index)+1)]
+df["YieldData"] = ["YieldData-{}".format(i) for i in range(1, len(df.index)+1)]
 df.rename({"PLOT_ID_ANNUAL": "FeatureOfInterest@SamplingPlot", "OPERATOR": "madeBySensor@Sensor", "DATE": "resultTime@Date"}, axis=1, inplace=True)
-df.set_index(df["NirsData"], inplace=True, drop=True)
-df.drop(["NirsData", "DATE_FRESH_SEEDS", "DATE_DRY_SEEDS"], axis=1, inplace=True)
+df.set_index(df["YieldData"], inplace=True, drop=True)
+df.drop(["YieldData", "DATE_FRESH_SEEDS", "DATE_DRY_SEEDS"], axis=1, inplace=True)
+
+for col in ["NB_RANKS","NB_UNITS"]:
+	df[col] = df[col].apply(lambda x: str(x).replace(".0", ""))
+df = df.replace("nan", '', regex=True)
 
 df.to_csv(os.path.join(args.output_dir, "yields.tsv"), sep="\t")
 
+# Entities
+# --------
+
+df = pd.read_csv(os.path.join(args.input_dir, "weeds.tsv"), 
+	index_col=None, 
+	header=0, 
+	sep="\t", 
+	decimal=",")
+
+df = pd.DataFrame({"Entity": df["WEED_SPECIES"].unique(), "EntityLabel": df["WEED_SPECIES"].unique()})
+
+# Missing : bioagressors species
+
+df.to_csv(os.path.join(args.output_dir, "entities.tsv"), sep="\t", index=False)
