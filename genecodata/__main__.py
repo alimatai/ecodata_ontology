@@ -13,7 +13,7 @@ import time
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--obs-dir", help="directory with all required tab-separated files of sosa:Observations" )
 parser.add_argument("-c", "--config-dir", help="Directory with all config files of sosa:Property/iop:Variable, sosa:FeatureOfInterest, sosa:Temporalities ...")
-parser.add_argument("-p", "--instances-prefix", help="prefix that will used to the project instances")
+# parser.add_argument("-p", "--instances-prefix", help="prefix that will used to the project instances")
 parser.add_argument("-o", "--output-rdf", help="output RDF file") # TODO : make several files named with a common prefix/suffix
 args=parser.parse_args()
 
@@ -130,6 +130,9 @@ def main():
 		print(f"""{data} triples...""")
 		df.build_triples(graph)
 
+	# DEPRECATED BELOW ; 
+	# # TODO : check if loop aboveis correct then delete
+	
 	# df = ObservationConverter(
 	# 	pd.read_csv(os.path.join(args.obs_dir, "observations_biomasses.tsv"),
 	# 		header=0,

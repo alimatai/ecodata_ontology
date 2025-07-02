@@ -1,7 +1,0 @@
-Constraint	Constraint	constrains@property
-Root	Root	Abundance
-Rhizosphere	Rhizosphere	Abundance
-Leaf	Leaf	Abundance
-PhenologyStage	PhenologyStage	SpeciesPresence
-LabSampled	LabSampled	SpeciesPresence
-FieldSampled	FieldSampled	SpeciesPresence

@@ -37,7 +37,7 @@ df.to_csv(os.path.join(args.output_dir, "temporalities.tsv"), sep="\t", index=Fa
 # (WARNING : hard-coded here because it is small; if too big : parse all tables and get unique values)
 # Question : How to handle multiple values with Askofiles ? (in RDF, make a bag, but in askofiles ??)
 
-sensors = ["CG,FR","CG,OB","CG,OB,RZ","CG,RD","CG,RZ","CM,LL","CM,LLB","EC,TD,LL,CM","FR,CG","FR,CG,OB","FR,RD,RZ","FR,RZ","FV","FV,OB","FV,RZ","KG,LLB,CM","KGN","LL","LL,CM","LL,CM,TD,EC","LLB,CHM,KGN","MC","OB","OB,CG","PLG","PLG","PLG,CM,LL","PLG,JC","PLG,SC","PLG,UK,SD","RZ,BM,CG","RZ,RD","SC","SC,KG","SC,KG,OB,EC","SD,UK,PLG","TD,EC","UK,EV","UK,SC,EC,EV"]
+sensors = ["CG,FR","CG,OB","CG,OB,RZ","CG,RD","CG,RZ","CM,LL","CM,LLB","EC,TD,LL,CM","FR,CG","FR,CG,OB","FR,RD,RZ","FR,RZ","FV","FV,OB","FV,RZ","KG,LLB,CM","KGN","LL","LL,CM","LL,CM,TD,EC","LLB,CHM,KGN","MC","OB","OB,CG","PLG","PLG,CM,LL","PLG,JC","PLG,SC","PLG,UK,SD","RD,CG","RZ,BM,CG","RZ,RD","RZ,RD,FR","SC","SC,KG","SC,KG,OB,EC","SD,UK,PLG","TD,EC","UK,EV","UK,SC,EC,EV"]
 sensorstypes = ["Person"]*len(sensors)
 
 df = pd.DataFrame({"Sensor": sensors, "Type":sensorstypes})
